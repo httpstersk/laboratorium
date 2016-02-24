@@ -7,64 +7,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="generator" content="Clap for CSS Variables!" />
     <title>&#128079; for CSS Variables!</title>
+    <link rel="stylesheet" href="../style.css">
 
     <style>
       :root {
-        --small-size: 50px;
-        --big-size: 100px;
-        --orange: #F96B4C;
-        --pink: #F23182;
-        --more-purple: #480EC3;
-        --less-purple: #B409F7;
-        --white-glow: rgba(255, 255, 255, 0.25);
-        --pink-glow: rgba(243, 49, 128, 1);
-        --small-shadow: 0 0 var(--small-size) var(--pink-glow), 0 0 var(--small-size) var(--white-glow);
-        --big-shadow: 0 0 var(--big-size) var(--pink-glow), 0 0 var(--big-size) var(--white-glow);
-      }
-
-      html,
-      body {
-        height: 100%;
-        margin: 0;
-        padding: 0;
-      }
-
-      main {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        height: 100%;
-      }
-
-      button {
-        border: none;
-        cursor: pointer;
-        font-size: 5vw;
-        height: 15vw;
-        transition: all 0.25s;
-        width: 15vw;
-        will-change: transform;
-      }
-
-      main {
-        background: linear-gradient(to bottom, var(--more-purple) 0%, var(--less-purple) 90%);
-      }
-
-      button {
-        background-color: var(--orange);
-        background-image: linear-gradient(var(--orange), var(--pink));
-        border-radius: 50%;
-        box-shadow: var(--big-shadow);
-      }
-
-      button:focus,
-      button:hover {
-        box-shadow: var(--small-shadow);
-        outline: 0;
-      }
-
-      button:active {
-        transform: scale(0.99);
+        --button-radius: 50%;
+        --button-font-size: 5vw;
+        --button-size: 15vw;
+        --button-normal-blur: 100px;
+        --button-hover-blur: 50px;
+        --button-hover-scale: 0.99;
+        --button-shadow-color-1: rgba(243, 49, 128, 1);
+        --button-shadow-color-2: rgba(255, 255, 255, 0.25);
+        --button-gradient-start-color: #F96B4C;
+        --button-gradient-stop-color: #F23182;
+        --bg-gradient-start-color: #480EC3;
+        --bg-gradient-stop-color: #B409F7;
+        --transition-time: 0.25s;
       }
     </style>
   </head>
