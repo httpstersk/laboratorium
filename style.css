@@ -1,9 +1,17 @@
+@font-face {
+	font-family: 'Avenir';
+	src: url('avenir.woff') format('woff');
+	font-weight: normal;
+	font-style: normal;
+}
+
 :root {
   --button-hover-shadow: 0 0 var(--button-hover-blur) var(--button-shadow-color-1), 0 0 var(--button-hover-blur) var(--button-shadow-color-2);
   --button-normal-shadow: 0 0 var(--button-normal-blur) var(--button-shadow-color-1), 0 0 var(--button-normal-blur) var(--button-shadow-color-2);
 }
 
 html, body {
+  font-family: Avenir, Arial;
   height: 100%;
   margin: 0;
   padding: 0;

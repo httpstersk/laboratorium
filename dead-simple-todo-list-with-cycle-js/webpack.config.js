@@ -29,6 +29,9 @@ module.exports = {
     }, {
       test: /\.css$/,
       loaders: ['style', 'css']
+    }, {
+      test: /\.(png|woff|woff2|eot|ttf|svg)$/,
+      loader: require.resolve("file-loader")
     }]
   },
 
