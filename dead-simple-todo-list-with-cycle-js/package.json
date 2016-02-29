@@ -1,0 +1,30 @@
+{
+  "name": "dead-simple-todo-list-with-cycle-js",
+  "version": "1.0.0",
+  "description": "A Dead-Simple Todo List with Cycle.js (RxJS)",
+  "scripts": {
+    "build": "webpack",
+    "start": "webpack-dev-server"
+  },
+  "keywords": [
+    "cyclejs",
+    "rxjs",
+    "webpack",
+    "babel"
+  ],
+  "dependencies": {
+    "@cycle/core": "^6.0.0",
+    "@cycle/dom": "^9.0.1",
+    "rx": "^4.0.7"
+  },
+  "devDependencies": {
+    "babel-core": "^6.4.5",
+    "babel-loader": "^6.2.1",
+    "babel-preset-es2015": "^6.3.13",
+    "css-loader": "^0.23.1",
+    "html-webpack-plugin": "^2.7.1",
+    "style-loader": "^0.13.0",
+    "webpack": "^1.12.12",
+    "webpack-dev-server": "^1.14.1"
+  }
+}
