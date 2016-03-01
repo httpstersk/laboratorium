@@ -1,0 +1,28 @@
+{
+  "name": "vjing-with-web-midi-and-rxjs",
+  "version": "1.0.0",
+  "description": "VJing with Web MIDI and RxJS",
+  "keywords": [
+    "vjing",
+    "rxjs",
+    "webaudio",
+    "webmidi",
+    "babel"
+  ],
+  "scripts": {
+    "watch:app": "watchify app/index.js -t babelify -o app/dist.js -v",
+    "build:app": "browserify app/index.js -t babelify -o app/dist.js",
+    "build": "browserify lib/rxjs-web-midi.js -t babelify -o dist/rxjs-web-midi.js"
+  },
+  "dependencies": {
+    "rx": "^4.0.8"
+  },
+  "devDependencies": {
+    "babel": "^6.5.2",
+    "babel-preset-es2015": "^6.6.0",
+    "babelify": "^7.2.0",
+    "browserify": "^13.0.0",
+    "mocha": "^2.4.5",
+    "watchify": "^3.7.0"
+  }
+}
