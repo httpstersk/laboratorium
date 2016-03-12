@@ -1,8 +1,8 @@
 @font-face {
-	font-family: 'Avenir';
-	src: url('avenir.woff') format('woff');
-	font-weight: normal;
-	font-style: normal;
+  font-family: 'Avenir';
+  src: url('avenir.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
 }
 
 :root {
@@ -25,9 +25,8 @@ main {
   height: 100%;
 }
 
-ul,
-li {
-	list-style-type: none;
+ul, li {
+  list-style-type: none;
 }
 
 button {
@@ -36,11 +35,11 @@ button {
   border-radius: var(--button-radius, 50%);
   border: none;
   box-shadow: var(--button-normal-shadow);
-	color: var(--button-font-color);
+  color: var(--button-font-color);
   cursor: pointer;
   font-size: var(--button-font-size);
   height: var(--button-size);
-	margin: var(--button-margin, 0.5vw);
+  margin: var(--button-margin, 0.5vw);
   transition: all var(--transition-time);
   width: var(--button-size);
   will-change: transform;
