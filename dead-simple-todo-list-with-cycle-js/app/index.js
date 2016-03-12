@@ -48,7 +48,7 @@ function view(state$) {
       ul('.todos', state.items.map(todo =>
         li('.todo', [
           span('.item', todo),
-          button('.button', 'x')
+          button('.button', '✖')
         ])
       ))
     ]));

@@ -25,15 +25,22 @@ main {
   height: 100%;
 }
 
+ul,
+li {
+	list-style-type: none;
+}
+
 button {
   background-color: var(--button-gradient-start-color);
   background-image: linear-gradient(var(--button-gradient-start-color), var(--button-gradient-stop-color));
-  border-radius: var(--button-radius);
+  border-radius: var(--button-radius, 50%);
   border: none;
   box-shadow: var(--button-normal-shadow);
+	color: var(--button-font-color);
   cursor: pointer;
   font-size: var(--button-font-size);
   height: var(--button-size);
+	margin: var(--button-margin, 0.5vw);
   transition: all var(--transition-time);
   width: var(--button-size);
   will-change: transform;
