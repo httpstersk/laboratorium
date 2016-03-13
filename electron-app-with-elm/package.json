@@ -1,0 +1,21 @@
+{
+  "name": "electron-app-with-elm",
+  "version": "1.0.0",
+  "description": "Electron App with Elm",
+  "main": "main.js",
+  "scripts": {
+    "elm": "npm run clean && elm make Main.elm --output compiled/elm.js || true",
+    "elm:watch": "chokidar '**/*.elm' -c 'npm run elm'",
+    "clean": "rimraf compiled",
+    "start": "electron main.js",
+    "watch": "npm run start & npm run elm:watch & wait"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "chokidar": "^1.4.3",
+    "chokidar-cli": "^1.2.0",
+    "electron-prebuilt": "^0.37.1",
+    "rimraf": "^2.5.2"
+  }
+}
