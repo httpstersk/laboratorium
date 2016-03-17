@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Building a Live-Validated Signup Form in Elm</title>
+
+  <style>
+    label,
+    input,
+    h1,
+    .signup-button,
+    .validation-error {
+      font-family: sans-serif;
+      font-size: 36px;
+      width: 200px
+    }
+
+    h1 {
+      border-bottom: 1px solid #111;
+      font-size: 48px;
+      padding-bottom: 10px;
+      width: 925px;
+    }
+
+    label {
+      display: inline-block;
+    }
+
+    input {
+      color: #111111;
+      margin: 20px;
+      padding: 10px;
+      width: 680px;
+    }
+
+    .signup-button {
+      background-color: #7FDBFF;
+      border: none;
+      color: rgb(0, 73, 102);
+      margin: 20px 0;
+      padding: 30px;
+      width: 150px;
+    }
+
+    .signup-button:hover {
+      background-color: #0074D9;
+      color: rgb(179, 220, 255);
+    }
+
+    form {
+      margin: 80px auto;
+      width: 960px;
+    }
+
+    .validation-error {
+      box-sizing: border-box;
+      color: #FF4136;
+      display: inline-block;
+      width: 925px;
+    }
+  </style>
+</head>
+
+<body>
+
+</body>
+
+<script src="elm.js"></script>
+
+<script>
+  Elm.fullscreen(Elm.SignupForm);
+</script>
+
+</html>
