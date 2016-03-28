@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="A Weather Widget using RxJS" />
+    <title>A Weather Widget using RxJS</title>
+
+    <style>
+      :root {
+        --bg-gradient-start-color: #87288C;
+        --bg-gradient-stop-color: #ED168F;
+      }
+
+      #weather {
+        color: #c11e8e;
+        font-size: 100vh;
+        left: 0;
+        position: absolute;
+        top: -10vh;
+        white-space: nowrap;
+      }
+
+      #location-input {
+        font-size: 3rem;
+        z-index: 1;
+      }
+    </style>
+  </head>
+
+  <body>
+    <main>
+      <div id="weather"></div>
+      <input type="text" id="location-input" placeholder="City...">
+    </main>
+  </body>
+
+</html>
