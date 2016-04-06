@@ -1,34 +1,36 @@
 html,
 body {
-    height: 100%;
-    overflow: hidden;
+  height: 100%;
+  overflow: hidden;
 }
 
 body {
-    color: white;
-    margin: 0;
-    font-family: Roboto, Helvetica;
-    font-size: 4vw;
+  color: white;
+  font-family: Roboto, Helvetica;
+  font-size: 4vw;
+  margin: 0;
 }
 
 #app {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100%;
-    background-color: #24242d;
-}
-
-.flash {
+  background-color: #24242d;
   display: flex;
+  min-height: 100%;
 }
 
-.flash > div,
+.flash,
+.flash-question,
 .flash-results > div {
-  flex: 1;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+}
+
+.flash-question {
+  width: 70vw;
 }
 
 .flash-results {
   display: flex;
   flex-direction: column;
+  width: 30vw;
 }

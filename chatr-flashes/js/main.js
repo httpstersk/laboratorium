@@ -16,20 +16,20 @@ function main(sources) {
     DOM: flash$
       .map(state =>
         div('.flash', [
-          div('.flash-question', JSON.stringify(state.flash.text)),
+          div('.flash-question', state.flash.text),
           div('.flash-results', [
             div({
               style: {
                 backgroundColor: '#bada55',
-                height: JSON.stringify(state.choice_a_percent) + 'vh'
+                height: state.choice_a_percent + 'vh'
               }
-            }, JSON.stringify(state.choice_a_percent)),
+            }, state.flash.choice_a),
             div({
               style: {
                 backgroundColor: '#bebebe',
-                height: JSON.stringify(state.choice_b_percent) + 'vh'
+                height: state.choice_b_percent + 'vh'
               }
-            }, JSON.stringify(state.choice_b_percent))
+            }, state.flash.choice_b)
           ])
         ]))
   };
