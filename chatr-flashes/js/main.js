@@ -3,7 +3,7 @@ import {Observable} from 'rx';
 import {div, makeDOMDriver} from '@cycle/dom';
 import axios from 'axios';
 
-const url = 'https://chatr.tv/api/flashes/0';
+const url = 'https://chatr.tv/api/flashes/100';
 const p = axios.get(url);
 
 const flash$ = Rx.Observable
@@ -21,13 +21,13 @@ function main(sources) {
             div({
               style: {
                 backgroundColor: '#bada55',
-                height: state.choice_a_percent + 'vh'
+                height: (state.choice_a_percent === 0 && state.choice_b_percent === 0 ? 50 : state.choice_a_percent) + 'vh'
               }
             }, state.flash.choice_a),
             div({
               style: {
                 backgroundColor: '#bebebe',
-                height: state.choice_b_percent + 'vh'
+                height: (state.choice_a_percent === 0 && state.choice_b_percent === 0 ? 50 : state.choice_b_percent) + 'vh'
               }
             }, state.flash.choice_b)
           ])
