@@ -1,0 +1,34 @@
+html,
+body {
+    height: 100%;
+    overflow: hidden;
+}
+
+body {
+    color: white;
+    margin: 0;
+    font-family: Roboto, Helvetica;
+    font-size: 4vw;
+}
+
+#app {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100%;
+    background-color: #24242d;
+}
+
+.flash {
+  display: flex;
+}
+
+.flash > div,
+.flash-results > div {
+  flex: 1;
+}
+
+.flash-results {
+  display: flex;
+  flex-direction: column;
+}
