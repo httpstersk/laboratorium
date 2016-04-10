@@ -13,12 +13,18 @@ module.exports = {
     filename: './dist/bundle.js'
   },
   module: {
-    loaders: [{
-      test: /\.js$/,
-      loaders: ['babel'],
-      include: __dirname,
-      exclude: /node_modules/
-    }]
+    loaders: [
+      {
+        test: /\.js$/,
+        loaders: ['babel'],
+        include: __dirname,
+        exclude: /node_modules/
+      },
+      {
+        test: /\.(ttf|eot|svg|woff(2)?)(\?[a-z0-9]+)?$/,
+        loader: 'file-loader'
+      }
+    ]
   },
   plugins: (ENV == 'production' ? [
     new webpack.optimize.UglifyJsPlugin({

@@ -1,3 +1,10 @@
+@font-face {
+  font-family: "Platform";
+  src: url("../fonts/platform-medium-web.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
 html,
 body {
   height: 100%;
@@ -6,8 +13,8 @@ body {
 
 body {
   color: white;
-  font-family: Roboto, Helvetica;
-  font-size: 4vw;
+  font-family: Platform, Helvetica;
+  font-size: 6vw;
   margin: 0;
 }
 
