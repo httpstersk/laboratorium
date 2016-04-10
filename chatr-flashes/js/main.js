@@ -15,20 +15,18 @@ function main(sources) {
   const sinks = {
     DOM: flash$
       .map(state =>
-        div('.flash', [
-          div('.flash-meta', [
-            div('.flash-question', state.flash.text)
+        div('.⚡', [
+          div('.🔥', [
+            div('.💬', state.flash.text)
           ]),
-          div('.flash-results', [
-            div({
+          div('.↕', [
+            div('.👍', {
               style: {
-                backgroundColor: '#bada55',
                 height: (state.choice_a_percent === 0 && state.choice_b_percent === 0 ? 50 : state.choice_a_percent) + 'vh'
               }
             }, state.flash.choice_a),
-            div({
+            div('.👎', {
               style: {
-                backgroundColor: '#bebebe',
                 height: (state.choice_a_percent === 0 && state.choice_b_percent === 0 ? 50 : state.choice_b_percent) + 'vh'
               }
             }, state.flash.choice_b)

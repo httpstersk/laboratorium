@@ -24,24 +24,32 @@ body {
   min-height: 100%;
 }
 
-.flash,
-.flash-meta,
-.flash-results > div {
+.⚡,
+.🔥,
+.↕ > div {
   align-items: center;
   display: flex;
   justify-content: center;
 }
 
-.flash-meta {
+.👍 {
+  background-color: #bada55;
+}
+
+.👎 {
+  background-color: #bebebe;
+}
+
+.🔥 {
   width: 70vw;
 }
 
-.flash-question {
+.💬 {
   flex-basis: 50%;
   line-height: 1.3;
 }
 
-.flash-results {
+.↕ {
   display: flex;
   flex-direction: column;
   width: 30vw;
