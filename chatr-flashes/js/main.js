@@ -3,7 +3,7 @@ import {Observable} from 'rx';
 import {div, makeDOMDriver} from '@cycle/dom';
 import axios from 'axios';
 
-const url = 'https://chatr.tv/api/flashes/100';
+const url = 'https://chatr.tv/api/flashes/0';
 const p = axios.get(url);
 
 const flash$ = Rx.Observable
@@ -16,7 +16,9 @@ function main(sources) {
     DOM: flash$
       .map(state =>
         div('.flash', [
-          div('.flash-question', state.flash.text),
+          div('.flash-meta', [
+            div('.flash-question', state.flash.text)
+          ]),
           div('.flash-results', [
             div({
               style: {

@@ -25,15 +25,20 @@ body {
 }
 
 .flash,
-.flash-question,
+.flash-meta,
 .flash-results > div {
   align-items: center;
   display: flex;
   justify-content: center;
 }
 
-.flash-question {
+.flash-meta {
   width: 70vw;
+}
+
+.flash-question {
+  flex-basis: 50%;
+  line-height: 1.3;
 }
 
 .flash-results {
