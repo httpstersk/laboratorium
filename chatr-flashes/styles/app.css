@@ -19,7 +19,7 @@ body {
 }
 
 #app {
-  background-color: #24242d;
+  background-color: lightgrey;
   display: flex;
   min-height: 100%;
 }
@@ -33,11 +33,13 @@ body {
 }
 
 .👍 {
-  background-color: #bada55;
+  background-color: #28b898;
+  color: #1c1a2b;
 }
 
 .👎 {
-  background-color: #bebebe;
+  background-color: #1c1a2b;
+  color: #28b898;
 }
 
 .🔥 {
