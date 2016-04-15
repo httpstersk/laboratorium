@@ -10,7 +10,7 @@
 
 @font-face {
   font-family: "Platform";
-  src: url("../fonts/platform-medium-web.woff") format("woff");
+  src: url("./fonts/platform-medium-web.woff") format("woff");
   font-weight: normal;
   font-style: normal;
 }
