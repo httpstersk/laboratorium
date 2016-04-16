@@ -1,0 +1,48 @@
+@font-face {
+  font-family: "Platform";
+  src: url("./fonts/platform-medium-web.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
+html,
+body {
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  color: white;
+  font-family: Platform, Helvetica;
+  font-size: 6vw;
+  margin: 0;
+}
+
+#app {
+  background-color: lightgrey;
+  display: flex;
+  min-height: 100%;
+}
+
+.bubble-chart-container {
+  display: flex;
+  flex: 1;
+  justify-content: center;
+  position: relative;
+  user-select: none;
+}
+
+.bubble-label {
+  align-items: center;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-around;
+  overflow: hidden;
+  text-align: center;
+  will-change: left, top, height, width;
+}
+
+.bubble-label.small {
+  font-size: 0;
+}
