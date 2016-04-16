@@ -21,9 +21,9 @@ class App extends React.Component {
   }
 
   render() {
-    let flash = this.state.flash;
+    let {text, choice_a, choice_b, choice_a_percent, choice_b_percent} = this.state.flash;
 
-    if (flash) {
+    if (text) {
       const stream = document.querySelector('#stream');
       stream.classList.add('🔘');
     }
@@ -31,16 +31,16 @@ class App extends React.Component {
     return (
       <div className='⚡'>
         <div className='🔥'>
-          <div className='💬'>{flash.text}</div>
+          <div className='💬'>{text}</div>
         </div>
         <div className='↕'>
-          <div className='👍' style={(flash.choice_a_percent === 0 && flash.choice_b_percent === 0) ? {height: '50vh'} : {height: flash.choice_a_percent + 'vh'}}>
-            <div>{flash.choice_a}</div>
-            <div className='🎈'>{flash.choice_a_percent}</div>
+          <div className='👍' style={(choice_a_percent === 0 && choice_b_percent === 0) ? {height: '50vh'} : {height: choice_a_percent + 'vh'}}>
+            <div>{choice_a}</div>
+            <div className='🎈'>{choice_a_percent}</div>
           </div>
-          <div className='👎' style={(flash.choice_a_percent === 0 && flash.choice_b_percent === 0) ? {height: '50vh'} : {height: flash.choice_b_percent + 'vh'}}>
-            <div>{flash.choice_b}</div>
-            <div className='🎈'>{flash.choice_b_percent}</div>
+          <div className='👎' style={(choice_a_percent === 0 && choice_b_percent === 0) ? {height: '50vh'} : {height: choice_b_percent + 'vh'}}>
+            <div>{choice_b}</div>
+            <div className='🎈'>{choice_b_percent}</div>
           </div>
         </div>
       </div>
