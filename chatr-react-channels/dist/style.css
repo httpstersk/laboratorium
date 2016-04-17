@@ -35,6 +35,7 @@ body {
 .bubble-label {
   align-items: center;
   border-radius: 50%;
+  color: lightgrey;
   cursor: pointer;
   display: flex;
   justify-content: space-around;
@@ -45,4 +46,12 @@ body {
 
 .bubble-label.small {
   font-size: 0;
+}
+
+.bubble.jednotka {
+  fill: #ed0e58;
+}
+
+.bubble.dvojka {
+  fill: #231f20;
 }

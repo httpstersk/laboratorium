@@ -26,12 +26,13 @@ class App extends React.Component {
     let data = this.state.channels
       .filter(channel => channel.id === 1 || channel.id === 2)
       .filter(channel => channel.act_clients !== 0)
-      .map(ch => ({ _id: ch.id, value: ch.act_clients, displayText: ch.act_clients, colorValue: ch.color }));
+      .map(ch => ({ _id: ch.name.toLowerCase(), value: ch.act_clients, displayText: ch.act_clients, colorValue: ch.color }));
 
     return (
       <ReactBubbleChart
         className="bubble"
         data={data}
+        fontSizeFactor={1}
       />
     )
   }
