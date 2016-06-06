@@ -9,6 +9,10 @@
   "author": "Lubos Belak",
   "license": "ISC",
   "dependencies": {
-    "@horizon/client": "^1.1.1"
+    "@cycle/core": "^6.0.3",
+    "@cycle/dom": "^9.4.0",
+    "@horizon/client": "^1.1.1",
+    "rxjs-es": "^5.0.0-beta.8",
+    "xstream": "^4.0.1"
   }
 }
