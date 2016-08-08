@@ -1,0 +1,20 @@
+{
+    "name": "chuck-norris-quotes-app-using-elm",
+    "version": "1.0.0",
+    "description": "",
+    "main": "",
+    "scripts": {
+        "dev": "gulp",
+        "build": "gulp build"
+    },
+    "dependencies": {},
+    "devDependencies": {
+        "gulp": "^3.9.1",
+        "gulp-connect": "^5.0.0",
+        "gulp-elm": "^0.5.0",
+        "gulp-plumber": "^1.1.0",
+        "gulp-util": "^3.0.7"
+    },
+    "keywords": ["elm"],
+    "license": "ISC"
+}
