@@ -1,0 +1,94 @@
+<template id="tomato-button">
+  <style>
+    :host {
+      opacity: 0;
+    }
+
+    :host([enhanced]) {
+      opacity: 1;
+    }
+
+    :host {
+      background: tomato;
+      color: white;
+      cursor: pointer;
+      font-size: 1.5rem;
+      padding: 1rem 2rem;
+      text-transform: capitalize;
+      transition: all 0.3s ease;
+    }
+
+    :host(:active),
+    :host(:focus),
+    :host(:hover) {
+      background: black;
+    }
+
+    :host([disabled]) {
+      cursor: not-allowed;
+      opacity: 0.5;
+    }
+  </style>
+
+  <slot name="text"></slot>
+  <slot name="icon"></slot>
+</template>
+
+<script>
+    const owner = document.currentScript.ownerDocument;
+    const template = owner.querySelector('template');
+    const content = template.content.cloneNode(true);
+
+    class CustomButton extends HTMLButtonElement {
+        constructor() {
+            super();
+
+            console.log('👍');
+
+            let shadowRoot = this.attachShadow({
+                mode: 'open'
+            });
+
+            shadowRoot.appendChild(content);
+
+            this.addEventListener('click', this._clickHandler.bind(this));
+        }
+
+        static get observedAttributes() {
+            return ['disabled', 'iconurl'];
+        }
+
+        connectedCallback() {
+            this.setAttribute('enhanced', '');
+        }
+
+        disconnectedCallback() {
+
+        }
+
+        attributeChangedCallback(attrName, oldVal, newVal) {
+
+        }
+
+        get disabled() {
+            return this.hasAttribute('disabled');
+        }
+
+        set disabled(val) {
+            if (val) {
+                this.setAttribute('disabled', true);
+            } else {
+                this.removeAttribute('disabled');
+            }
+        }
+
+        _clickHandler() {
+            this.disabled = this.disabled ? '' : 'disabled';
+        }
+
+    }
+
+    window.customElements.define('tomato-button', CustomButton, {
+        extends: 'button'
+    });
+</script>
