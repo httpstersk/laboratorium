@@ -6,18 +6,91 @@
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Web Components V1 Playground</title>
-    <link rel="import" href="tomato-button/tomato-button.html">
+    <style>
+        html {
+            box-sizing: border-box;
+            height: 100%;
+        }
+
+        @media screen and (min-width: 20rem) {
+            html {
+                font-size: calc(1rem + 1.2 * ((100vw - 20rem) / 30));
+            }
+        }
+
+        @media screen and (min-width: 50rem) {
+            html {
+                font-size: 2rem;
+            }
+        }
+
+        *,
+        *:before,
+        *:after {
+            box-sizing: inherit;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            font-family: Arial, sans-serif;
+            font-size: 1.6rem;
+            margin: 0;
+            min-height: 100%;
+        }
+    </style>
 </head>
 
 <body>
-    <button is="tomato-button">
-        <span slot="text">🍅</span>
-        <span slot="icon">👍</span>
-    </button>
+    <section>
+        <h2>Custom Element 1</h2>
+    </section>
+
+    <section>
+        <h2>Custom Element 2</h2>
+    </section>
+
+    <section>
+        <h2>Custom Element 3</h2>
+    </section>
 
     <script type="text/javascript">
         (function() {
             'use strict';
+
+            if (document.fonts) {
+
+                const FONTS = ['Neuzeitgrot', 'Platform', 'Walsheim'];
+                const FONT_FACES = new Set();
+                const SECTIONS = [...document.querySelectorAll('section')];
+
+                const randomize = arr => arr[Math.floor(Math.random() * arr.length)];
+
+                const addCSSRule = (sheet, selector, rules, index = sheet.cssRules.length) => {
+                    if ('insertRule' in sheet) {
+                        sheet.insertRule(`${selector} { ${rules} }`, index);
+                    } else if ('addRule' in sheet) {
+                        sheet.addRule(selector, rules, index);
+                    }
+                };
+
+                const defineClassName = font => `font-${font.toLowerCase()}`;
+                const createCSSDefinition = font => addCSSRule(document.styleSheets[0], `.${defineClassName(font)}`, `font-family: ${font}`);
+
+                FONTS.map(font => FONT_FACES.add(new FontFace(font, `url(${font}.woff)`)));
+                FONTS.map(font => createCSSDefinition(font));
+
+                [...FONT_FACES].map(face => face.load().then(document.fonts.add(face)));
+
+                document.fonts.ready.then(() => {
+                    for (const fontface of document.fonts.values()) {
+                        console.info(`${fontface.family}: ${fontface.status}`);
+                    }
+                });
+
+                SECTIONS.map(section => section.classList.add(defineClassName(randomize(FONTS))));
+
+            }
 
         }());
     </script>
