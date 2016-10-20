@@ -6,6 +6,7 @@
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Web Components V1 Playground</title>
+    <link rel="import" href="dual-sliding-panels/dual-sliding-panels.html">
     <style>
         html {
             box-sizing: border-box;
@@ -38,20 +39,22 @@
             margin: 0;
             min-height: 100%;
         }
+
+        section {
+            height: 50vh;
+        }
     </style>
 </head>
 
 <body>
     <section>
-        <h2>Custom Element 1</h2>
-    </section>
+        <dual-sliding-panels>
+          <h3 slot="front--left">Bright Side</h3>
+          <p slot="back--left">Positive!</p>
 
-    <section>
-        <h2>Custom Element 2</h2>
-    </section>
-
-    <section>
-        <h2>Custom Element 3</h2>
+          <h3 slot="front--right">Dark Side</h3>
+          <p slot="back--right">Negative!</p>
+        </dual-sliding-panels>
     </section>
 
     <script type="text/javascript">
