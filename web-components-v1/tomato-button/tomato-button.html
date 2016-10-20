@@ -8,7 +8,7 @@
       opacity: 1;
     }
 
-    :host {
+    button {
       background: tomato;
       color: white;
       cursor: pointer;
@@ -18,20 +18,22 @@
       transition: all 0.3s ease;
     }
 
-    :host(:active),
-    :host(:focus),
-    :host(:hover) {
+    button(:active),
+    button(:focus),
+    button(:hover) {
       background: black;
     }
 
-    :host([disabled]) {
+    :host([disabled]) button {
       cursor: not-allowed;
       opacity: 0.5;
     }
   </style>
 
-  <slot name="text"></slot>
-  <slot name="icon"></slot>
+  <button>
+    <slot name="text"></slot>
+    <slot name="icon"></slot>
+  </button>
 </template>
 
 <script>
@@ -39,7 +41,7 @@
     const template = owner.querySelector('template');
     const content = template.content.cloneNode(true);
 
-    class CustomButton extends HTMLButtonElement {
+    class CustomButton extends HTMLElement {
         constructor() {
             super();
 
@@ -88,7 +90,5 @@
 
     }
 
-    window.customElements.define('tomato-button', CustomButton, {
-        extends: 'button'
-    });
+    window.customElements.define('tomato-button', CustomButton);
 </script>
