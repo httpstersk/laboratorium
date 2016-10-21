@@ -1,5 +1,14 @@
 <template id="dual-sliding-panels">
     <style>
+        :host {
+            --light-color: #f5f5f5;
+            --dark-color: #151515;
+            --gradient-start-l: #50c56c;
+            --gradient-stop-l: #4ec4ce;
+            --gradient-start-r: #50c56c;
+            --gradient-stop-r: #4ec4ce;
+        }
+
         main {
             height: 100%;
             overflow: hidden;
@@ -25,21 +34,24 @@
         .side-right {
             left: -25%;
             position: relative;
-            transform: translate(0, 0);
+            transform: translateX(0);
             will-change: transform;
         }
 
         .side-left {
-            background: #f5f5f5;
+            background: var(--side-left-bg, var(--light-color));
+            background-image: linear-gradient(to right, var(--side-left-gradient-start, var(--gradient-start-l)) 0%, var(--side-left-gradient-stop, var(--gradient-stop-l)) 100%);
+            color: var(--dark-color);
         }
 
         .side-right {
-            background: #151515;
-            color: white;
+            background: var(--side-right-bg, var(--dark-color));
+            background-image: linear-gradient(to left, var(--side-right-gradient-start, var(--gradient-start-r)) 0%, var(--side-right-gradient-stop, var(--gradient-stop-r)) 100%);
+            color: var(--light-color);
         }
 
         .side-left--active {
-            transform: translate(50%, 0);
+            transform: translateX(50%);
         }
 
         .side-left--active .side-left--inner {
@@ -47,7 +59,7 @@
         }
 
         .side-right--active {
-            transform: translate(-50%, 0);
+            transform: translateX(-50%);
         }
 
         .side-right--active .side-right--inner {
@@ -55,11 +67,11 @@
         }
 
         .side-left--hidden {
-            transform: translate(-50%, 0);
+            transform: translateX(-50%);
         }
 
         .side-right--hidden {
-            transform: translate(50%, 0);
+            transform: translateX(50%);
         }
 
         .side--inner {
@@ -71,25 +83,21 @@
         .side--inner {
             height: 100%;
             padding: 0 5vw;
+            transition-delay: 150ms;
             will-change: transform;
         }
 
         .side-left--inner {
             transform: rotateY(-90deg);
             transform-origin: right center;
-            transition-delay: 150ms;
         }
 
         .side-right--inner {
             transform: rotateY(90deg);
             transform-origin: left center;
-            transition-delay: 150ms;
         }
 
-        ::slotted(*) {
-            border: 0.5vw solid tomato;
-            padding: 1vw;
-        }
+        ::slotted(*) {}
     </style>
 
     <main>
@@ -151,10 +159,8 @@
             attributeChangedCallback(attrName, oldVal, newVal) {}
 
             openLeft(event) {
-                if (this._shadowRoot) {
-                    this.panelLeft.classList.toggle('side-left--active');
-                    this.panelRight.classList.toggle('side-right--hidden');
-                }
+                this.panelLeft.classList.toggle('side-left--active');
+                this.panelRight.classList.toggle('side-right--hidden');
             }
 
             openRight(event) {
