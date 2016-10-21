@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Web Components V1 Playground</title>
     <link rel="import" href="dual-sliding-panels/dual-sliding-panels.html">
+    <link rel="import" href="tabs-with-indicator/tabs-with-indicator.html">
     <style>
         html {
             box-sizing: border-box;
@@ -42,6 +43,8 @@
 
         section {
             height: 50vh;
+            max-height: 50vh;
+            overflow: hidden;
         }
     </style>
 </head>
@@ -49,12 +52,25 @@
 <body>
     <section>
         <dual-sliding-panels>
-          <h3 slot="front--left">Bright Side</h3>
-          <p slot="back--left">Positive!</p>
+            <h3 slot="front--left">Bright Side</h3>
+            <p slot="back--left">Positive!</p>
 
-          <h3 slot="front--right">Dark Side</h3>
-          <p slot="back--right">Negative!</p>
+            <h3 slot="front--right">Dark Side</h3>
+            <p slot="back--right">Negative!</p>
         </dual-sliding-panels>
+    </section>
+
+    <section>
+        <tabs-with-indicator>
+            <span slot="tab-1">Quote 1</span>
+            <p slot="panel-1">"Designers need to go from decorators to problem solvers."</p>
+            <span slot="tab-2">Quote 2</span>
+            <p slot="panel-2">"Think about each component as if it could be presented to a design contest. Design the footer that will win the design contest of footers."</p>
+            <span slot="tab-3">Quote 3</span>
+            <p slot="panel-3">"Being a Web designer and not considering speed/performance is like being a print designer and not considering how your colors will print."</p>
+            <span slot="tab-4">Quote 4</span>
+            <p slot="panel-4">"Surround yourself with those who bring out the best in you, not the stress in you."</p>
+        </tabs-with-indicator>
     </section>
 
     <script type="text/javascript">
