@@ -8,6 +8,7 @@
     <title>Web Components V1 Playground</title>
     <link rel="import" href="dual-sliding-panels/dual-sliding-panels.html">
     <link rel="import" href="tabs-with-indicator/tabs-with-indicator.html">
+    <link rel="import" href="revealing-slider/revealing-slider.html">
     <style>
         html {
             box-sizing: border-box;
@@ -54,6 +55,15 @@
 </head>
 
 <body>
+    <section>
+        <revealing-slider>
+            <h3 slot="slide-1">Slide 1</h3>
+            <h3 slot="slide-2">Slide 2</h3>
+            <h3 slot="slide-3">Slide 3</h3>
+            <h3 slot="slide-4">Slide 4</h3>
+        </revealing-slider>
+    </section>
+
     <section>
         <dual-sliding-panels>
             <h3 slot="front--left">Bright Side</h3>

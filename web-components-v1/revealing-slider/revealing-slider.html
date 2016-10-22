@@ -1,0 +1,237 @@
+<template id="revealing-slider">
+    <style>
+        :host {
+            --button-color: #e13334;
+            --button-size: 12vw;
+            --slide-bg-1: #005397;
+            --slide-bg-2: lightgray;
+            --slide-bg-3: darkgray;
+            --slide-bg-4: gray;
+            display: block;
+            height: 100%;
+        }
+
+        main {
+            height: 100%;
+        }
+
+        .slider {
+            height: 100%;
+            position: relative;
+            width: 100%;
+        }
+
+        .slider-control:active,
+        .slider-control:focus,
+        .slider-control:hover {
+            opacity: 0.9;
+        }
+
+        .slide {
+            border-radius: 50%;
+            clip-path: circle(0 at 100% 50%);
+            height: 150vmax;
+            left: 50%;
+            overflow: hidden;
+            position: absolute;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            transition: clip-path 0s 0.75s;
+            width: 150vmax;
+        }
+
+        .slide.slide--prev {
+            clip-path: circle(0 at 0vw 50%);
+        }
+
+        .slide.slide--active {
+            clip-path: circle(150vmax at 100% 50%);
+            transition: clip-path 1s;
+            z-index: 1;
+        }
+
+        .slide.slide--active.slide--active-prev {
+            clip-path: circle(150vmax at 0 50%);
+        }
+
+        .slide:nth-of-type(1) .slide-inner {
+            background: var(--slide-bg-1);
+        }
+
+        .slide:nth-of-type(2) .slide-inner {
+            background: var(--slide-bg-2);
+        }
+
+        .slide:nth-of-type(3) .slide-inner {
+            background: var(--slide-bg-3);
+        }
+
+        .slide:nth-of-type(4) .slide-inner {
+            background: var(--slide-bg-4);
+        }
+
+        .slide-inner,
+        .slide-content {
+            left: 50%;
+            position: absolute;
+            top: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .slide-inner {
+            background-position: center center;
+            background-size: cover;
+            height: 100%;
+            width: 100%;
+        }
+
+        .slide-content {
+            color: var(--button-color);
+        }
+
+        button {
+            border: none;
+        }
+
+        .button--prev,
+        .button--next {
+            background: var(--button-color);
+            border-radius: 50%;
+            cursor: pointer;
+            display: inline-block;
+            height: var(--button-size);
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            transform-origin: top center;
+            width: var(--button-size);
+            z-index: 3;
+        }
+
+        .button--prev {
+            left: calc(-1 * (var(--button-size) / 2));
+        }
+
+        .button--next {
+            right: calc(-1 * (var(--button-size) / 2));
+        }
+    </style>
+
+    <main>
+
+        <section class="slider">
+            <button class="slider-control button--prev"></button>
+
+            <article class="slide slide--active">
+                <div class="slide-inner">
+                    <div class="slide-content">
+                        <slot name="slide-1"></slot>
+                    </div>
+                </div>
+            </article>
+
+            <article class="slide">
+                <div class="slide-inner">
+                    <div class="slide-content">
+                        <slot name="slide-2"></slot>
+                    </div>
+                </div>
+            </article>
+
+            <article class="slide">
+                <div class="slide-inner">
+                    <div class="slide-content">
+                        <slot name="slide-3"></slot>
+                    </div>
+                </div>
+            </article>
+
+            <article class="slide slide--prev">
+                <div class="slide-inner">
+                    <div class="slide-content">
+                        <slot name="slide-4"></slot>
+                    </div>
+                </div>
+            </article>
+
+            <button class="slider-control button--next"></button>
+        </section>
+
+    </main>
+
+</template>
+
+<script>
+    (function() {
+        'use strict';
+
+        const owner = document.currentScript.ownerDocument;
+        const template = owner.querySelector('template');
+        const content = template.content.cloneNode(true);
+
+        class RevealingSlider extends HTMLElement {
+            constructor() {
+                super();
+
+                this._shadowRoot = this.attachShadow({
+                    mode: 'open'
+                });
+
+                this._shadowRoot.appendChild(content);      }
+
+            static get observedAttributes() {
+                return [''];
+            }
+
+            connectedCallback() {
+                const slides = [...this._shadowRoot.querySelectorAll('.slide')];
+                const buttons = [...this._shadowRoot.querySelectorAll('.slider-control')];
+
+                this.allSlides = slides.length;
+
+                slides.map((slide, index) => {
+                    const i = index + 1;
+                    slide.classList.add(`slide-${i}`);
+                    slide.dataset.slide = i;
+                });
+
+                buttons.map(control => control.addEventListener('click', this._clickHandlers.bind(this)));
+            }
+
+            disconnectedCallback() {}
+
+            attributeChangedCallback(attrName, oldVal, newVal) {}
+
+            _clickHandlers(event) {
+               const nextButton = event.target.classList.contains('button--next');
+               const currActive = this._findElement('.slide.slide--active');
+
+               let index = +currActive.dataset.slide;
+
+               (nextButton) ? index++ : index--;
+
+               if (index < 1) index = this.allSlides;
+               if (index > this.allSlides) index = 1;
+
+               const newActive = this._findElement('.slide-' + index);
+
+               currActive.classList.remove('slide--active', 'slide--active-prev');
+               this._findElement('.slide.slide--prev').classList.remove('slide--prev');
+
+               newActive.classList.add('slide--active');
+               if (!nextButton) newActive.classList.add('slide--active-prev');
+
+               let prevIndex = index - 1;
+               if (prevIndex < 1) prevIndex = this.allSlides;
+
+               this._findElement('.slide-' + prevIndex).classList.add('slide--prev');
+            }
+
+            _findElement(selector) {
+                return this._shadowRoot.querySelector(selector);
+            }
+        }
+
+        window.customElements.define('revealing-slider', RevealingSlider);
+    }());
+</script>
