@@ -1,12 +1,8 @@
 <template id="dual-sliding-panels">
     <style>
         :host {
-            --light-color: #f5f5f5;
-            --dark-color: #151515;
-            --gradient-start-l: #50c56c;
-            --gradient-stop-l: #4ec4ce;
-            --gradient-start-r: #50c56c;
-            --gradient-stop-r: #4ec4ce;
+            --light-color: #bbab9b;
+            --dark-color: #371722;
         }
 
         main {
@@ -40,13 +36,11 @@
 
         .side-left {
             background: var(--side-left-bg, var(--light-color));
-            background-image: linear-gradient(to right, var(--side-left-gradient-start, var(--gradient-start-l)) 0%, var(--side-left-gradient-stop, var(--gradient-stop-l)) 100%);
             color: var(--dark-color);
         }
 
         .side-right {
             background: var(--side-right-bg, var(--dark-color));
-            background-image: linear-gradient(to left, var(--side-right-gradient-start, var(--gradient-start-r)) 0%, var(--side-right-gradient-stop, var(--gradient-stop-r)) 100%);
             color: var(--light-color);
         }
 
