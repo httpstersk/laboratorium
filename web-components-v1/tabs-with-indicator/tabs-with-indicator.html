@@ -190,9 +190,6 @@
 
                 this._shadowRoot.appendChild(content);
                 this.active = this.getAttribute('active');
-
-                console.log('Active', this.active);
-
             }
 
             static get observedAttributes() {
@@ -205,57 +202,60 @@
 
             set active(num) {
                 if (isNaN(parseInt(num))) return;
-
                 this._active = num;
-                this._setActiveView(num);
             }
 
-            _setActiveView(val) {
+            _setStateToInput(num) {
                 const inputs = [...this._shadowRoot.querySelectorAll('input')];
 
                 inputs.forEach((input, index) => {
                     let i = index + 1;
+                    input.removeAttribute('checked');
 
-                    if (i === parseInt(val)) {
-                        input.setAttribute('checked', true);
+                    if (i === parseInt(num)) {
+                        input.setAttribute('checked', 'true');
                     }
                 });
             }
 
-            connectedCallback() {
-                const inputs = [...this._shadowRoot.querySelectorAll('input')];
-
-                for (let input of inputs) {
-                    if (input.hasAttribute('checked')) {
-                        this.currTab = input.id;
-                    }
-                }
-
+            _setAriaToLabels(num) {
                 const labels = [...this._shadowRoot.querySelectorAll('label')];
 
                 for (let label of labels) {
                     label.setAttribute('aria-selected', 'false');
 
-                    if (label.getAttribute('for') === this.currTab) {
+                    if (label.getAttribute('for').includes(num)) {
                         label.setAttribute('aria-selected', 'true');
                         this.currPanel = label.getAttribute('aria-controls');
                     }
                 }
+            }
 
+            _setAriaToPanels(num) {
                 const panels = [...this._shadowRoot.querySelectorAll('section')];
 
                 for (let panel of panels) {
                     panel.setAttribute('aria-hidden', 'true');
 
-                    if (panel.getAttribute('id') === this.currPanel) {
+                    if (panel.getAttribute('id').includes(num)) {
                         panel.setAttribute('aria-hidden', 'false');
                     }
                 }
             }
 
+            connectedCallback() {}
+
             disconnectedCallback() {}
 
-            attributeChangedCallback(attrName, oldVal, newVal) {}
+            attributeChangedCallback(attrName, oldVal, newVal) {
+                if (newVal !== oldVal && attrName === 'active') {
+                    this.active = newVal;
+
+                    this._setStateToInput(newVal);
+                    this._setAriaToLabels(newVal);
+                    this._setAriaToPanels(newVal);
+                }
+            }
         }
 
         window.customElements.define('tabs-with-indicator', TabsWithIndicator);
