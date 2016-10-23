@@ -101,7 +101,7 @@
     <main>
         <section class="panels">
             <aside class="side side-left">
-                <div class="side side-left--inner">
+                <div class="side side-left--inner" aria-hidden="true">
                     <slot name="back--left"></slot>
                 </div>
                 <div class="side side--inner">
@@ -112,7 +112,7 @@
                 <div class="side side--inner">
                     <slot name="front--right"></slot>
                 </div>
-                <div class="side side-right--inner">
+                <div class="side side-right--inner" aria-hidden="true">
                     <slot name="back--right"></slot>
                 </div>
             </aside>
@@ -165,6 +165,9 @@
                 if (this.panelLeft.classList.contains(activeClass)) {
                     this._fireEvent('side-left-opened');
                 }
+
+                this._selectElement('.side-left--inner').setAttribute('aria-hidden', 'false');
+                this._selectElement('.side-right--inner').setAttribute('aria-hidden', 'true');
             }
 
             openRight(event) {
@@ -176,6 +179,9 @@
                 if (this.panelRight.classList.contains(activeClass)) {
                     this._fireEvent('side-right-opened');
                 }
+
+                this._selectElement('.side-right--inner').setAttribute('aria-hidden', 'false');
+                this._selectElement('.side-left--inner').setAttribute('aria-hidden', 'true');
             }
 
             _selectElement(selector) {
