@@ -116,14 +116,12 @@
             }
         }
 
-        ::spotted(*) {
-            border: 10px solid tomato;
-        }
+        ::spotted(*) {}
     </style>
 
     <main>
 
-        <input type="radio" id="tab-1" name="tab-control" checked>
+        <input type="radio" id="tab-1" name="tab-control">
         <input type="radio" id="tab-2" name="tab-control">
         <input type="radio" id="tab-3" name="tab-control">
         <input type="radio" id="tab-4" name="tab-control">
@@ -191,22 +189,49 @@
                 });
 
                 this._shadowRoot.appendChild(content);
+                this.active = this.getAttribute('active');
+
+                console.log('Active', this.active);
+
             }
 
             static get observedAttributes() {
-                return [''];
+                return ['active'];
+            }
+
+            get active() {
+                return this._active;
+            }
+
+            set active(num) {
+                if (isNaN(parseInt(num))) return;
+
+                this._active = num;
+                this._setActiveView(num);
+            }
+
+            _setActiveView(val) {
+                const inputs = [...this._shadowRoot.querySelectorAll('input')];
+
+                inputs.forEach((input, index) => {
+                    let i = index + 1;
+
+                    if (i === parseInt(val)) {
+                        input.setAttribute('checked', true);
+                    }
+                });
             }
 
             connectedCallback() {
-                const labels = [...this._shadowRoot.querySelectorAll('label')];
                 const inputs = [...this._shadowRoot.querySelectorAll('input')];
-                const panels = [...this._shadowRoot.querySelectorAll('section')];
 
                 for (let input of inputs) {
                     if (input.hasAttribute('checked')) {
                         this.currTab = input.id;
                     }
                 }
+
+                const labels = [...this._shadowRoot.querySelectorAll('label')];
 
                 for (let label of labels) {
                     label.setAttribute('aria-selected', 'false');
@@ -216,6 +241,8 @@
                         this.currPanel = label.getAttribute('aria-controls');
                     }
                 }
+
+                const panels = [...this._shadowRoot.querySelectorAll('section')];
 
                 for (let panel of panels) {
                     panel.setAttribute('aria-hidden', 'true');
