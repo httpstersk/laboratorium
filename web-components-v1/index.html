@@ -123,6 +123,10 @@
 
                 SECTIONS.map(section => section.classList.add(defineClassName(randomize(FONTS))));
 
+                const dualSlidingPanels = document.querySelector('dual-sliding-panels');
+                dualSlidingPanels.addEventListener('side-left-opened', () => console.log('← Opened!'));
+                dualSlidingPanels.addEventListener('side-right-opened', () => console.log('→ Opened!'));
+
             }
 
         }());

@@ -35,7 +35,7 @@
         }
 
         .side-left {
-            background: var(--side-left-bg, var(--light-color));
+            background-color: var(--side-left-bg, var(--light-color));
             color: var(--dark-color);
         }
 
@@ -45,6 +45,8 @@
         }
 
         .side-left--active {
+            background-image: url('');
+            background-blend-mode: overlay;
             transform: translateX(50%);
         }
 
@@ -53,6 +55,8 @@
         }
 
         .side-right--active {
+            background-image: url('');
+            background-blend-mode: overlay;
             transform: translateX(-50%);
         }
 
@@ -134,36 +138,52 @@
                 });
 
                 this._shadowRoot.appendChild(content);
-
-                this.panelLeft = this._findElement('.side-left');
-                this.panelRight = this._findElement('.side-right');
-
-                this.panelLeft.addEventListener('click', this.openLeft.bind(this), false);
-                this.panelRight.addEventListener('click', this.openRight.bind(this), false);
             }
 
             static get observedAttributes() {
                 return attrToObserve;
             }
 
-            connectedCallback() {}
+            connectedCallback() {
+                this.panelLeft = this._selectElement('.side-left');
+                this.panelRight = this._selectElement('.side-right');
+
+                this.panelLeft.addEventListener('click', this.openLeft.bind(this), false);
+                this.panelRight.addEventListener('click', this.openRight.bind(this), false);
+            }
 
             disconnectedCallback() {}
 
             attributeChangedCallback(attrName, oldVal, newVal) {}
 
             openLeft(event) {
-                this.panelLeft.classList.toggle('side-left--active');
+                const activeClass = 'side-left--active';
+
+                this.panelLeft.classList.toggle(activeClass);
                 this.panelRight.classList.toggle('side-right--hidden');
+
+                if (this.panelLeft.classList.contains(activeClass)) {
+                    this._fireEvent('side-left-opened');
+                }
             }
 
             openRight(event) {
-                this.panelRight.classList.toggle('side-right--active');
+                const activeClass = 'side-right--active';
+
+                this.panelRight.classList.toggle(activeClass);
                 this.panelLeft.classList.toggle('side-left-hidden');
+
+                if (this.panelRight.classList.contains(activeClass)) {
+                    this._fireEvent('side-right-opened');
+                }
             }
 
-            _findElement(selector) {
+            _selectElement(selector) {
                 return this._shadowRoot.querySelector(selector);
+            }
+
+            _fireEvent(name) {
+                return this.dispatchEvent(new CustomEvent(name, { bubbles: true, composed: true }));
             }
         }
 
