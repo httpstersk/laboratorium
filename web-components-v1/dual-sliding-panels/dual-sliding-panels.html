@@ -148,11 +148,14 @@
                 this.panelLeft = this._selectElement('.side-left');
                 this.panelRight = this._selectElement('.side-right');
 
-                this.panelLeft.addEventListener('click', this.openLeft.bind(this), false);
-                this.panelRight.addEventListener('click', this.openRight.bind(this), false);
+                this.panelLeft.addEventListener('click', this.openLeft.bind(this));
+                this.panelRight.addEventListener('click', this.openRight.bind(this));
             }
 
-            disconnectedCallback() {}
+            disconnectedCallback() {
+                this.panelLeft.addEventListener('click', this.openLeft);
+                this.panelRight.addEventListener('click', this.openRight);
+            }
 
             attributeChangedCallback(attrName, oldVal, newVal) {}
 
@@ -189,7 +192,7 @@
             }
 
             _fireEvent(name) {
-                return this.dispatchEvent(new CustomEvent(name, { bubbles: true, composed: true }));
+                return this.dispatchEvent(new CustomEvent(name, { bubbles: false }));
             }
         }
 
