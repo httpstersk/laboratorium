@@ -129,23 +129,23 @@
         <input type="radio" id="tab-4" name="tab-control">
 
         <ul class="tablist" role="tablist">
-            <li role="tab" class="tab" aria-controls="panel-1" aria-selected="true">
-                <label for="tab-1">
+            <li role="tab" class="tab">
+                <label for="tab-1" aria-controls="panel-1">
                     <slot name="tab-1"></slot>
                 </label>
             </li>
-            <li role="tab" class="tab" aria-controls="panel-2" aria-selected="false">
-                <label for="tab-2">
+            <li role="tab" class="tab">
+                <label for="tab-2" aria-controls="panel-2">
                     <slot name="tab-2"></slot>
                 </label>
             </li>
-            <li role="tab" class="tab" aria-controls="panel-3" aria-selected="false">
-                <label for="tab-3">
+            <li role="tab" class="tab">
+                <label for="tab-3" aria-controls="panel-3">
                     <slot name="tab-3"></slot>
                 </label>
             </li>
-            <li role="tab" class="tab" aria-controls="panel-4" aria-selected="false">
-                <label for="tab-4">
+            <li role="tab" class="tab">
+                <label for="tab-4" aria-controls="panel-4">
                     <slot name="tab-4"></slot>
                 </label>
             </li>
@@ -156,16 +156,16 @@
         </div>
 
         <div class="tabpanel" role="tabpanel">
-            <section id="panel-1" aria-hidden="false">
+            <section id="panel-1">
                 <slot name="panel-1"></slot>
             </section>
-            <section id="panel-2" aria-hidden="true">
+            <section id="panel-2">
                 <slot name="panel-2"></slot>
             </section>
-            <section id="panel-3" aria-hidden="true">
+            <section id="panel-3">
                 <slot name="panel-3"></slot>
             </section>
-            <section id="panel-4" aria-hidden="true">
+            <section id="panel-4">
                 <slot name="panel-4"></slot>
             </section>
         </div>
@@ -186,18 +186,45 @@
             constructor() {
                 super();
 
-                let shadowRoot = this.attachShadow({
+                this._shadowRoot = this.attachShadow({
                     mode: 'open'
                 });
 
-                shadowRoot.appendChild(content);
+                this._shadowRoot.appendChild(content);
             }
 
             static get observedAttributes() {
                 return [''];
             }
 
-            connectedCallback() {}
+            connectedCallback() {
+                const labels = [...this._shadowRoot.querySelectorAll('label')];
+                const inputs = [...this._shadowRoot.querySelectorAll('input')];
+                const panels = [...this._shadowRoot.querySelectorAll('section')];
+
+                for (let input of inputs) {
+                    if (input.hasAttribute('checked')) {
+                        this.currTab = input.id;
+                    }
+                }
+
+                for (let label of labels) {
+                    label.setAttribute('aria-selected', 'false');
+
+                    if (label.getAttribute('for') === this.currTab) {
+                        label.setAttribute('aria-selected', 'true');
+                        this.currPanel = label.getAttribute('aria-controls');
+                    }
+                }
+
+                for (let panel of panels) {
+                    panel.setAttribute('aria-hidden', 'true');
+
+                    if (panel.getAttribute('id') === this.currPanel) {
+                        panel.setAttribute('aria-hidden', 'false');
+                    }
+                }
+            }
 
             disconnectedCallback() {}
 
