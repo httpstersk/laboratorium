@@ -57,22 +57,31 @@
             });
 
             this._shadowRoot.appendChild(content);
-
-            this.addEventListener('click', this._clickHandler.bind(this));
-            this.addEventListener('mousemove', this._mouseMoveHandler.bind(this));
-            this.addEventListener('mouseleave', this._mouseLeaveHandler.bind(this));
         }
 
         static get observedAttributes() {
             return ['disabled'];
         }
 
+        _addEventListeners() {
+            this.addEventListener('click', this._clickHandler);
+            this.addEventListener('mousemove', this._mouseMoveHandler);
+            this.addEventListener('mouseleave', this._mouseLeaveHandler);
+        }
+
+        _removeEventListeners() {
+            this.removeEventListener('click', this._clickHandler);
+            this.removeEventListener('mousemove', this._mouseMoveHandler);
+            this.removeEventListener('mouseleave', this._mouseLeaveHandler);
+        }
+
         connectedCallback() {
             this.setAttribute('enhanced', '');
+            this._addEventListeners();
         }
 
         disconnectedCallback() {
-
+            this._removeEventListeners();
         }
 
         attributeChangedCallback(attrName, oldVal, newVal) {
