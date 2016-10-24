@@ -176,7 +176,8 @@
                     mode: 'open'
                 });
 
-                this._shadowRoot.appendChild(content);      }
+                this._shadowRoot.appendChild(content);
+            }
 
             static get observedAttributes() {
                 return [''];
@@ -186,7 +187,8 @@
                 const slides = [...this._shadowRoot.querySelectorAll('.slide')];
                 const buttons = [...this._shadowRoot.querySelectorAll('.slider-control')];
 
-                this.allSlides = slides.length;
+                this._slidesLength = slides.length;
+                this._animating = false;
 
                 slides.map((slide, index) => {
                     const i = index + 1;
@@ -202,28 +204,37 @@
             attributeChangedCallback(attrName, oldVal, newVal) {}
 
             _clickHandlers(event) {
-               const nextButton = event.target.classList.contains('button--next');
-               const currActive = this._findElement('.slide.slide--active');
+                if (this._animating) return;
+                this._animating = true;
+                const nextButton = event.target.classList.contains('button--next');
+                const currActive = this._findElement('.slide.slide--active');
+                const firstIndex = 1;
 
-               let index = +currActive.dataset.slide;
+                let currIndex = +currActive.dataset.slide;
 
-               (nextButton) ? index++ : index--;
+                (nextButton) ? currIndex++ : currIndex--;
 
-               if (index < 1) index = this.allSlides;
-               if (index > this.allSlides) index = 1;
+                if (currIndex < firstIndex) currIndex = this._slidesLength;
+                if (currIndex > this._slidesLength) currIndex = firstIndex;
 
-               const newActive = this._findElement('.slide-' + index);
+                const newActive = this._findElement(`.slide-${currIndex}`);
 
-               currActive.classList.remove('slide--active', 'slide--active-prev');
-               this._findElement('.slide.slide--prev').classList.remove('slide--prev');
+                currActive.classList.remove('slide--active', 'slide--active-prev');
+                this._findElement('.slide.slide--prev').classList.remove('slide--prev');
 
-               newActive.classList.add('slide--active');
-               if (!nextButton) newActive.classList.add('slide--active-prev');
+                newActive.classList.add('slide--active');
+                if (!nextButton) newActive.classList.add('slide--active-prev');
 
-               let prevIndex = index - 1;
-               if (prevIndex < 1) prevIndex = this.allSlides;
+                let prevIndex = currIndex - firstIndex;
+                if (prevIndex < firstIndex) prevIndex = this._slidesLength;
 
-               this._findElement('.slide-' + prevIndex).classList.add('slide--prev');
+                this._findElement(`.slide-${prevIndex}`).classList.add('slide--prev');
+
+                currActive.addEventListener('transitionend', () => this._onTransitionEnd(), { once: true });
+            }
+
+            _onTransitionEnd() {
+                this._animating = false;
             }
 
             _findElement(selector) {
