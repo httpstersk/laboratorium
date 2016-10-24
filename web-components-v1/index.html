@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Web Components V1 Playground</title>
     <link rel="import" href="dual-sliding-panels/dual-sliding-panels.html">
+    <link rel="import" href="reactive-button/reactive-button.html">
     <link rel="import" href="tabs-with-indicator/tabs-with-indicator.html">
     <link rel="import" href="revealing-slider/revealing-slider.html">
     <style>
@@ -48,6 +49,12 @@
             overflow: hidden;
         }
 
+        [center] {
+            align-items: center;
+            display: flex;
+            justify-content: center;
+        }
+
         tabs-with-indicator {
             background: #ef3e4a;
         }
@@ -55,6 +62,10 @@
 </head>
 
 <body>
+    <section center>
+        <reactive-button>Over Me!</reactive-button>
+    </section>
+
     <section>
         <revealing-slider>
             <h3 slot="slide-1">Slide 1</h3>

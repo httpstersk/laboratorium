@@ -1,0 +1,122 @@
+<template id="reactive-button">
+    <style>
+        :host {
+            --button-bg: #fb9b2a;
+            --button-color: #0c00ff;
+            --font-size: 2rem;
+            opacity: 0;
+        }
+
+        :host([enhanced]) {
+            opacity: 1;
+        }
+
+        button {
+            background: var(--button-bg);
+            border: none;
+            color: var(--button-color);
+            cursor: pointer;
+            font-size: var(--font-size);
+            font-family: inherit;
+            outline: none;
+            padding: calc(var(--font-size) / 3) var(--font-size);
+            transform: rotateX(var(--rx, 0)) rotateY(var(--ry, 0));
+            transition: all 250ms;
+            user-select: none;
+            will-change: transform;
+        }
+
+        button:active,
+        button:focus,
+        button:hover {
+            background: orange;
+        }
+
+        :host([disabled]) button {
+            cursor: not-allowed;
+            opacity: 0.5;
+        }
+    </style>
+
+    <button>
+        <slot></slot>
+    </button>
+</template>
+
+<script>
+    const owner = document.currentScript.ownerDocument;
+    const template = owner.querySelector('template');
+    const content = template.content.cloneNode(true);
+
+    class ReactiveButton extends HTMLElement {
+        constructor() {
+            super();
+
+            this._shadowRoot = this.attachShadow({
+                mode: 'open'
+            });
+
+            this._shadowRoot.appendChild(content);
+
+            this.addEventListener('click', this._clickHandler.bind(this));
+            this.addEventListener('mousemove', this._mouseMoveHandler.bind(this));
+            this.addEventListener('mouseleave', this._mouseLeaveHandler.bind(this));
+        }
+
+        static get observedAttributes() {
+            return ['disabled'];
+        }
+
+        connectedCallback() {
+            this.setAttribute('enhanced', '');
+        }
+
+        disconnectedCallback() {
+
+        }
+
+        attributeChangedCallback(attrName, oldVal, newVal) {
+
+        }
+
+        get disabled() {
+            return this.hasAttribute('disabled');
+        }
+
+        set disabled(val) {
+            if (val) {
+                this.setAttribute('disabled', true);
+            } else {
+                this.removeAttribute('disabled');
+            }
+        }
+
+        _clickHandler() {
+            this.disabled = this.disabled ? '' : 'disabled';
+        }
+
+        _mouseMoveHandler(event) {
+            const gbcr = this.getBoundingClientRect();
+
+            const x = event.clientX - gbcr.left;
+          	const y = event.clientY - gbcr.top;
+
+          	const xc = gbcr.width / 2;
+          	const yc = gbcr.height / 2;
+
+          	const dx = parseInt(x - xc);
+          	const dy = parseInt(y - yc);
+
+          	event.target.style.setProperty('--rx', `${dy/-2}deg`);
+          	event.target.style.setProperty('--ry', `${dx/10}deg`);
+        }
+
+        _mouseLeaveHandler(event) {
+            event.target.style.setProperty('--rx', '0');
+            event.target.style.setProperty('--ry', '0');
+        }
+
+      }
+
+    window.customElements.define('reactive-button', ReactiveButton);
+</script>
