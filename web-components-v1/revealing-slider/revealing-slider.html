@@ -190,8 +190,12 @@
             connectedCallback() {
                 const slides = [...this._shadowRoot.querySelectorAll('.slide')];
                 const buttons = [...this._shadowRoot.querySelectorAll('.slider-control')];
+                const prev = this._shadowRoot.querySelector('.button--prev');
+                const next = this._shadowRoot.querySelector('.button--next');
 
                 this._slidesLength = slides.length;
+                this._firstIndex = 1;
+                this._currIndex = this._firstIndex;
                 this._animating = false;
 
                 slides.map((slide, index) => {
@@ -200,8 +204,10 @@
                     slide.dataset.slide = i;
                 });
 
+                prev.addEventListener('click', (event) => this.prev(event));
+                next.addEventListener('click', (event) => this.next(event));
+
                 this._grabImagesFromLightDOM();
-                buttons.map(control => control.addEventListener('click', this._clickHandlers.bind(this)));
             }
 
             _grabImagesFromLightDOM() {
@@ -219,32 +225,54 @@
 
             attributeChangedCallback(attrName, oldVal, newVal) {}
 
-            _clickHandlers(event) {
+            next(event) {
                 if (this._animating) return;
                 this._animating = true;
-                const nextButton = event.target.classList.contains('button--next');
+
+                if (this._currIndex < this._slidesLength) {
+                    this._currIndex++;
+                } else {
+                    this._currIndex = this._firstIndex;
+                }
+
                 const currActive = this._findElement('.slide.slide--active');
-                const firstIndex = 1;
-
-                let currIndex = +currActive.dataset.slide;
-
-                (nextButton) ? currIndex++ : currIndex--;
-
-                if (currIndex < firstIndex) currIndex = this._slidesLength;
-                if (currIndex > this._slidesLength) currIndex = firstIndex;
-
-                const newActive = this._findElement(`.slide-${currIndex}`);
+                const nextActive = this._findElement(`.slide-${this._currIndex}`);
 
                 currActive.classList.remove('slide--active', 'slide--active-prev');
                 this._findElement('.slide.slide--prev').classList.remove('slide--prev');
 
-                newActive.classList.add('slide--active');
-                if (!nextButton) newActive.classList.add('slide--active-prev');
+                nextActive.classList.add('slide--active');
 
-                let prevIndex = currIndex - firstIndex;
-                if (prevIndex < firstIndex) prevIndex = this._slidesLength;
+                this._prevIndex = this._currIndex - this._firstIndex;
+                if (this._prevIndex < this._firstIndex) this._prevIndex = this._slidesLength;
 
-                this._findElement(`.slide-${prevIndex}`).classList.add('slide--prev');
+                this._findElement(`.slide-${this._prevIndex}`).classList.add('slide--prev');
+
+                currActive.addEventListener('transitionend', () => this._onTransitionEnd(), { once: true });
+            }
+
+            prev(event) {
+                if (this._animating) return;
+                this._animating = true;
+
+                if (this._currIndex > this._firstIndex) {
+                    this._currIndex--;
+                } else {
+                    this._currIndex = this._slidesLength;
+                }
+
+                const currActive = this._findElement('.slide.slide--active');
+                const nextActive = this._findElement(`.slide-${this._currIndex}`);
+
+                currActive.classList.remove('slide--active', 'slide--active-prev');
+                this._findElement('.slide.slide--prev').classList.remove('slide--prev');
+
+                nextActive.classList.add('slide--active', 'slide--active-prev');
+
+                this._prevIndex = this._currIndex - this._firstIndex;
+                if (this._prevIndex < this._firstIndex) this._prevIndex = this._slidesLength;
+
+                this._findElement(`.slide-${this._prevIndex}`).classList.add('slide--prev');
 
                 currActive.addEventListener('transitionend', () => this._onTransitionEnd(), { once: true });
             }
