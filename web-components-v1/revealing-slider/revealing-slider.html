@@ -3,10 +3,10 @@
         :host {
             --button-color: #e13334;
             --button-size: 12vw;
-            --slide-bg-1: #005397;
-            --slide-bg-2: lightgray;
-            --slide-bg-3: darkgray;
-            --slide-bg-4: gray;
+            --slide-color-1: #005397;
+            --slide-color-2: lightgray;
+            --slide-color-3: darkgray;
+            --slide-color-4: gray;
             display: block;
             height: 100%;
         }
@@ -54,19 +54,23 @@
         }
 
         .slide:nth-of-type(1) .slide-inner {
-            background-color: var(--slide-bg-1);
+            background-color: var(--slide-color-1);
+            background-image: var(--slide-image-1);
         }
 
         .slide:nth-of-type(2) .slide-inner {
-            background-color: var(--slide-bg-2);
+            background-color: var(--slide-color-2);
+            background-image: var(--slide-image-2);
         }
 
         .slide:nth-of-type(3) .slide-inner {
-            background-color: var(--slide-bg-3);
+            background-color: var(--slide-color-3);
+            background-image: var(--slide-image-3);
         }
 
         .slide:nth-of-type(4) .slide-inner {
-            background-color: var(--slide-bg-4);
+            background-color: var(--slide-color-4);
+            background-image: var(--slide-image-4);
         }
 
         .slide-inner,
@@ -191,12 +195,24 @@
                 this._animating = false;
 
                 slides.map((slide, index) => {
-                    const i = index + 1;
+                    let i = index + 1;
                     slide.classList.add(`slide-${i}`);
                     slide.dataset.slide = i;
                 });
 
+                this._grabImagesFromLightDOM();
                 buttons.map(control => control.addEventListener('click', this._clickHandlers.bind(this)));
+            }
+
+            _grabImagesFromLightDOM() {
+                window.addEventListener('DOMContentLoaded', () => {
+                    const images = [...this.querySelectorAll('img')];
+
+                    images.map((image, index) => {
+                        let i = index + 1;
+                        this.style.setProperty(`--slide-image-${i}`, `url(${image.src})`);
+                    });
+                });
             }
 
             disconnectedCallback() {}
