@@ -248,6 +248,16 @@
 
                 this._findElement(`.slide-${this._prevIndex}`).classList.add('slide--prev');
 
+                this._nextIndex = this._currIndex + 1;
+                if (this._currIndex === this._slidesLength) this._nextIndex = this._firstIndex;
+
+                console.log('this._slidesLength', this._slidesLength);
+                console.log('this._currIndex', this._currIndex);
+                console.log('this._nextIndex', this._nextIndex);
+
+                const bg = this.style.getPropertyValue(`--slide-image-${this._nextIndex}`);
+                event.target.style.backgroundImage = bg;
+
                 currActive.addEventListener('transitionend', () => this._onTransitionEnd(), { once: true });
             }
 
@@ -273,6 +283,12 @@
                 if (this._prevIndex < this._firstIndex) this._prevIndex = this._slidesLength;
 
                 this._findElement(`.slide-${this._prevIndex}`).classList.add('slide--prev');
+
+                this._nextIndex = this._currIndex - 1;
+                if (this._currIndex === this._firstIndex) this._nextIndex = this._slidesLength;
+
+                const bg = this.style.getPropertyValue(`--slide-image-${this._nextIndex}`);
+                event.target.style.backgroundImage = bg;
 
                 currActive.addEventListener('transitionend', () => this._onTransitionEnd(), { once: true });
             }
