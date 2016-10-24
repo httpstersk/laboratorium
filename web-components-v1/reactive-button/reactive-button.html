@@ -11,7 +11,7 @@
             opacity: 1;
         }
 
-        button {
+        ::slotted(button) {
             background: var(--button-bg);
             border: none;
             color: var(--button-color);
@@ -26,21 +26,19 @@
             will-change: transform;
         }
 
-        button:active,
-        button:focus,
-        button:hover {
+        ::slotted(button):active,
+        ::slotted(button):focus,
+        ::slotted(button):hover {
             background: orange;
         }
 
-        :host([disabled]) button {
+        :host([disabled]) ::slotted(button) {
             cursor: not-allowed;
             opacity: 0.5;
         }
     </style>
 
-    <button>
-        <slot></slot>
-    </button>
+    <slot></slot>
 </template>
 
 <script>
