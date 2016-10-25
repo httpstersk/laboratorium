@@ -155,8 +155,10 @@
                 </div>
             </article>
 
-            <button class="slider-control button--prev"></button>
-            <button class="slider-control button--next"></button>
+            <div class="slider-controls">
+                <button class="slider-control button--prev"></button>
+                <button class="slider-control button--next"></button>
+            </div>
         </section>
 
     </main>
@@ -234,33 +236,15 @@
                     this._currIndex = this._firstIndex;
                 }
 
-                const currActive = this._findElement('.slide.slide--active');
-                const nextActive = this._findElement(`.slide-${this._currIndex}`);
-
-                currActive.classList.remove('slide--active', 'slide--active-prev');
-                this._findElement('.slide.slide--prev').classList.remove('slide--prev');
-
-                nextActive.classList.add('slide--active');
-
                 this._prevIndex = this._currIndex - this._firstIndex;
                 if (this._prevIndex < this._firstIndex) this._prevIndex = this._slidesLength;
-
-                this._findElement(`.slide-${this._prevIndex}`).classList.add('slide--prev');
 
                 this._nextIndex = this._currIndex + 1;
                 if (this._currIndex === this._slidesLength) this._nextIndex = this._firstIndex;
 
-                console.log(`——————————→ ${this._nextIndex}`);
-                console.log(`————— ${this._currIndex} —————`);
-                console.log(`${this._prevIndex} ←——————————`);
-
-                const rightButtonBg = this.style.getPropertyValue(`--slide-image-${this._nextIndex}`);
-                const leftButtonBg = this.style.getPropertyValue(`--slide-image-${this._prevIndex}`);
-
-                event.target.style.backgroundImage = rightButtonBg;
-                event.target.previousElementSibling.style.backgroundImage = leftButtonBg;
-
-                currActive.addEventListener('transitionend', () => this._onTransitionEnd(), { once: true });
+                this._addOrRemoveClasses(event);
+                this._addSneakPeekBackground(event);
+                this._debugIndexes();
             }
 
             prev(event) {
@@ -273,33 +257,50 @@
                     this._currIndex = this._slidesLength;
                 }
 
-                const currActive = this._findElement('.slide.slide--active');
-                const nextActive = this._findElement(`.slide-${this._currIndex}`);
-
-                currActive.classList.remove('slide--active', 'slide--active-prev');
-                this._findElement('.slide.slide--prev').classList.remove('slide--prev');
-
-                nextActive.classList.add('slide--active', 'slide--active-prev');
-
                 this._prevIndex = this._currIndex - this._firstIndex;
                 if (this._prevIndex < this._firstIndex) this._prevIndex = this._slidesLength;
-
-                this._findElement(`.slide-${this._prevIndex}`).classList.add('slide--prev');
 
                 this._nextIndex = this._currIndex + 1;
                 if (this._nextIndex > this._slidesLength) this._nextIndex = this._firstIndex;
 
-                const leftButtonBg = this.style.getPropertyValue(`--slide-image-${this._prevIndex}`);
-                const rightButtonBg = this.style.getPropertyValue(`--slide-image-${this._nextIndex}`);
+                this._addOrRemoveClasses(event);
+                this._addSneakPeekBackground(event);
+                this._debugIndexes();
+            }
 
-                event.target.style.backgroundImage = leftButtonBg;
-                event.target.nextElementSibling.style.backgroundImage = rightButtonBg;
+            _addSneakPeekBackground(event) {
+                const prevBg = this.style.getPropertyValue(`--slide-image-${this._prevIndex}`);
+                const nextBg = this.style.getPropertyValue(`--slide-image-${this._nextIndex}`);
+                const target = event.target;
+                const isNext = target.classList.contains('button--next');
 
-                console.log(`——————————→ ${this._nextIndex}`);
-                console.log(`————— ${this._currIndex} —————`);
-                console.log(`${this._prevIndex} ←——————————`);
+                if (isNext) {
+                    target.style.backgroundImage = nextBg;
+                    target.previousElementSibling.style.backgroundImage = prevBg;
+                } else {
+                    target.style.backgroundImage = prevBg;
+                    target.nextElementSibling.style.backgroundImage = nextBg;
+                }
 
-                currActive.addEventListener('transitionend', () => this._onTransitionEnd(), { once: true });
+            }
+
+            _addOrRemoveClasses(event) {
+                const currSlide = this._findElement('.slide.slide--active');
+                const nextSlide = this._findElement(`.slide-${this._currIndex}`);
+                const isPrev = event.target.classList.contains('button--prev');
+
+                currSlide.classList.remove('slide--active', 'slide--active-prev');
+
+                this._findElement('.slide.slide--prev').classList.remove('slide--prev');
+                this._findElement(`.slide-${this._prevIndex}`).classList.add('slide--prev');
+
+                nextSlide.classList.add('slide--active');
+
+                if (isPrev) {
+                    nextSlide.classList.add('slide--active-prev');
+                }
+
+                currSlide.addEventListener('transitionend', () => this._onTransitionEnd(), { once: true });
             }
 
             _onTransitionEnd() {
@@ -308,6 +309,12 @@
 
             _findElement(selector) {
                 return this._shadowRoot.querySelector(selector);
+            }
+
+            _debugIndexes() {
+                console.log(`——————————→ ${this._nextIndex}`);
+                console.log(`————— ${this._currIndex} —————`);
+                console.log(`${this._prevIndex} ←——————————`);
             }
         }
 
