@@ -254,6 +254,7 @@
             }
 
             prev(event) {
+                this.pause();
                 if (this._animating) return;
                 this._animating = true;
 
@@ -277,6 +278,12 @@
                 if (isNaN(parseInt(timeout))) return;
 
                 this._timer = setInterval(() => this._buttonNext.click(), timeout * 1000);
+            }
+
+            pause() {
+                if (this._timer) {
+                    clearInterval(this._timer);
+                }
             }
 
             _calculatingIndexes() {
