@@ -185,7 +185,7 @@
             }
 
             static get observedAttributes() {
-                return [''];
+                return ['timeout'];
             }
 
             connectedCallback() {
@@ -213,6 +213,7 @@
                 this._buttonNext.addEventListener('click', this.next);
 
                 this._grabImagesFromLightDOM();
+                this.play();
             }
 
             _grabImagesFromLightDOM() {
@@ -266,9 +267,16 @@
 
                 this._addOrRemoveClasses(event);
                 this._addSneakPeekBackground(event);
-                this._fireChangedEvent();
+                this._fireChangeEvent();
 
                 this._debugIndexes();
+            }
+
+            play() {
+                const timeout = this.getAttribute('timeout');
+                if (isNaN(parseInt(timeout))) return;
+
+                this._timer = setInterval(() => this._buttonNext.click(), timeout * 1000);
             }
 
             _calculatingIndexes() {
