@@ -243,14 +243,11 @@
                     this._currIndex = this._firstIndex;
                 }
 
-                this._prevIndex = this._currIndex - this._firstIndex;
-                if (this._prevIndex < this._firstIndex) this._prevIndex = this._slidesLength;
-
-                this._nextIndex = this._currIndex + 1;
-                if (this._currIndex === this._slidesLength) this._nextIndex = this._firstIndex;
+                this._calculatingIndexes();
 
                 this._addOrRemoveClasses(event);
                 this._addSneakPeekBackground(event);
+
                 this._debugIndexes();
             }
 
@@ -264,15 +261,19 @@
                     this._currIndex = this._slidesLength;
                 }
 
-                this._prevIndex = this._currIndex - this._firstIndex;
-                if (this._prevIndex < this._firstIndex) this._prevIndex = this._slidesLength;
-
-                this._nextIndex = this._currIndex + 1;
-                if (this._nextIndex > this._slidesLength) this._nextIndex = this._firstIndex;
+                this._calculatingIndexes();
 
                 this._addOrRemoveClasses(event);
                 this._addSneakPeekBackground(event);
                 this._debugIndexes();
+            }
+
+            _calculatingIndexes() {
+                this._prevIndex = this._currIndex - 1;
+                if (this._prevIndex < this._firstIndex) this._prevIndex = this._slidesLength;
+
+                this._nextIndex = this._currIndex + 1;
+                if (this._currIndex === this._slidesLength) this._nextIndex = this._firstIndex;
             }
 
             _addSneakPeekBackground(event) {
