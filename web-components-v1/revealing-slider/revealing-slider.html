@@ -191,8 +191,9 @@
             connectedCallback() {
                 const slides = [...this._shadowRoot.querySelectorAll('.slide')];
                 const buttons = [...this._shadowRoot.querySelectorAll('.slider-control')];
-                const prev = this._shadowRoot.querySelector('.button--prev');
-                const next = this._shadowRoot.querySelector('.button--next');
+
+                this._buttonPrev = this._shadowRoot.querySelector('.button--prev');
+                this._buttonNext = this._shadowRoot.querySelector('.button--next');
 
                 this._slidesLength = slides.length;
                 this._firstIndex = 1;
@@ -205,8 +206,11 @@
                     slide.dataset.slide = i;
                 });
 
-                prev.addEventListener('click', (event) => this.prev(event));
-                next.addEventListener('click', (event) => this.next(event));
+                this.prev = this.prev.bind(this);
+                this.next = this.next.bind(this);
+
+                this._buttonPrev.addEventListener('click', this.prev);
+                this._buttonNext.addEventListener('click', this.next);
 
                 this._grabImagesFromLightDOM();
             }
@@ -222,7 +226,10 @@
                 });
             }
 
-            disconnectedCallback() {}
+            disconnectedCallback() {
+                this._buttonPrev.removeEventListener('click', this.prev);
+                this._buttonNext.removeEventListener('click', this.next);
+            }
 
             attributeChangedCallback(attrName, oldVal, newVal) {}
 
