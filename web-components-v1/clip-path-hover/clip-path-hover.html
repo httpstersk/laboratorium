@@ -1,0 +1,198 @@
+<template id="clip-path-hover">
+    <style>
+        :host {
+            --custom-easing: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            display: block;
+            height: 100%;
+            width: 100%;
+        }
+
+        main {
+            height: 100%;
+        }
+
+        svg {
+            height: 100%;
+            left: 0;
+            position: absolute;
+            top: 0;
+            width: 100%;
+        }
+
+        circle {
+            transform: scale(0);
+            transform-origin: 50% 50%;
+            transition: transform 200ms var(--custom-easing);
+        }
+
+        text {
+            font-size: 1rem;
+            text-anchor: middle;
+        }
+
+        .svg-text {
+            fill: #545a64;
+        }
+
+        .svg-masked-text {
+            fill: white;
+        }
+
+        image {
+            transform-origin: 50% 50%;
+            transition: transform 200ms var(--custom-easing);
+        }
+
+        .items {
+            display: flex;
+            flex-flow: row wrap;
+            justify-content: center;
+        }
+
+        .item {
+            background-color: #3b3e46;
+            cursor: pointer;
+            display: flex;
+            flex: 1;
+            height: 50vh;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+            will-change: transform;
+        }
+
+        .item:hover circle,
+        .item:hover image {
+            transform: scale(1);
+        }
+    </style>
+
+    <main>
+
+        <div class="items">
+
+            <div class="item">
+                <svg id="svg-1" preserveAspectRatio="xMidYMid slice" viewBox="0 0 300 200">
+                    <defs>
+                        <clipPath id="clip-1">
+                            <circle cx="0" cy="0" fill="#000" r="150px"></circle>
+                        </clipPath>
+                    </defs>
+                    <text class="svg-text" dy="0.35em" x="50%" y="50%">
+                        Clip 1
+                    </text>
+                    <g clip-path="url(#clip-1)">
+                        <image height="100%" preserveAspectRatio="xMinYMin slice" width="100%" xlink:href="http://placehold.it/2000/005397/ffffff/?text=1"></image>
+                        <text class="svg-masked-text" dy="0.35em" x="50%" y="50%">
+                            Clip 1
+                        </text>
+                    </g>
+                </svg>
+            </div>
+
+            <div class="item">
+                <svg id="svg-2" preserveAspectRatio="xMidYMid slice" viewBox="0 0 300 200">
+                    <defs>
+                        <clipPath id="clip-2">
+                            <circle cx="0" cy="0" fill="#000" r="150px"></circle>
+                        </clipPath>
+                    </defs>
+                    <text class="svg-text" dy="0.35em" x="50%" y="50%">
+                        Clip 2
+                    </text>
+                    <g clip-path="url(#clip-2)">
+                        <image height="100%" preserveAspectRatio="xMinYMin slice" width="100%" xlink:href="http://placehold.it/2000/32b67a/ffffff/?text=2"></image>
+                        <text class="svg-masked-text" dy="0.35em" x="50%" y="50%">
+                            Clip 2
+                        </text>
+                    </g>
+                </svg>
+            </div>
+
+            <div class="item">
+                <svg id="svg-3" preserveAspectRatio="xMidYMid slice" viewBox="0 0 300 200">
+                    <defs>
+                        <clipPath id="clip-3">
+                            <circle cx="0" cy="0" fill="#000" r="150px"></circle>
+                        </clipPath>
+                    </defs>
+                    <text class="svg-text" dy="0.35em" x="50%" y="50%">
+                        Clip 3
+                    </text>
+                    <g clip-path="url(#clip-3)">
+                        <image height="100%" preserveAspectRatio="xMinYMin slice" width="100%" xlink:href="http://placehold.it/2000/bfb5d7/ffffff/?text=3"></image>
+                        <text class="svg-masked-text" dy="0.35em" x="50%" y="50%">
+                            Clip 3
+                        </text>
+                    </g>
+                </svg>
+            </div>
+
+        </div>
+
+    </main>
+
+</template>
+
+<script>
+    (function() {
+        'use strict';
+
+        const owner = document.currentScript.ownerDocument;
+        const template = owner.querySelector('template');
+        const content = template.content.cloneNode(true);
+
+        class ClipPathHover extends HTMLElement {
+            constructor() {
+                super();
+
+                this._shadowRoot = this.attachShadow({
+                    mode: 'open'
+                });
+
+                this._shadowRoot.appendChild(content);
+            }
+
+            static get observedAttributes() {
+                return [''];
+            }
+
+            connectedCallback() {
+                this._items = [...this._shadowRoot.querySelectorAll('.item')];
+                this._point = this._shadowRoot.querySelector('svg').createSVGPoint();
+
+                this._items.forEach((item, index) => item.addEventListener('mousemove', () => {
+                    let i = index + 1;
+                    let clip = this._shadowRoot.querySelector(`#clip-${i} circle`);
+                    let svg = this._shadowRoot.querySelector(`#svg-${i}`);
+                    this.update(clip, this.getCoordinates(event, svg));
+                }));
+            }
+
+            _mouseMoveHandler(event) {
+
+            }
+
+            update(clip, c) {
+                clip.setAttribute('cx', c.x);
+                clip.setAttribute('cy', c.y);
+            }
+
+            getCoordinates(event, svg) {
+                this._point.x = event.clientX;
+                this._point.y = event.clientY;
+                return this._point.matrixTransform(svg.getScreenCTM().inverse());
+            }
+
+            disconnectedCallback() {}
+
+            attributeChangedCallback(attrName, oldVal, newVal) {}
+
+            _selectElement(selector) {
+                return this._shadowRoot.querySelector(selector);
+            }
+        }
+
+        window.customElements.define('clip-path-hover', ClipPathHover);
+    }());
+</script>

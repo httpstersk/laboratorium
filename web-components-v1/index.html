@@ -6,6 +6,7 @@
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Web Components V1 Playground</title>
+    <link rel="import" href="clip-path-hover/clip-path-hover.html">
     <link rel="import" href="dual-sliding-panels/dual-sliding-panels.html">
     <link rel="import" href="reactive-button/reactive-button.html">
     <link rel="import" href="tabs-with-indicator/tabs-with-indicator.html">
@@ -64,11 +65,17 @@
 
 <body>
     <section center>
+        <clip-path-hover>
+
+        </clip-path-hover>
+    </section>
+
+    <section center>
         <reactive-button><button>Over Me!</button></reactive-button>
     </section>
 
     <section>
-        <revealing-slider>
+        <revealing-slider interval="3">
             <h3 slot="slide-1">Slide 1</h3>
             <img src="http://placehold.it/2000/005397/ffffff/?text=1" alt="" />
             <h3 slot="slide-2">Slide 2</h3>
