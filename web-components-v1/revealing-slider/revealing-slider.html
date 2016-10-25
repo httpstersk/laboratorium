@@ -247,6 +247,7 @@
 
                 this._addOrRemoveClasses(event);
                 this._addSneakPeekBackground(event);
+                this._fireChangeEvent();
 
                 this._debugIndexes();
             }
@@ -265,6 +266,8 @@
 
                 this._addOrRemoveClasses(event);
                 this._addSneakPeekBackground(event);
+                this._fireChangedEvent();
+
                 this._debugIndexes();
             }
 
@@ -309,6 +312,13 @@
                 }
 
                 currSlide.addEventListener('transitionend', () => this._onTransitionEnd(), { once: true });
+            }
+
+            _fireChangeEvent() {
+                this.dispatchEvent(new CustomEvent('slidechange', {
+                    detail: { currentSlide: this._currIndex },
+                    bubbles: true
+                }));
             }
 
             _onTransitionEnd() {
