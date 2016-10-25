@@ -185,7 +185,7 @@
             }
 
             static get observedAttributes() {
-                return ['timeout'];
+                return ['interval'];
             }
 
             connectedCallback() {
@@ -274,15 +274,29 @@
             }
 
             play() {
-                const timeout = this.getAttribute('timeout');
-                if (isNaN(parseInt(timeout))) return;
+                const interval = this.getAttribute('interval');
+                const _setInterval = (fn, delay) => {
+                    const tick = now => {
+                        if (now - start >= delay) {
+                            start = now;
+                            fn();
+                        }
 
-                this._timer = setInterval(() => this._buttonNext.click(), timeout * 1000);
+                        this._requestId = requestAnimationFrame(tick);
+                    };
+
+                    let start = performance.now();
+                    requestAnimationFrame(tick);
+                };
+
+                if (isNaN(parseInt(interval))) return;
+
+                _setInterval(() => this._buttonNext.click(), interval * 1000);
             }
 
             pause() {
-                if (this._timer) {
-                    clearInterval(this._timer);
+                if (this._requestId) {
+                    cancelAnimationFrame(this._requestId);
                 }
             }
 
