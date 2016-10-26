@@ -75,6 +75,25 @@
         <div class="clipped-boxes">
 
             <div class="clipped-box">
+                <svg id="svg-0" preserveAspectRatio="xMidYMid slice" viewBox="0 0 300 300">
+                    <defs>
+                        <clipPath id="clip-0">
+                            <circle cx="0" cy="0" r="150px"></circle>
+                        </clipPath>
+                    </defs>
+                    <text class="svg-text" dy="0.35em" x="50%" y="50%">
+                        Clip 0
+                    </text>
+                    <g clip-path="url(#clip-0)">
+                        <image height="100%" preserveAspectRatio="xMinYMin slice" width="100%"></image>
+                        <text class="svg-masked-text" dy="0.35em" x="50%" y="50%">
+                            Clip 0
+                        </text>
+                    </g>
+                </svg>
+            </div>
+
+            <div class="clipped-box">
                 <svg id="svg-1" preserveAspectRatio="xMidYMid slice" viewBox="0 0 300 300">
                     <defs>
                         <clipPath id="clip-1">
@@ -131,25 +150,6 @@
                 </svg>
             </div>
 
-            <div class="clipped-box">
-                <svg id="svg-4" preserveAspectRatio="xMidYMid slice" viewBox="0 0 300 300">
-                    <defs>
-                        <clipPath id="clip-4">
-                            <circle cx="0" cy="0" r="150px"></circle>
-                        </clipPath>
-                    </defs>
-                    <text class="svg-text" dy="0.35em" x="50%" y="50%">
-                        Clip 4
-                    </text>
-                    <g clip-path="url(#clip-4)">
-                        <image height="100%" preserveAspectRatio="xMinYMin slice" width="100%"></image>
-                        <text class="svg-masked-text" dy="0.35em" x="50%" y="50%">
-                            Clip 4
-                        </text>
-                    </g>
-                </svg>
-            </div>
-
         </div>
 
     </main>
@@ -181,26 +181,39 @@
 
             connectedCallback() {
                 this._clippedBoxes = [...this._shadowRoot.querySelectorAll('.clipped-box')];
-                this._clippedBoxes.forEach((box, index) => box.addEventListener('mousemove', () => this._mouseMoveHandler(event, index)));
+                this._clippedBoxes.forEach((box, index) => {
+                    box.addEventListener('mousemove', () => this._mouseMoveHandler(event, index))
+                    box.addEventListener('touchmove', () => this._touchMoveHandler(event, index))
+                });
                 this._grabImagesFromLightDOM();
             }
 
             _mouseMoveHandler(event, index) {
-                let i = index + 1;
-                let svg = this._selectElement(`#svg-${i}`);
+                let svg = this._selectElement(`#svg-${index}`);
                 let circle = svg.querySelector('circle');
                 let point = svg.createSVGPoint();
 
                 this._update(circle, this._getCoordinates(event, svg, point));
             }
 
+            _touchMoveHandler(event, index) {
+                event.preventDefault();
+
+                let touch = event.targetTouches[0];
+
+                if (touch) {
+                    let svg = this._selectElement(`#svg-${index}`);
+                    let circle = svg.querySelector('circle');
+                    let point = svg.createSVGPoint();
+
+                    this._update(circle, this._getCoordinates(touch, svg, point));
+                }
+            }
+
             _grabImagesFromLightDOM() {
                 window.addEventListener('DOMContentLoaded', () => {
-                    const images = [...this.querySelectorAll('img')];
-
-                    images.map((image, index) => {
-                        let i = index + 1;
-                        let svg = this._selectElement(`#svg-${i}`);
+                    [...this.querySelectorAll('img')].map((image, index) => {
+                        let svg = this._selectElement(`#svg-${index}`);
                         let svgImage = svg.querySelector('image');
                         svgImage.setAttributeNS('http://www.w3.org/1999/xlink', 'href', image.src);
                     });

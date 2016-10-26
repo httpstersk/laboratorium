@@ -57,6 +57,11 @@
             justify-content: center;
         }
 
+        section > *:not(:defined) {
+            opacity: 0;
+            transition: opacity 200ms ease-in-out;
+        }
+
         tabs-with-indicator {
             background: #ef3e4a;
         }
@@ -66,7 +71,10 @@
 <body>
     <section center>
         <clip-path-hover>
-
+            <img src="http://placehold.it/2000/005397/ffffff/?text=1" alt="" />
+            <img src="http://placehold.it/2000/32b67a/ffffff/?text=2" alt="" />
+            <img src="http://placehold.it/2000/bfb5d7/ffffff/?text=3" alt="" />
+            <img src="http://placehold.it/2000/f0cf61/ffffff/?text=4" alt="" />
         </clip-path-hover>
     </section>
 
