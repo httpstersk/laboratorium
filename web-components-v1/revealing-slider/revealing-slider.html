@@ -246,7 +246,7 @@
 
                 this._calculatingIndexes();
 
-                this._addOrRemoveClasses(event);
+                this._applyClasses(event);
                 this._addSneakPeekBackground(event);
                 this._fireChangeEvent();
 
@@ -266,7 +266,7 @@
 
                 this._calculatingIndexes();
 
-                this._addOrRemoveClasses(event);
+                this._applyClasses(event);
                 this._addSneakPeekBackground(event);
                 this._fireChangeEvent();
 
@@ -275,29 +275,29 @@
 
             play() {
                 const interval = this.getAttribute('interval');
-                const _setInterval = (fn, delay) => {
-                    const tick = now => {
-                        if (now - start >= delay) {
-                            start = now;
-                            fn();
-                        }
-
-                        this._requestId = requestAnimationFrame(tick);
-                    };
-
-                    let start = performance.now();
-                    requestAnimationFrame(tick);
-                };
 
                 if (isNaN(parseInt(interval))) return;
-
-                _setInterval(() => this._buttonNext.click(), interval * 1000);
+                this._setInterval(() => this._buttonNext.click(), interval * 1000);
             }
 
             pause() {
                 if (this._requestId) {
                     cancelAnimationFrame(this._requestId);
                 }
+            }
+
+            _setInterval(fn, delay) {
+                const tick = now => {
+                    if (now - start >= delay) {
+                        start = now;
+                        fn();
+                    }
+
+                    this._requestId = window.requestAnimationFrame(tick);
+                };
+
+                let start = performance.now();
+                window.requestAnimationFrame(tick);
             }
 
             _calculatingIndexes() {
@@ -324,7 +324,7 @@
 
             }
 
-            _addOrRemoveClasses(event) {
+            _applyClasses(event) {
                 const currSlide = this._findElement('.slide.slide--active');
                 const nextSlide = this._findElement(`.slide-${this._currIndex}`);
                 const isPrev = event.target.classList.contains('button--prev');
