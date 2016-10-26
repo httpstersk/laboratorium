@@ -3,7 +3,7 @@
         :host {
             --clip-background: #39205b;
             --clip-color: #17e1e3;
-            --custom-easing: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            --easing: ease-in-out;
             --transition-timing: 200ms;
             display: block;
             height: 100%;
@@ -48,7 +48,7 @@
         circle {
             transform: scale(0);
             transform-origin: 50% 50%;
-            transition: transform var(--transition-timing) var(--custom-easing);
+            transition: transform var(--transition-timing) var(--easing);
         }
 
         text {
