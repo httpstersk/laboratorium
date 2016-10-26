@@ -85,7 +85,7 @@
                         Clip 1
                     </text>
                     <g clip-path="url(#clip-1)">
-                        <image height="100%" preserveAspectRatio="xMinYMin slice" width="100%" xlink:href="http://placehold.it/2000/005397/ffffff/?text=1"></image>
+                        <image height="100%" preserveAspectRatio="xMinYMin slice" width="100%"></image>
                         <text class="svg-masked-text" dy="0.35em" x="50%" y="50%">
                             Clip 1
                         </text>
@@ -104,7 +104,7 @@
                         Clip 2
                     </text>
                     <g clip-path="url(#clip-2)">
-                        <image height="100%" preserveAspectRatio="xMinYMin slice" width="100%" xlink:href="http://placehold.it/2000/32b67a/ffffff/?text=2"></image>
+                        <image height="100%" preserveAspectRatio="xMinYMin slice" width="100%"></image>
                         <text class="svg-masked-text" dy="0.35em" x="50%" y="50%">
                             Clip 2
                         </text>
@@ -123,9 +123,28 @@
                         Clip 3
                     </text>
                     <g clip-path="url(#clip-3)">
-                        <image height="100%" preserveAspectRatio="xMinYMin slice" width="100%" xlink:href="http://placehold.it/2000/bfb5d7/ffffff/?text=3"></image>
+                        <image height="100%" preserveAspectRatio="xMinYMin slice" width="100%"></image>
                         <text class="svg-masked-text" dy="0.35em" x="50%" y="50%">
                             Clip 3
+                        </text>
+                    </g>
+                </svg>
+            </div>
+
+            <div class="clipped-box">
+                <svg id="svg-4" preserveAspectRatio="xMidYMid slice" viewBox="0 0 300 300">
+                    <defs>
+                        <clipPath id="clip-4">
+                            <circle cx="0" cy="0" r="150px"></circle>
+                        </clipPath>
+                    </defs>
+                    <text class="svg-text" dy="0.35em" x="50%" y="50%">
+                        Clip 4
+                    </text>
+                    <g clip-path="url(#clip-4)">
+                        <image height="100%" preserveAspectRatio="xMinYMin slice" width="100%"></image>
+                        <text class="svg-masked-text" dy="0.35em" x="50%" y="50%">
+                            Clip 4
                         </text>
                     </g>
                 </svg>
@@ -163,27 +182,44 @@
             connectedCallback() {
                 this._clippedBoxes = [...this._shadowRoot.querySelectorAll('.clipped-box')];
                 this._clippedBoxes.forEach((box, index) => box.addEventListener('mousemove', () => this._mouseMoveHandler(event, index)));
+                this._grabImagesFromLightDOM();
             }
 
             _mouseMoveHandler(event, index) {
                 let i = index + 1;
-
-                let svg = this._shadowRoot.querySelector(`#svg-${i}`);
-                let clip = svg.querySelector('circle');
+                let svg = this._selectElement(`#svg-${i}`);
+                let circle = svg.querySelector('circle');
                 let point = svg.createSVGPoint();
 
-                this.update(clip, this.getCoordinates(event, svg, point));
+                this._update(circle, this._getCoordinates(event, svg, point));
             }
 
-            update(clip, c) {
-                clip.setAttribute('cx', c.x);
-                clip.setAttribute('cy', c.y);
+            _grabImagesFromLightDOM() {
+                window.addEventListener('DOMContentLoaded', () => {
+                    const images = [...this.querySelectorAll('img')];
+
+                    images.map((image, index) => {
+                        let i = index + 1;
+                        let svg = this._selectElement(`#svg-${i}`);
+                        let svgImage = svg.querySelector('image');
+                        svgImage.setAttributeNS('http://www.w3.org/1999/xlink', 'href', image.src);
+                    });
+                });
             }
 
-            getCoordinates(event, svg, point) {
+            _getCoordinates(event, svg, point) {
                 point.x = event.clientX;
                 point.y = event.clientY;
-                return point.matrixTransform(svg.getScreenCTM().inverse());
+
+                let sctm = svg.getScreenCTM();
+                let inverse = sctm.inverse();
+
+                return point.matrixTransform(inverse);
+            }
+
+            _update(circle, c) {
+                circle.setAttribute('cx', c.x);
+                circle.setAttribute('cy', c.y);
             }
 
             disconnectedCallback() {
