@@ -1,7 +1,10 @@
 <template id="clip-path-hover">
     <style>
         :host {
+            --clip-background: #39205b;
+            --clip-color: #17e1e3;
             --custom-easing: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            --transition-timing: 200ms;
             display: block;
             height: 100%;
             width: 100%;
@@ -9,6 +12,29 @@
 
         main {
             height: 100%;
+        }
+
+        .clipped-boxes {
+            display: flex;
+            flex-flow: row wrap;
+            justify-content: center;
+        }
+
+        .clipped-box {
+            background-color: var(--clip-background);
+            cursor: pointer;
+            display: flex;
+            flex: 1;
+            height: 50vh;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+            will-change: transform;
+        }
+
+        .clipped-box:hover circle,
+        .clipped-box:hover image {
+            transform: scale(1);
         }
 
         svg {
@@ -22,7 +48,7 @@
         circle {
             transform: scale(0);
             transform-origin: 50% 50%;
-            transition: transform 200ms var(--custom-easing);
+            transition: transform var(--transition-timing) var(--custom-easing);
         }
 
         text {
@@ -31,7 +57,7 @@
         }
 
         .svg-text {
-            fill: #545a64;
+            fill: var(--clip-color);
         }
 
         .svg-masked-text {
@@ -40,42 +66,19 @@
 
         image {
             transform-origin: 50% 50%;
-            transition: transform 200ms var(--custom-easing);
-        }
-
-        .items {
-            display: flex;
-            flex-flow: row wrap;
-            justify-content: center;
-        }
-
-        .item {
-            background-color: #3b3e46;
-            cursor: pointer;
-            display: flex;
-            flex: 1;
-            height: 50vh;
-            justify-content: center;
-            overflow: hidden;
-            position: relative;
-            will-change: transform;
-        }
-
-        .item:hover circle,
-        .item:hover image {
-            transform: scale(1);
+            transition: transform var(--transition-timing) var(--custom-easing);
         }
     </style>
 
     <main>
 
-        <div class="items">
+        <div class="clipped-boxes">
 
-            <div class="item">
-                <svg id="svg-1" preserveAspectRatio="xMidYMid slice" viewBox="0 0 300 200">
+            <div class="clipped-box">
+                <svg id="svg-1" preserveAspectRatio="xMidYMid slice" viewBox="0 0 300 300">
                     <defs>
                         <clipPath id="clip-1">
-                            <circle cx="0" cy="0" fill="#000" r="150px"></circle>
+                            <circle cx="0" cy="0" r="150px"></circle>
                         </clipPath>
                     </defs>
                     <text class="svg-text" dy="0.35em" x="50%" y="50%">
@@ -90,11 +93,11 @@
                 </svg>
             </div>
 
-            <div class="item">
-                <svg id="svg-2" preserveAspectRatio="xMidYMid slice" viewBox="0 0 300 200">
+            <div class="clipped-box">
+                <svg id="svg-2" preserveAspectRatio="xMidYMid slice" viewBox="0 0 300 300">
                     <defs>
                         <clipPath id="clip-2">
-                            <circle cx="0" cy="0" fill="#000" r="150px"></circle>
+                            <circle cx="0" cy="0" r="150px"></circle>
                         </clipPath>
                     </defs>
                     <text class="svg-text" dy="0.35em" x="50%" y="50%">
@@ -109,11 +112,11 @@
                 </svg>
             </div>
 
-            <div class="item">
-                <svg id="svg-3" preserveAspectRatio="xMidYMid slice" viewBox="0 0 300 200">
+            <div class="clipped-box">
+                <svg id="svg-3" preserveAspectRatio="xMidYMid slice" viewBox="0 0 300 300">
                     <defs>
                         <clipPath id="clip-3">
-                            <circle cx="0" cy="0" fill="#000" r="150px"></circle>
+                            <circle cx="0" cy="0" r="150px"></circle>
                         </clipPath>
                     </defs>
                     <text class="svg-text" dy="0.35em" x="50%" y="50%">
@@ -158,19 +161,18 @@
             }
 
             connectedCallback() {
-                this._items = [...this._shadowRoot.querySelectorAll('.item')];
-                this._point = this._shadowRoot.querySelector('svg').createSVGPoint();
-
-                this._items.forEach((item, index) => item.addEventListener('mousemove', () => {
-                    let i = index + 1;
-                    let clip = this._shadowRoot.querySelector(`#clip-${i} circle`);
-                    let svg = this._shadowRoot.querySelector(`#svg-${i}`);
-                    this.update(clip, this.getCoordinates(event, svg));
-                }));
+                this._clippedBoxes = [...this._shadowRoot.querySelectorAll('.clipped-box')];
+                this._clippedBoxes.forEach((box, index) => box.addEventListener('mousemove', () => this._mouseMoveHandler(event, index)));
             }
 
-            _mouseMoveHandler(event) {
+            _mouseMoveHandler(event, index) {
+                let i = index + 1;
 
+                let svg = this._shadowRoot.querySelector(`#svg-${i}`);
+                let clip = svg.querySelector('circle');
+                let point = svg.createSVGPoint();
+
+                this.update(clip, this.getCoordinates(event, svg, point));
             }
 
             update(clip, c) {
@@ -178,13 +180,15 @@
                 clip.setAttribute('cy', c.y);
             }
 
-            getCoordinates(event, svg) {
-                this._point.x = event.clientX;
-                this._point.y = event.clientY;
-                return this._point.matrixTransform(svg.getScreenCTM().inverse());
+            getCoordinates(event, svg, point) {
+                point.x = event.clientX;
+                point.y = event.clientY;
+                return point.matrixTransform(svg.getScreenCTM().inverse());
             }
 
-            disconnectedCallback() {}
+            disconnectedCallback() {
+                this._clippedBoxes.forEach(item => item.removeEventListener('mousemove', () => this._mouseMoveHandler()));
+            }
 
             attributeChangedCallback(attrName, oldVal, newVal) {}
 
