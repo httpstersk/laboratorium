@@ -82,12 +82,12 @@
                         </clipPath>
                     </defs>
                     <text class="svg-text" dy="0.35em" x="50%" y="50%">
-                        Clip 0
+                        Uno
                     </text>
                     <g clip-path="url(#clip-0)">
                         <image height="100%" preserveAspectRatio="xMinYMin slice" width="100%"></image>
                         <text class="svg-masked-text" dy="0.35em" x="50%" y="50%">
-                            Clip 0
+                            Uno
                         </text>
                     </g>
                 </svg>
@@ -101,12 +101,12 @@
                         </clipPath>
                     </defs>
                     <text class="svg-text" dy="0.35em" x="50%" y="50%">
-                        Clip 1
+                        Duo
                     </text>
                     <g clip-path="url(#clip-1)">
                         <image height="100%" preserveAspectRatio="xMinYMin slice" width="100%"></image>
                         <text class="svg-masked-text" dy="0.35em" x="50%" y="50%">
-                            Clip 1
+                            Duo
                         </text>
                     </g>
                 </svg>
@@ -120,12 +120,12 @@
                         </clipPath>
                     </defs>
                     <text class="svg-text" dy="0.35em" x="50%" y="50%">
-                        Clip 2
+                        Tres
                     </text>
                     <g clip-path="url(#clip-2)">
                         <image height="100%" preserveAspectRatio="xMinYMin slice" width="100%"></image>
                         <text class="svg-masked-text" dy="0.35em" x="50%" y="50%">
-                            Clip 2
+                            Tres
                         </text>
                     </g>
                 </svg>
@@ -139,12 +139,12 @@
                         </clipPath>
                     </defs>
                     <text class="svg-text" dy="0.35em" x="50%" y="50%">
-                        Clip 3
+                        Cuatro
                     </text>
                     <g clip-path="url(#clip-3)">
                         <image height="100%" preserveAspectRatio="xMinYMin slice" width="100%"></image>
                         <text class="svg-masked-text" dy="0.35em" x="50%" y="50%">
-                            Clip 3
+                            Cuatro
                         </text>
                     </g>
                 </svg>
@@ -180,7 +180,7 @@
             }
 
             connectedCallback() {
-                this._clippedBoxes = [...this._shadowRoot.querySelectorAll('.clipped-box')];
+                this._clippedBoxes = this._selectElements('.clipped-box');
                 this._clippedBoxes.forEach((box, index) => {
                     box.addEventListener('mousemove', () => this._mouseMoveHandler(event, index))
                     box.addEventListener('touchmove', () => this._touchMoveHandler(event, index))
@@ -193,7 +193,7 @@
                 let circle = svg.querySelector('circle');
                 let point = svg.createSVGPoint();
 
-                this._update(circle, this._getCoordinates(event, svg, point));
+                this._updateCenterPoints(circle, this._getCoordinates(event, svg, point));
             }
 
             _touchMoveHandler(event, index) {
@@ -206,7 +206,7 @@
                     let circle = svg.querySelector('circle');
                     let point = svg.createSVGPoint();
 
-                    this._update(circle, this._getCoordinates(touch, svg, point));
+                    this._updateCenterPoints(circle, this._getCoordinates(touch, svg, point));
                 }
             }
 
@@ -230,19 +230,28 @@
                 return point.matrixTransform(inverse);
             }
 
-            _update(circle, c) {
+            _updateCenterPoints(circle, c) {
                 circle.setAttribute('cx', c.x);
                 circle.setAttribute('cy', c.y);
             }
 
             disconnectedCallback() {
-                this._clippedBoxes.forEach(item => item.removeEventListener('mousemove', () => this._mouseMoveHandler()));
+                this._clippedBoxes.forEach(box => {
+                    box.removeEventListener('mousemove', () => this._mouseMoveHandler());
+                    box.removeEventListener('touchmove', () => this._touchMoveHandler());
+                });
             }
 
-            attributeChangedCallback(attrName, oldVal, newVal) {}
+            attributeChangedCallback(attrName, oldVal, newVal) {
+
+            }
 
             _selectElement(selector) {
                 return this._shadowRoot.querySelector(selector);
+            }
+
+            _selectElements(selector) {
+                return [...this._shadowRoot.querySelectorAll(selector)];
             }
         }
 
