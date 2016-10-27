@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Creanet Web Components</title>
+    <link rel="import" href="creanet-vizitka.html">
+    <style>
+        html {
+            box-sizing: border-box;
+            height: 100%;
+        }
+
+        @media screen and (min-width: 60rem) {
+            html {
+                font-size: 2.2vw;
+            }
+        }
+
+        *,
+        *:before,
+        *:after {
+            box-sizing: inherit;
+        }
+
+        body {
+            background: #efe8d8;
+            display: flex;
+            flex-direction: column;
+            font-family: Helvetica, Arial, sans-serif;
+            font-size: 1rem;
+            margin: 0;
+            min-height: 100%;
+        }
+
+        body.walsheim-loaded {
+            font-family: Walsheim;
+        }
+
+        section {
+            height: 100vh;
+        }
+
+        [center] {
+            align-items: center;
+            display: flex;
+            justify-content: center;
+        }
+
+        section > *:not(:defined) {
+            opacity: 0;
+            transition: opacity 200ms ease-in-out;
+        }
+    </style>
+</head>
+
+<body>
+    <section center>
+        <creanet-vizitka name="Luboš Belák" phone="0987654321" position="Frontend developer"></creanet-vizitka>
+    </section>
+
+    <script type="text/javascript">
+        (function() {
+            'use strict';
+
+            if (document.fonts) {
+
+                const walsheim = new FontFace('Walsheim', 'url(walsheim.woff)');
+                const addLoadedClass = (font) => document.body.classList.add(`${font.family.toLowerCase()}-loaded`);
+
+                walsheim.load();
+                document.fonts.add(walsheim);
+                walsheim.loaded.then(addLoadedClass);
+
+            }
+
+        }());
+    </script>
+</body>
+
+</html>
