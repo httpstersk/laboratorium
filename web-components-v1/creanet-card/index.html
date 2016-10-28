@@ -53,12 +53,18 @@
             opacity: 0;
             transition: opacity 200ms ease-in-out;
         }
+
+        img {
+            display: block;
+        }
     </style>
 </head>
 
 <body>
     <section center>
-        <creanet-card name="Luboš Belák" phone="0987654321" position="Frontend developer"></creanet-card>
+        <creanet-card name="Luboš Belák" phone="0987654321" position="Frontend developer">
+            <img slot="logo" src="creanet-logo.svg" alt="Logo Creanet" />
+        </creanet-card>
     </section>
 
     <script type="text/javascript">
