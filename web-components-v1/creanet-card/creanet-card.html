@@ -9,24 +9,27 @@
         }
 
         #card {
-            background: var(--card-bg);
             height: var(--card-height);
+            perspective: 500px;
+            position: relative;
             width: var(--card-width);
+            will-change: transform;
+        }
+
+        #card-back,
+        #card-front {
+            background: var(--card-bg);
+            backface-visibility: hidden;
+            left: 0;
+            height: 100%;
+            overflow: hidden;
+            position: absolute;
+            top: 0;
+            width: 100%;
         }
 
         #card-back {
-            backface-visibility: hidden;
-            display: none;
-            justify-content: center;
-            visibility: hidden;
-        }
-
-        #card-front {
-            display: flex;
-            flex: 1;
-            flex-direction: row;
-            height: 100%;
-            visibility: visible;
+            transform: rotate(180deg);
         }
 
         #contacts {
@@ -41,7 +44,19 @@
             width: 50%;
         }
 
-        a {
+        #card button {
+            background: none;
+            border: none;
+            left: 0;
+            height: 100%;
+            position: absolute;
+            text-indent: -10000px;
+            top: 0;
+            width: 100%;
+        }
+
+        a,
+        button {
             color: var(--card-color);
             cursor: pointer;
             transition: all 300ms;
@@ -81,11 +96,12 @@
     </style>
 
     <main id="card">
-        <section id="card-back">
+        <section id="card-back" center>
             <slot name="logo"></slot>
+            <button>↻</button>
         </section>
 
-        <section id="card-front">
+        <section id="card-front" center>
             <summary id="contacts">
                 <h2 id="name"></h2>
                 <strong id="position"></strong>
@@ -99,6 +115,8 @@
             <figure id="qr" center>
                 <qr-code></qr-code>
             </figure>
+
+            <button>↻</button>
         </section>
     </main>
 </template>
