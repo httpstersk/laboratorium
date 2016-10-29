@@ -3,14 +3,14 @@
         :host {
             --card-bg: #123456;
             --card-color: white;
-            --card-width: 80vw;
+            --card-width: 60vw;
             --card-height: calc(var(--card-width) * 0.5);
             display: inline-block;
         }
 
         #card {
             height: var(--card-height);
-            perspective: 500px;
+            perspective: 1000px;
             position: relative;
             width: var(--card-width);
             will-change: transform;
@@ -136,6 +136,10 @@
                 this._shadowRoot = this.attachShadow({ mode: 'open' });
                 this._shadowRoot.appendChild(content);
 
+                this._front = this._findElement('card-front');
+                this._back = this._findElement('card-back');
+                this._side = CreanetCard.SIDES.FRONT;
+
                 this.name = this.getAttribute('name');
                 this.phone = this.getAttribute('phone');
                 this.position = this.getAttribute('position');
@@ -143,6 +147,13 @@
 
             static get observedAttributes() {
                 return ['name', 'phone', 'position'];
+            }
+
+            static get SIDES() {
+                return {
+                    FRONT: 1,
+                    BACK: 2
+                };
             }
 
             get name() {
@@ -180,7 +191,8 @@
             }
 
             connectedCallback() {
-
+                const buttons = [...this._shadowRoot.querySelectorAll('button')];
+                buttons.forEach(button => button.addEventListener('click', () => this.flip()));
             }
 
             disconnectedCallback() {
@@ -208,6 +220,53 @@
 
                     this._updateContent(attrName, newVal);
                 }
+            }
+
+            flip() {
+                const sideOne = [
+                    {transform: `translateZ(-200px) rotateY(0)`},
+                    {transform: `translateZ(-100px) rotateY(0)`, offset: 0.15},
+                    {transform: `translateZ(-100px) rotateY(180deg)`, offset: 0.65},
+                    {transform: `translateZ(-200px) rotateY(180deg)`}
+                ];
+
+                const sideTwo = [
+                    {transform: `translateZ(-200px) rotateY(180deg)`},
+                    {transform: `translateZ(-100px) rotateY(180deg)`, offset: 0.15},
+                    {transform: `translateZ(-100px) rotateY(360deg)`, offset: 0.65},
+                    {transform: `translateZ(-200px) rotateY(360deg)`}
+                ];
+
+                const timing = {
+                    duration: 1000,
+                    iterations: 1,
+                    easing: 'ease-in-out',
+                    fill: 'forwards'
+                };
+
+                switch (this._side) {
+                    case CreanetCard.SIDES.FRONT:
+                        this._front.animate(sideOne, timing);
+                        this._back.animate(sideTwo, timing);
+                        this._onAnimationFinish();
+                        this._back.focus();
+                        break;
+
+                    case CreanetCard.SIDES.BACK:
+                        this._front.animate(sideTwo, timing);
+                        this._back.animate(sideOne, timing);
+                        this._onAnimationFinish();
+                        this._front.focus();
+                        break;
+
+                    defaut:
+                        throw new Error('Unknown side');
+                }
+
+            }
+
+            _onAnimationFinish() {
+                this._side = (this._side === CreanetCard.SIDES.FRONT) ? CreanetCard.SIDES.BACK : CreanetCard.SIDES.FRONT;
             }
 
             _madeEmailFromName(name) {
