@@ -33,7 +33,6 @@
         }
 
         #contacts {
-            background: pink;
             box-sizing: border-box;
             color: var(--card-color);
             display: flex;
@@ -222,39 +221,37 @@
                 }
             }
 
+            _animKeyframes(side) {
+              const deg = (side === CreanetCard.SIDES.FRONT) ? 0 : 180;
+              const axisZ = -100;
+
+              return [
+                  {transform: `translateZ(0) rotateY(${deg}deg)`},
+                  {transform: `translateZ(${axisZ}px) rotateY(${deg}deg)`, offset: 0.15},
+                  {transform: `translateZ(${axisZ}px) rotateY(${deg + 180}deg)`, offset: 0.65},
+                  {transform: `translateZ(0) rotateY(${deg + 180}deg)`}
+              ]
+            }
+
             flip() {
-                const sideOne = [
-                    {transform: `translateZ(-200px) rotateY(0)`},
-                    {transform: `translateZ(-100px) rotateY(0)`, offset: 0.15},
-                    {transform: `translateZ(-100px) rotateY(180deg)`, offset: 0.65},
-                    {transform: `translateZ(-200px) rotateY(180deg)`}
-                ];
-
-                const sideTwo = [
-                    {transform: `translateZ(-200px) rotateY(180deg)`},
-                    {transform: `translateZ(-100px) rotateY(180deg)`, offset: 0.15},
-                    {transform: `translateZ(-100px) rotateY(360deg)`, offset: 0.65},
-                    {transform: `translateZ(-200px) rotateY(360deg)`}
-                ];
-
                 const timing = {
                     duration: 1000,
-                    iterations: 1,
                     easing: 'ease-in-out',
-                    fill: 'forwards'
+                    fill: 'forwards',
+                    iterations: 1
                 };
 
                 switch (this._side) {
                     case CreanetCard.SIDES.FRONT:
-                        this._front.animate(sideOne, timing);
-                        this._back.animate(sideTwo, timing);
+                        this._front.animate(this._animKeyframes(1), timing);
+                        this._back.animate(this._animKeyframes(2), timing);
                         this._onAnimationFinish();
                         this._back.focus();
                         break;
 
                     case CreanetCard.SIDES.BACK:
-                        this._front.animate(sideTwo, timing);
-                        this._back.animate(sideOne, timing);
+                        this._front.animate(this._animKeyframes(2), timing);
+                        this._back.animate(this._animKeyframes(1), timing);
                         this._onAnimationFinish();
                         this._front.focus();
                         break;
