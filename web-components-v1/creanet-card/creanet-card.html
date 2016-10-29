@@ -190,12 +190,12 @@
             }
 
             connectedCallback() {
-                const buttons = [...this._shadowRoot.querySelectorAll('button')];
-                buttons.forEach(button => button.addEventListener('click', () => this.flip()));
+                this._buttons = [...this._shadowRoot.querySelectorAll('button')];
+                this._buttons.forEach(button => button.addEventListener('click', () => this.flip()));
             }
 
             disconnectedCallback() {
-
+                this._buttons.forEach(button => button.removeEventListener('click', () => this.flip()));
             }
 
             attributeChangedCallback(attrName, oldVal, newVal) {
