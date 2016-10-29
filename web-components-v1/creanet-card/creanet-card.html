@@ -54,8 +54,7 @@
             width: 100%;
         }
 
-        a,
-        button {
+        a {
             color: var(--card-color);
             cursor: pointer;
             transition: all 300ms;
@@ -135,6 +134,7 @@
                 this._shadowRoot = this.attachShadow({ mode: 'open' });
                 this._shadowRoot.appendChild(content);
 
+                this._locked = false;
                 this._front = this._findElement('card-front');
                 this._back = this._findElement('card-back');
                 this._side = CreanetCard.SIDES.FRONT;
@@ -234,6 +234,12 @@
             }
 
             flip() {
+                if (this._locked) {
+                    return;
+                }
+
+                this._locked = true;
+
                 const timing = {
                     duration: 1000,
                     easing: 'ease-in-out',
@@ -241,25 +247,28 @@
                     iterations: 1
                 };
 
+                const keyframesOne = this._animKeyframes(1);
+                const keyframesTwo = this._animKeyframes(2);
+
                 switch (this._side) {
                     case CreanetCard.SIDES.FRONT:
                         this._front
-                            .animate(this._animKeyframes(1), timing);
+                            .animate(keyframesOne, timing);
 
                         this._back
-                            .animate(this._animKeyframes(2), timing)
-                            .onfinish = (this._onAnimationFinish());
+                            .animate(keyframesTwo, timing)
+                            .onfinish = () => this._onAnimationFinish();
 
                         this._back.focus();
                         break;
 
                     case CreanetCard.SIDES.BACK:
                         this._front
-                            .animate(this._animKeyframes(2), timing);
+                            .animate(keyframesTwo, timing);
 
                         this._back
-                            .animate(this._animKeyframes(1), timing)
-                            .onfinish = (this._onAnimationFinish());
+                            .animate(keyframesOne, timing)
+                            .onfinish = () => this._onAnimationFinish();
 
                         this._front.focus();
                         break;
@@ -271,7 +280,9 @@
             }
 
             _onAnimationFinish() {
+                this._locked = false;
                 this._side = (this._side === CreanetCard.SIDES.FRONT) ? CreanetCard.SIDES.BACK : CreanetCard.SIDES.FRONT;
+                console.info('Finito!');
             }
 
             _madeEmailFromName(name) {
