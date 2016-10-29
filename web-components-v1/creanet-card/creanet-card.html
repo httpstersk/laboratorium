@@ -243,21 +243,29 @@
 
                 switch (this._side) {
                     case CreanetCard.SIDES.FRONT:
-                        this._front.animate(this._animKeyframes(1), timing);
-                        this._back.animate(this._animKeyframes(2), timing);
-                        this._onAnimationFinish();
+                        this._front
+                            .animate(this._animKeyframes(1), timing);
+
+                        this._back
+                            .animate(this._animKeyframes(2), timing)
+                            .onfinish = (this._onAnimationFinish());
+
                         this._back.focus();
                         break;
 
                     case CreanetCard.SIDES.BACK:
-                        this._front.animate(this._animKeyframes(2), timing);
-                        this._back.animate(this._animKeyframes(1), timing);
-                        this._onAnimationFinish();
+                        this._front
+                            .animate(this._animKeyframes(2), timing);
+
+                        this._back
+                            .animate(this._animKeyframes(1), timing)
+                            .onfinish = (this._onAnimationFinish());
+
                         this._front.focus();
                         break;
 
                     defaut:
-                        throw new Error('Unknown side');
+                        throw new Error('😱');
                 }
 
             }
