@@ -1,0 +1,190 @@
+<template id="fancy-tabs">
+    <style>
+        :host {
+            contain: content;
+            display: inline-block;
+            height: 100%;
+            width: 100%;
+        }
+
+        main {
+            height: 100%;
+        }
+
+        #panels {
+            background: white;
+            justify-content: center;
+            height: 100%;
+            overflow: auto;
+            padding: 3vw;
+        }
+
+        #tabs {
+            background: silver;
+            display: inline-flex;
+            width: 100%;
+            user-select: none;
+        }
+
+        #tabs slot {
+            display: inline-flex;
+        }
+
+        #tabs ::slotted(*) {
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            margin: 0;
+            overflow: hidden;
+            padding: 2vw 1vw;
+            text-align: center;
+            text-overflow: ellipsis;
+            width: 100px;
+            white-space: nowrap;
+        }
+
+        #tabs ::slotted([aria-selected="true"]) {
+            background: white;
+            font-weight: 600;
+        }
+
+        #tabs ::slotted(:focus) {
+            z-index: 1;
+        }
+
+        #panels ::slotted([aria-hidden="true"]) {
+            display: none;
+        }
+    </style>
+
+    <main>
+
+      <section id="tabs">
+          <slot id="tabs-slot" name="tab"></slot>
+      </section>
+
+      <section id="panels">
+            <slot id="panels-slot"></slot>
+      </section>
+
+    </main>
+
+</template>
+
+<script>
+    (function() {
+        'use strict';
+
+        const owner = document.currentScript.ownerDocument;
+        const template = owner.querySelector('template');
+        const content = template.content.cloneNode(true);
+
+        class FancyTabs extends HTMLElement {
+            constructor() {
+                super();
+
+                this._shadowRoot = this.attachShadow({ mode: 'open' });
+                this._shadowRoot.appendChild(content);
+                this.selected_ = null;
+            }
+
+            get selected() {
+                return this.selected_;
+            }
+
+            set selected(idx) {
+                this.selected_ = idx;
+                this._selectTab(idx);
+                this.setAttribute('selected', idx);
+            }
+
+            connectedCallback() {
+                this.setAttribute('role', 'tablist');
+
+                const tabsSlot = this._shadowRoot.querySelector('#tabs-slot');
+                const panelsSlot = this._shadowRoot.querySelector('#panels-slot');
+
+                this.tabs = tabsSlot.assignedNodes({flatten: true});
+                this.panels = panelsSlot.assignedNodes({flatten: true})
+                    .filter(el => el.nodeType === Node.ELEMENT_NODE);
+
+                for (let [i, panel] of this.panels.entries()) {
+                    panel.setAttribute('role', 'tabpanel');
+                    panel.setAttribute('tabindex', 0);
+                }
+
+                this._boundOnTitleClick = this._onTitleClick.bind(this);
+                this._boundOnKeyDown = this._onKeyDown.bind(this);
+
+                tabsSlot.addEventListener('click', this._boundOnTitleClick);
+                tabsSlot.addEventListener('keydown', this._boundOnKeyDown);
+
+                this.selected = this._findFirstSelectedTab() || 0;
+            }
+
+            disconnectedCallback() {
+                const tabsSlot = this._shadowRoot.querySelector('#tabsSlot');
+                tabsSlot.removeEventListener('click', this._boundOnTitleClick);
+                tabsSlot.removeEventListener('keydown', this._boundOnKeyDown);
+            }
+
+            _onTitleClick(event) {
+                if (event.target.slot === 'tab') {
+                    this.selected = this.tabs.indexOf(event.target);
+                    event.target.focus();
+                }
+            }
+
+            _onKeyDown(event) {
+                switch (event.code) {
+                    case 'ArrowUp':
+                    case 'ArrowLeft':
+                        event.preventDefault();
+
+                        var idx = this.selected - 1;
+                        idx = idx < 0 ? this.tabs.length - 1 : idx;
+
+                        this.tabs[idx].click();
+                        break;
+
+                    case 'ArrowDown':
+                    case 'ArrowRight':
+                        event.preventDefault();
+                        var idx = this.selected + 1;
+
+                        this.tabs[idx % this.tabs.length].click();
+                        break;
+
+                    default:
+                        break;
+                }
+            }
+
+            _findFirstSelectedTab() {
+                let selectedIdx;
+
+                for (let [i, tab] of this.tabs.entries()) {
+                    tab.setAttribute('role', 'tab');
+
+                    if (tab.hasAttribute('selected')) {
+                        selectedIdx = i;
+                    }
+                }
+
+                return selectedIdx;
+            }
+
+            _selectTab(idx = null) {
+                for (let i = 0, tab; tab = this.tabs[i]; i++) {
+                    let select = i === idx;
+                    tab.setAttribute('tabindex', select ? 0 : -1);
+                    tab.setAttribute('aria-selected', select);
+                    this.panels[i].setAttribute('aria-hidden', !select);
+                }
+            }
+
+        }
+
+        window.customElements.define('fancy-tabs', FancyTabs);
+    }());
+</script>

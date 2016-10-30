@@ -8,6 +8,7 @@
     <title>Web Components V1 Playground</title>
     <link rel="import" href="clip-path-hover/clip-path-hover.html">
     <link rel="import" href="dual-sliding-panels/dual-sliding-panels.html">
+    <link rel="import" href="fancy-tabs/fancy-tabs.html">
     <link rel="import" href="reactive-button/reactive-button.html">
     <link rel="import" href="tabs-with-indicator/tabs-with-indicator.html">
     <link rel="import" href="revealing-slider/revealing-slider.html">
@@ -69,6 +70,17 @@
 </head>
 
 <body>
+    <section center>
+        <fancy-tabs>
+            <button slot="tab">Tab 1</button>
+            <button slot="tab" selected>Tab 2</button>
+            <button slot="tab">Tab 3</button>
+            <div>1</div>
+            <div>2</div>
+            <div>3</div>
+        </fancy-tabs>
+    </section>
+
     <section center>
         <clip-path-hover>
             <img src="http://placehold.it/2000/005397/ffffff/?text=1" alt="" />
@@ -148,7 +160,7 @@
 
                 document.fonts.ready.then(() => {
                     for (const fontface of document.fonts.values()) {
-                        console.info(`${fontface.family}: ${fontface.status}`);
+                        // console.info(`${fontface.family}: ${fontface.status}`);
                     }
                 });
 
