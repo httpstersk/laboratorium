@@ -99,7 +99,9 @@
             }
 
             connectedCallback() {
-                this.setAttribute('role', 'tablist');
+                if (!this.getAttribute('role')) {
+                    this.setAttribute('role', 'tablist');
+                }
 
                 const tabsSlot = this._shadowRoot.querySelector('#tabs-slot');
                 const panelsSlot = this._shadowRoot.querySelector('#panels-slot');
