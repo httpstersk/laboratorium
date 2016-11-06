@@ -9,6 +9,7 @@
     <link rel="import" href="clip-path-hover/clip-path-hover.html">
     <link rel="import" href="dual-sliding-panels/dual-sliding-panels.html">
     <link rel="import" href="fancy-tabs/fancy-tabs.html">
+    <link rel="import" href="material-checkbox/material-checkbox.html">
     <link rel="import" href="reactive-button/reactive-button.html">
     <link rel="import" href="tabs-with-indicator/tabs-with-indicator.html">
     <link rel="import" href="revealing-slider/revealing-slider.html">
@@ -70,6 +71,8 @@
 </head>
 
 <body>
+    <section center id="material"></section>
+
     <section center>
         <fancy-tabs>
             <button slot="tab">Tab 1</button>
@@ -174,6 +177,16 @@
 
             }
 
+            const props = {
+                checked: false,
+                oncheckchanged: event =>  console.log('Detail', event.detail)
+            };
+
+            const materialCheckbox = document.createElement('material-checkbox');
+            const materialSection = document.querySelector('#material');
+
+            Object.assign(materialCheckbox, props);
+            materialSection.appendChild(materialCheckbox);
         }());
     </script>
 </body>

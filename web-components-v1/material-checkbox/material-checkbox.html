@@ -1,0 +1,139 @@
+<template id="material-checkbox">
+    <style>
+         :host {
+            --unchecked-color: silver;
+            --checked-color: #384d9d;
+            --checkbox-size: 100px;
+            --ripple-size: 300%;
+            --transition: 150ms;
+        }
+
+        input[type="checkbox"] {
+            display: none;
+        }
+
+        input[type="checkbox"]:checked+label {
+            background: var(--checked-color);
+            border-color: var(--checked-color);
+        }
+
+        input[type="checkbox"]:checked+label:after {
+            transform: scale(1.3);
+        }
+
+        label {
+            box-sizing: border-box;
+            cursor: pointer;
+            display: block;
+            width: var(--checkbox-size);
+            height: var(--checkbox-size);
+            border: 11px solid var(--unchecked-color);
+            position: relative;
+            transition: var(--transition);
+        }
+
+        label:before {
+            border-radius: 50%;
+            content: '';
+            display: block;
+            height: var(--ripple-size);
+            left: 50%;
+            position: absolute;
+            transition: var(--transition);
+            transform: translate(-50%, -50%);
+            top: 50%;
+            width: var(--ripple-size);
+            z-index: -1;
+        }
+
+        label:after {
+            background: url('data:image/svg+xml;charset=UTF-8,<svg fill="white" height="24" width="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M0 0h24v24H0z" fill="none"/><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>') center center no-repeat;
+            background-size: contain;
+            content: '';
+            display: block;
+            height: 100%;
+            transform: scale(0);
+            transition: var(--transition);
+            width: 100%;
+        }
+
+        label:active:before {
+            background: var(--unchecked-color);
+            opacity: 0.1;
+        }
+    </style>
+
+    <input id="checkbox" type="checkbox"/>
+    <label for="checkbox"></label>
+</template>
+
+<script>
+    (function() {
+        'use strict';
+
+        const owner = document.currentScript.ownerDocument;
+        const template = owner.querySelector('template');
+        const content = template.content.cloneNode(true);
+
+        class MaterialCheckbox extends HTMLElement {
+            constructor() {
+                super();
+
+                this._shadowRoot = this.attachShadow({
+                    mode: 'open'
+                });
+
+                this._shadowRoot.appendChild(content);
+                this._checkbox = this._shadowRoot.querySelector('#checkbox');
+            }
+
+            static get observedAttributes() {
+                return [''];
+            }
+
+            connectedCallback() {
+                this.addEventListener('click', this._onClick);
+            }
+
+            disconnectedCallback() {
+                this.removeEventListener('click', this._onClick);
+            }
+
+            _onClick() {
+                this.checked = !this.checked;
+                this._checkbox.checked = !this._checkbox.checked;
+
+                this.dispatchEvent(new CustomEvent('checkchanged', {
+                    detail: { checked: this.checked },
+                    bubbles: false
+                }));
+            }
+
+            get checked() {
+                return this._checked;
+            }
+
+            set checked(val) {
+                this._checked = val;
+
+                if (val) {
+                    this.setAttribute('checked', '');
+                    this._checkbox.setAttribute('checked', '');
+                } else {
+                    this.removeAttribute('checked', '');
+                    this._checkbox.removeAttribute('checked', '');
+                }
+            }
+
+            set oncheckchanged(fn) {
+                this.removeEventListener('checkchanged', this._oncheckchanged);
+                this._oncheckchanged = fn;
+                this.addEventListener('checkchanged', this._oncheckchanged);
+            }
+
+        }
+
+        window.customElements.define('material-checkbox', MaterialCheckbox);
+
+    }());
+</script>
