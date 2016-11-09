@@ -1,0 +1,16 @@
+{
+    "name": "spa-elm",
+    "description": "Single Page App in Elm based on Tutorial",
+    "version": "1.0.0",
+    "main": "main.js",
+    "scripts": {
+        "watch": "elm-live src/*.elm --open --pushstate --output dist/bundle.js",
+        "test": "elm-test"
+    },
+    "license": "ISC",
+    "devDependencies": {
+        "elm": "^0.17.1",
+        "elm-live": "^2.6.0",
+        "elm-test": "^0.17.3"
+    }
+}

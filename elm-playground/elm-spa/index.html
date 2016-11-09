@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Single Page App in Elm</title>
+    <script type="text/javascript" src="dist/bundle.js"></script>
+</head>
+
+<body>
+    <div id="elm-app"></div>
+
+    <script type="text/javascript">
+        const elmDiv = document.getElementById('elm-app');
+        Elm.Main.embed(elmDiv);
+    </script>
+</body>
+
+</html>
