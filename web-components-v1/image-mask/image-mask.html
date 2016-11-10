@@ -1,0 +1,162 @@
+<template id="image-mask">
+    <style>
+        ::slotted(img) {
+            display: none;
+        }
+    </style>
+
+    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" role="img">
+        <defs>
+            <clipPath id="mask" clipPathUnits="objectBoundingBox">
+                <path />
+            </clipPath>
+        </defs>
+
+        <image clip-path="url(#mask)" height="100%" width="100%" preserveAspectRatio="xMidYMid slice" />
+    </svg>
+
+    <slot></slot>
+
+</template>
+
+<script>
+    (function() {
+        'use strict';
+
+        const owner = document.currentScript.ownerDocument;
+        const template = owner.querySelector('template');
+        const content = template.content.cloneNode(true);
+
+        class ImageMask extends HTMLElement {
+            constructor() {
+                super();
+
+                this._shadowRoot = this.attachShadow({
+                    mode: 'open'
+                });
+
+                this._shadowRoot.appendChild(content);
+
+                this._svgEl = this._select('svg');
+                this._pathEl = this._svgEl.querySelector('path');
+            }
+
+            static get observedAttributes() {
+                return ['shape', 'size'];
+            }
+
+            connectedCallback() {
+                const image = this._select('image');
+                const slot = this._select('slot');
+
+                this.size = this.getAttribute('size');
+
+                this._src = slot
+                    .assignedNodes({
+                        flatten: true
+                    })
+                    .filter(el => el.tagName === "IMG")
+                    .map(img => img.src);
+
+                this._setAttrNS(image, this._src);
+                this._setClipPath();
+            }
+
+            attributeChangedCallback(attrName, oldVal, newVal) {
+                if (newVal !== oldVal) {
+                    switch (attrName) {
+                        case 'size':
+                            this._setSize(this._svgEl, newVal);
+                            break;
+                        case 'shape':
+                            this._setClipPath();
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
+
+            get shape() {
+                return this.getAttribute('shape');
+            }
+
+            set shape(val) {
+                if (val) {
+                    this._setSize(this._svgEl, val);
+                }
+            }
+
+            get size() {
+                return this.getAttribute('size');
+            }
+
+            set size(val) {
+                if (val) {
+                    this._setClipPath();
+                }
+            }
+
+            _select(el) {
+                return this._shadowRoot.querySelector(el);
+            }
+
+            _setAttrNS(el, val) {
+                return el.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', val);
+            }
+
+            _setSize(el, size) {
+                el.setAttribute('height', size);
+                el.setAttribute('width', size);
+                el.setAttribute('viewBox', this._setViewBox(size));
+            }
+
+            _setViewBox(size) {
+                return `0 0 ${size} ${size}`;
+            }
+
+            _setClipPath() {
+                switch (this.shape) {
+                    case 'circle':
+                        this.path = 'M 0.5, 0.5 m -0.5, 0 a 0.5, 0.5 0 1, 0 1, 0 a 0.5, 0.5 0 1, 0 -1, 0';
+                        break;
+                    case 'square':
+                        this.path = 'M 0 0, 1 0, 1 1, 0 1 z';
+                        break;
+                    case 'triangle':
+                        this.path = 'M 0 1, 0.5 0, 0.5 0, 1 1 z';
+                        break;
+                    case 'rhombus':
+                        this.path = 'M 0.5 0, 1 0.5, 0.5 1, 0 0.5 z';
+                        break;
+                    case 'hexagon':
+                        this.path = 'M 0.5 0, 0.95 0.25, 0.95 0.75, 0.5 1, 0.05 0.75, 0.05 0.25 z';
+                        break;
+                    case 'octagon':
+                        this.path = 'M 0.3 0, 0.7 0, 1 0.3, 1 0.7, 0.7 1, 0.3 1, 0 0.7, 0 0.3 z';
+                        break;
+                    case 'star':
+                        this.path = 'M 0.5 0, 0.63 0.38, 1 0.38, 0.69 0.59, 0.82 1, 0.5 0.75, 0.18 1, 0.31 0.59, 0 0.38, 0.37 0.38 z';
+                        break;
+                    case 'parallelogram':
+                        this.path = 'M 0 1, 0.25 0, 1 0, 0.75 1, 0 1 z';
+                        break;
+                    case 'plus':
+                        this.path = 'M 0 0.33, 0.33 0.33, 0.33 0, 0.66 0, 0.66 0.33, 1 0.33, 1 0.66, 0.66 0.66, 0.66 1, 0.33 1, 0.33 0.66, 0 0.66 z';
+                        break;
+                    case 'squircle':
+                        this.path = 'M 0.5, 0 C 0.1, 0 0, 0.1 0, 0.5 0, 0.9 0.1, 1 0.5, 1 0.9, 1 1, 0.9 1, 0.5 1, 0.1 0.9, 0 0.5, 0 Z';
+                        break;
+                    case 'ring':
+                        this.path = 'M 0.5 0C0.22375 0 0 0.22375 0 0.5s0.22375 0.5 0.5 0.5 0.5-0.22375 0.5-0.5S0.77625 0 0.5 0zm0 0.75c-0.138125 0-0.25-0.111875-0.25-0.25s0.111875-0.25 0.25-0.25 0.25 0.111875 0.25 0.25-0.111875 0.25-0.25 0.25 z';
+                        break;
+                }
+
+                this._pathEl.setAttribute('d', this.path);
+            }
+
+        }
+
+        window.customElements.define('image-mask', ImageMask);
+    }());
+</script>
