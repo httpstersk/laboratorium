@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Elm Comment Box</title>
+    <style>
+        .comment-box {
+            border-radius: 3px;
+            border: 1px solid #ccccff;
+            padding: 10px 3px;
+        }
+
+        .comment-input {
+            margin-top: 10px;
+        }
+
+        .comment-input label {
+            color: #5555cc;
+        }
+
+        .comment {
+            padding: 10px;
+            margin-bottom: 5px;
+            background-color: #eeeeff;
+        }
+
+        .comment-button-add {
+            border-radius: 2px;
+            border: 1px solid #555555;
+            color: #333333;
+            background-color: #ffffff;
+            box-shadow: 0px 1px 5px 0px #aaa;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="comment-box"></div>
+    <script src="comment-box.js"></script>
+
+    <script>
+        var node = document.getElementById("comment-box");
+        var app = Elm.CommentBox.embed(node);
+    </script>
+</body>
+
+</html>
