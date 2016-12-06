@@ -1,0 +1,44 @@
+.close-button {
+    top: 40px;
+    left: 600px;
+}
+
+#main .photo-view .photo {
+    width: 320px;
+    height: 320px;
+}
+
+#main .photo-view .sidebar {
+    top: 63.7vh;
+    left: 100px;
+    width: 400px;
+    padding-left: 60px;
+    padding-right: 60px;
+}
+
+#header .header,
+#main {
+    margin-left: 10px;
+    margin-right: 10px;
+    width: 780px;
+}
+
+#main {
+    margin-top: 0px;
+}
+
+#header .logo small {
+    display: none;
+}
+
+.photo-grid {
+    margin-left: 80px;
+}
+
+.photo-grid .photo {
+    margin-bottom: 6px;
+}
+
+.comments-container {
+    height: 130px;
+}

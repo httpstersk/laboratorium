@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Elm Instagram Clone</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" media="screen and (max-width: 1024px)" href="style-laptop.css" />
+    <link rel="stylesheet" media="screen and (min-width: 1025px)" href="style-desktop.css" />
+
+</head>
+
+<body>
+    <div id="instagram-clone"></div>
+    <script src="instagram-clone.js"></script>
+
+    <script>
+        var node = document.getElementById("instagram-clone");
+        var app = Elm.Main.embed(node);
+    </script>
+</body>
+
+</html>

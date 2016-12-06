@@ -1,0 +1,169 @@
+body {
+    font-family: 'Arial', serif;
+    font-weight: 400;
+    padding: 0;
+    margin: 0;
+}
+
+#header {
+    width: 100%;
+    float: left;
+    clear: both;
+    border-bottom: 1px solid #3465a4;
+    background-color: #204a87;
+    color: #ffffff;
+}
+
+#header .logo h1 {
+    font-size: 1.5em;
+    font-weight: 400;
+}
+
+#header .logo small {
+    margin-left: 0.5em;
+    padding-left: 0.5em;
+    font-size: 0.7em;
+    font-weight: 600;
+    border-left: 1px solid #aaa;
+    color: #eeeeee;
+}
+
+#header .search {
+    margin-left: 20px;
+}
+
+#header .logo,
+#header .search {
+    float: left;
+}
+
+#header .search,
+#header .links,
+.profile-info {
+    margin-top: 20px;
+}
+
+#header .links {
+    float: right;
+    margin-left: 40px;
+}
+
+#main {
+    float: left;
+    clear: both;
+    margin-top: 40px;
+}
+
+.profile-info {
+    text-align: center;
+}
+
+.profile-info .name {
+    font-style: italic;
+}
+
+.profile-info .count {}
+
+.profile-info .count .value {
+    font-weight: bold;
+}
+
+.photo-grid {}
+
+.photo-grid .photo {
+    float: left;
+}
+
+#main .photo-view {
+    position: fixed;
+    background-color: rgba(50, 50, 50, 0.9);
+    border: 1px solid #aaa;
+    height: 100vh;
+    width: 100vw;
+    top: 0;
+    left: 0;
+    right: 0;
+}
+
+#main .photo-view .photo,
+#main .photo-view .sidebar {
+    position: fixed;
+    height: 400px;
+}
+
+#main .photo-view .sidebar {
+    background-color: #ffffff;
+}
+
+.sidebar-top {
+    margin-top: 10px;
+}
+
+#main .photo-view .photo {
+    background-color: white;
+}
+
+.photo-info .user {
+    padding-top: 1em;
+    font-weight: bold;
+}
+
+.comments-container {
+    overflow: scroll;
+}
+
+.comment {
+    margin: 5px;
+    padding: 5px 0px 25px;
+    clear: both;
+    border-top: 1px solid #729fcf;
+}
+
+.comment .user {
+    float: left;
+    width: 20%;
+    font-size: 0.9em;
+}
+
+.comment .message {
+    float: left;
+    width: 75%;
+    font-size: 1em;
+}
+
+.load-more-comments {
+    background-color: #9999ff;
+    border: 1px solid #dddddd;
+    margin: 10px;
+    padding: 10px;
+    color: #333333;
+    text-align: center;
+    border-radius: 7px;
+    border-shadow: 3px 3px #111111;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+    cursor: pointer;
+}
+
+.close-button {
+    position: fixed;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+    cursor: pointer;
+}
+
+.follow-button,
+.like-button {
+    cursor: pointer;
+    float: left;
+    padding: 5px;
+    border-radius: 5px;
+    border: 2px solid #729fcf;
+    color: #3465a4;
+}
+
+.photo-actions {
+    clear: both;
+}
