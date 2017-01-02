@@ -11,13 +11,22 @@
             overflow: hidden;
             padding: 0;
         }
+        
+        button {
+            bottom: 10px;
+            position: absolute;
+            right: 10px;
+        }
     </style>
 </head>
 
 <body>
+    <button id="startVR">Start VR</button>
+
     <script src="lib/three.min.js"></script>
     <script src="lib/webvr-polyfill.js"></script>
     <script src="lib/vr-controls.js"></script>
+    <script src="lib/vr-effect.js"></script>
 
     <script>
         (function() {
@@ -28,19 +37,29 @@
 
             let cubes = [];
             let scene, camera, renderer;
-            let controls;
+            let controls, effect;
+            let vrDisplay;
 
-            const init = () => {
+            if (navigator.getVRDisplay) {
+                navigator.getVRDisplay().then(displays => {
+                    if (displays.length > 0) {
+                        [vrDisplay] = displays;
+                    }
+                });
+            }
+
+            function init() {
                 let material, geometry, mesh;
 
                 scene = new THREE.Scene();
                 camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 10000);
                 renderer = new THREE.WebGLRenderer();
-
-                renderer.setSize(window.innerWidth, window.innerHeight);
-                document.body.appendChild(renderer.domElement);
-
                 controls = new THREE.VRControls(camera);
+                effect = new THREE.VREffect(renderer);
+
+                effect.setSize(window.innerWidth, window.innerHeight);
+
+                document.body.appendChild(renderer.domElement);
 
                 for (let i = 0; i < CUBES_NUM; i++) {
                     material = new THREE.MeshNormalMaterial();
@@ -54,11 +73,9 @@
                     scene.add(mesh);
                     cubes.push(mesh);
                 }
+            }
 
-                animate();
-            };
-
-            const animate = () => {
+            function animate() {
                 requestAnimationFrame(animate);
                 const cubesLenght = cubes.length;
 
@@ -68,10 +85,29 @@
                 }
 
                 controls.update();
-                renderer.render(scene, camera);
-            };
+                effect.render(scene, camera);
+            }
+
+            function onResize() {
+                effect.setSize(window.innerWidth, window.innerHeight);
+                camera.aspect = window.innerWidth / window.innerHeight;
+                camera.updateProjectionMatrix();
+            }
+
+            window.addEventListener('vrdisplaypresentchange', onResize);
+            window.addEventListener('resize', onResize);
+
+            document.querySelector('#startVR').addEventListener('click', () => {
+                if (vrDisplay) {
+                    vrDisplay.requestPresent([{
+                        source: renderer.domElement
+                    }]);
+                }
+            });
 
             init();
+            animate();
+
         })();
     </script>
 </body>
