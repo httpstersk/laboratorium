@@ -16,6 +16,8 @@
 
 <body>
     <script src="lib/three.min.js"></script>
+    <script src="lib/webvr-polyfill.js"></script>
+    <script src="lib/vr-controls.js"></script>
 
     <script>
         (function() {
@@ -26,6 +28,7 @@
 
             let cubes = [];
             let scene, camera, renderer;
+            let controls;
 
             const init = () => {
                 let material, geometry, mesh;
@@ -36,6 +39,8 @@
 
                 renderer.setSize(window.innerWidth, window.innerHeight);
                 document.body.appendChild(renderer.domElement);
+
+                controls = new THREE.VRControls(camera);
 
                 for (let i = 0; i < CUBES_NUM; i++) {
                     material = new THREE.MeshNormalMaterial();
@@ -62,6 +67,7 @@
                     cubes[i].rotation.y += 0.02;
                 }
 
+                controls.update();
                 renderer.render(scene, camera);
             };
 
