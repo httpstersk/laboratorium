@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>WebVR Tutorial</title>
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0, shrink-to-fit=no">
+    <style>
+        html,
+        body {
+            margin: 0;
+            overflow: hidden;
+            padding: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <script src="lib/three.min.js"></script>
+
+    <script>
+        (function() {
+            'use strict';
+
+            const CUBES_NUM = 100;
+            const FIELD_RANGE = 1500;
+
+            let cubes = [];
+            let scene, camera, renderer;
+
+            const init = () => {
+                let material, geometry, mesh;
+
+                scene = new THREE.Scene();
+                camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 10000);
+                renderer = new THREE.WebGLRenderer();
+
+                renderer.setSize(window.innerWidth, window.innerHeight);
+                document.body.appendChild(renderer.domElement);
+
+                for (let i = 0; i < CUBES_NUM; i++) {
+                    material = new THREE.MeshNormalMaterial();
+                    geometry = new THREE.BoxGeometry(50, 50, 50);
+                    mesh = new THREE.Mesh(geometry, material);
+
+                    mesh.position.x = (Math.random() * FIELD_RANGE) - FIELD_RANGE / 2;
+                    mesh.position.y = (Math.random() * FIELD_RANGE) - FIELD_RANGE / 2;
+                    mesh.position.z = (Math.random() * FIELD_RANGE) - FIELD_RANGE / 2;
+
+                    scene.add(mesh);
+                    cubes.push(mesh);
+                }
+
+                animate();
+            };
+
+            const animate = () => {
+                requestAnimationFrame(animate);
+                const cubesLenght = cubes.length;
+
+                for (let i = 0; i < cubesLenght; i++) {
+                    cubes[i].rotation.x += 0.01;
+                    cubes[i].rotation.y += 0.02;
+                }
+
+                renderer.render(scene, camera);
+            };
+
+            init();
+        })();
+    </script>
+</body>
+
+</html>
