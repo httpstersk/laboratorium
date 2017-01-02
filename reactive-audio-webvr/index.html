@@ -29,86 +29,174 @@
     <script src="lib/vr-effect.js"></script>
 
     <script>
-        (function() {
-            'use strict';
+        let scene, camera, renderer, controls, effect, fog, vrDisplay;
+        let audioContext, analyser, freqDomain, source, bandLower, bandUpper, bandWidth, bandVal;
 
-            const CUBES_NUM = 100;
-            const FIELD_RANGE = 1500;
+        const MESHES = [];
+        const MESH_COUNT = 100;
+        const LIGHT_COUNT = 3;
+        const FIELD_RANGE = 1500;
+        const BG_COLOR = 0x6A2E94;
+        const MESH_COLOR = 0x57FFC7;
 
-            let cubes = [];
-            let scene, camera, renderer;
-            let controls, effect;
-            let vrDisplay;
+        let material = new THREE.MeshPhongMaterial({
+            color: MESH_COLOR,
+            shading: THREE.FlatShading,
+            emissive: BG_COLOR,
+            specular: 0x333333,
+            shininess: 70
+        });
 
-            if (navigator.getVRDisplay) {
-                navigator.getVRDisplay().then(displays => {
+        class Mesh {
+            constructor() {
+                this.geometry = new THREE.IcosahedronBufferGeometry(50);
+                this.container = new THREE.Object3D();
+                this.mesh = new THREE.Mesh(this.geometry, material);
+
+                this.orbitSpeedX = 0.01 * Math.random() - 0.005;
+                this.orbitSpeedY = 0.01 * Math.random() - 0.005;
+
+                this.scale = null;
+
+                randomPosition(this.mesh);
+
+                this.container.add(this.mesh);
+                scene.add(this.container);
+            }
+
+            update() {
+                this.container.rotation.x += this.orbitSpeedX;
+                this.container.rotation.y += this.orbitSpeedY;
+
+                this.mesh.rotation.x += 0.01;
+                this.mesh.rotation.y += 0.02;
+
+                this.scale = 1 + (bandVal * 2);
+                this.mesh.scale.set(this.scale, this.scale, this.scale);
+            }
+        }
+
+        loadAudio();
+
+        function loadAudio() {
+            audioContext = new(window.AudioContext || window.webkitAudioContext);
+            const request = new Request('assets/loop.mp3');
+            fetch(request)
+                .then(response => response.arrayBuffer())
+                .then(buffer => {
+                    audioContext.decodeAudioData(buffer, onBufferload);
+                });
+        }
+
+        function onBufferload(buffer) {
+            analyser = audioContext.createAnalyser();
+            freqDomain = new Uint8Array(analyser.frequencyBinCount);
+
+            bandLower = Math.floor(analyser.frequencyBinCount * 0.4);
+            bandUpper = Math.floor(analyser.frequencyBinCount * 0.6);
+            bandWidth = bandUpper - bandLower;
+
+            source = audioContext.createBufferSource();
+            source.connect(analyser);
+
+            analyser.connect(audioContext.destination);
+
+            source.buffer = buffer;
+            source.loop = true;
+
+            source.start(0);
+
+            init();
+        }
+
+        function init() {
+            scene = new THREE.Scene();
+            camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 10000);
+
+            renderer = new THREE.WebGLRenderer();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+
+            document.body.appendChild(renderer.domElement);
+
+            controls = new THREE.VRControls(camera);
+
+            effect = new THREE.VREffect(renderer);
+            effect.setSize(window.innerWidth, window.innerHeight);
+
+            if (navigator.getVRDisplays) {
+                navigator.getVRDisplays().then((displays) => {
                     if (displays.length > 0) {
                         [vrDisplay] = displays;
                     }
                 });
             }
 
-            function init() {
-                let material, geometry, mesh;
+            scene.background = new THREE.Color(BG_COLOR);
+            scene.fog = new THREE.FogExp2(BG_COLOR, 0.002)
+            light = new THREE.AmbientLight(BG_COLOR, 0.012);
+            scene.add(light);
 
-                scene = new THREE.Scene();
-                camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 10000);
-                renderer = new THREE.WebGLRenderer();
-                controls = new THREE.VRControls(camera);
-                effect = new THREE.VREffect(renderer);
-
-                effect.setSize(window.innerWidth, window.innerHeight);
-
-                document.body.appendChild(renderer.domElement);
-
-                for (let i = 0; i < CUBES_NUM; i++) {
-                    material = new THREE.MeshNormalMaterial();
-                    geometry = new THREE.BoxGeometry(50, 50, 50);
-                    mesh = new THREE.Mesh(geometry, material);
-
-                    mesh.position.x = (Math.random() * FIELD_RANGE) - FIELD_RANGE / 2;
-                    mesh.position.y = (Math.random() * FIELD_RANGE) - FIELD_RANGE / 2;
-                    mesh.position.z = (Math.random() * FIELD_RANGE) - FIELD_RANGE / 2;
-
-                    scene.add(mesh);
-                    cubes.push(mesh);
-                }
+            for (let i = 0; i < LIGHT_COUNT; i++) {
+                light = new THREE.PointLight(BG_COLOR, 0.7);
+                randomPosition(light);
+                scene.add(light);
             }
 
-            function animate() {
-                requestAnimationFrame(animate);
-                const cubesLenght = cubes.length;
-
-                for (let i = 0; i < cubesLenght; i++) {
-                    cubes[i].rotation.x += 0.01;
-                    cubes[i].rotation.y += 0.02;
-                }
-
-                controls.update();
-                effect.render(scene, camera);
+            for (let i = 0; i < MESH_COUNT; i++) {
+                MESHES.push(new Mesh());
             }
 
-            function onResize() {
-                effect.setSize(window.innerWidth, window.innerHeight);
-                camera.aspect = window.innerWidth / window.innerHeight;
-                camera.updateProjectionMatrix();
-            }
-
-            window.addEventListener('vrdisplaypresentchange', onResize);
-            window.addEventListener('resize', onResize);
-
-            document.querySelector('#startVR').addEventListener('click', () => {
-                if (vrDisplay) {
-                    vrDisplay.requestPresent([{
-                        source: renderer.domElement
-                    }]);
-                }
-            });
-
-            init();
             animate();
+        }
 
-        })();
+        function randomPosition(mesh) {
+            mesh.position.x = (Math.random() * FIELD_RANGE) - FIELD_RANGE / 2;
+            mesh.position.y = (Math.random() * FIELD_RANGE) - FIELD_RANGE / 2;
+            mesh.position.z = (Math.random() * FIELD_RANGE) - FIELD_RANGE / 2;
+        }
+
+        function updateAudio() {
+            let sum = 0;
+
+            analyser.getByteFrequencyData(freqDomain);
+
+            for (let i = bandLower; i < bandUpper; i++) {
+                sum += freqDomain[i];
+            }
+
+            bandVal = (sum / bandWidth) / 256;
+        }
+
+        function onResize() {
+            effect.setSize(window.innerWidth, window.innerHeight);
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+
+            updateAudio();
+
+            for (let i = 0; i < MESH_COUNT; i++) {
+                MESHES[i].update();
+            }
+
+            controls.update();
+            effect.render(scene, camera);
+        }
+
+
+        document.querySelector('#startVR').addEventListener('click', () => {
+            if (vrDisplay) {
+                vrDisplay.requestPresent([{
+                    source: renderer.domElement
+                }]);
+            }
+        });
+
+        window.addEventListener('resize', onResize);
+        window.addEventListener('vrdisplaypresentchange', onResize);
     </script>
 </body>
 
