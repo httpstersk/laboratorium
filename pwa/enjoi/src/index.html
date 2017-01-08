@@ -3,11 +3,51 @@
 
 <head>
     <meta charset="utf-8">
+    <meta name="description" content="Enjoi - Progressive Web App (PWA)">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Enjoi PWA</title>
+
+    <style>
+         :root {
+            --enjoi-color: #ffcc00;
+        }
+        
+        html {
+            box-sizing: border-box;
+            height: 100%;
+        }
+        
+        @media screen and (min-width: 20rem) {
+            html {
+                font-size: calc(1rem + 1.2 * ((100vw - 20rem) / 20));
+            }
+        }
+        
+        @media screen and (min-width: 50rem) {
+            html {
+                font-size: 2rem;
+            }
+        }
+        
+        body {
+            background-color: var(--enjoi-color);
+            display: flex;
+            margin: 0;
+            min-height: 100%;
+        }
+    </style>
 </head>
 
 <body>
-    <div id="app"></div>
+    <main id="app">
+        <stage-list stage="Main">
+            <stage-artists>
+                <stage-artist artist="Orbital">Orbital</stage-artist>
+                <stage-artist artist="The Arcade Fire">The Arcade Fire</stage-artist>
+                <stage-artist artist="Radiohead">Radiohead</stage-artist>
+            </stage-artists>
+        </stage-list>
+    </main>
 </body>
 
 <script src="bundle.js"></script>
