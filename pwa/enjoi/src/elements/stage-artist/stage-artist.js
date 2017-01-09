@@ -3,11 +3,23 @@ export class StageArtist extends HTMLElement {
         super();
     }
 
+    static get observedAttributes() {
+        return ['artist'];
+    }
+
     connectedCallback() {
         this.render();
     }
 
+    get artist() {
+        return this.getAttribute('artist');
+    }
+
+    set artist(val) {
+        this.setAttribute('artist', val);
+    }
+
     render() {
-        this.innerHTML = ``;
+        this.innerHTML = this.artist;
     }
 }

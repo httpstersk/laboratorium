@@ -8,6 +8,6 @@ export class StageList extends HTMLElement {
     }
 
     render() {
-        this.innerHTML = ``;
+
     }
 }
