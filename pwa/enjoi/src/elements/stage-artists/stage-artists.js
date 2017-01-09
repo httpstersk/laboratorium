@@ -19,6 +19,15 @@ export class StageArtists extends HTMLElement {
             this.observer.observe(this, observerConfig);
         }
 
+        Object.assign(this.style, {
+            alignItems: 'center',
+            backgroundColor: 'gray',
+            display: 'flex',
+            height: '100vh',
+            overflow: 'hidden',
+            width: '100%'
+        });
+
         this.render();
     }
 
@@ -36,7 +45,7 @@ export class StageArtists extends HTMLElement {
 
     render() {
         this.innerHTML = this.artists.map(artist => {
-            return `<stage-artist artist="${artist.name}">${artist.name}</stage-artist>`;
+            return `<stage-artist artist="${artist.name}"></stage-artist>`;
         }).join('')
     }
 }

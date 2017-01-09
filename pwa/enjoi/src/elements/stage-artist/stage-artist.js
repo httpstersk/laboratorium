@@ -8,6 +8,17 @@ export class StageArtist extends HTMLElement {
     }
 
     connectedCallback() {
+        Object.assign(this.style, {
+            alignItems: 'center',
+            backgroundColor: '#b3b3b3',
+            color: '#808080',
+            display: 'flex',
+            flex: 1,
+            height: '100%',
+            justifyContent: 'center',
+            textAlign: 'center'
+        });
+
         this.render();
     }
 
@@ -20,6 +31,14 @@ export class StageArtist extends HTMLElement {
     }
 
     render() {
-        this.innerHTML = this.artist;
+        const strong = document.createElement('strong');
+        strong.textContent = this.artist;
+
+        Object.assign(strong.style, {
+            textTransform: 'uppercase',
+            transform: 'rotate(-90deg)'
+        });
+
+        this.appendChild(strong);
     }
 }
