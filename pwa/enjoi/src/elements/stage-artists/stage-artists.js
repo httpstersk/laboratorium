@@ -9,6 +9,16 @@ export class StageArtists extends HTMLElement {
 
     connectedCallback() {
         this.artists = this.getAttribute('artists');
+
+        if (MutationObserver) {
+            this.observer = new MutationObserver(mutations => {
+                this.render();
+            });
+
+            const observerConfig = { attributes: true };
+            this.observer.observe(this, observerConfig);
+        }
+
         this.render();
     }
 
