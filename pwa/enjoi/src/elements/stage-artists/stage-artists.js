@@ -1,6 +1,8 @@
 export class StageArtists extends HTMLElement {
     constructor() {
         super();
+
+        this.root = this.attachShadow({ mode: 'open' });
     }
 
     static get observedAttributes() {
@@ -44,7 +46,7 @@ export class StageArtists extends HTMLElement {
     }
 
     render() {
-        this.innerHTML = this.artists.map(artist => {
+        this.root.innerHTML = this.artists.map(artist => {
             return `<stage-artist artist="${artist.name}"></stage-artist>`;
         }).join('')
     }

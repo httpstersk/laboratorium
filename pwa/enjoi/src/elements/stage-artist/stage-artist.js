@@ -1,6 +1,8 @@
 export class StageArtist extends HTMLElement {
     constructor() {
         super();
+
+        this.root = this.attachShadow({ mode: 'open' });
     }
 
     static get observedAttributes() {
@@ -39,6 +41,6 @@ export class StageArtist extends HTMLElement {
             transform: 'rotate(-90deg)'
         });
 
-        this.appendChild(strong);
+        this.root.appendChild(strong);
     }
 }
