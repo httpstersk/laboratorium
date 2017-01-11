@@ -11,26 +11,28 @@ export class StageArtists extends HTMLElement {
 
     connectedCallback() {
         this.artists = this.getAttribute('artists');
+        this._startX = 0;
+        this._currentX = 0;
+        this._deltaX = 0;
+        this._dragging = false;
 
         if (MutationObserver) {
             this.observer = new MutationObserver(mutations => {
-                this.render();
+                this.update();
             });
 
             const observerConfig = { attributes: true };
             this.observer.observe(this, observerConfig);
         }
 
-        Object.assign(this.style, {
-            alignItems: 'center',
-            backgroundColor: 'gray',
-            display: 'flex',
-            height: '100vh',
-            overflow: 'hidden',
-            width: '100%'
-        });
-
+        this._onDragStart = this._onDragStart.bind(this);
+        this._onDragMove = this._onDragMove.bind(this);
+        this._onDragEnd = this._onDragEnd.bind(this);
+        this._listeners();
         this.render();
+
+        this.update = this.update.bind(this);
+        requestAnimationFrame(this.update);
     }
 
     get artists() {
@@ -43,6 +45,53 @@ export class StageArtists extends HTMLElement {
 
     set artists(val) {
         this.setAttribute('artists', val);
+    }
+
+    _listeners() {
+        this.addEventListener('touchstart', this._onDragStart);
+        this.addEventListener('touchmove', this._onDragMove);
+        this.addEventListener('touchend', this._onDragEnd);
+
+        this.addEventListener('mousedown', this._onDragStart);
+        this.addEventListener('mousemove', this._onDragMove);
+        this.addEventListener('mouseup', this._onDragEnd);
+    }
+
+    _onDragStart(event) {
+        this.target = event.target;
+        this._startX = event.pageX || event.touches[0].pageX;
+        this._currentX = this._startX;
+
+        this.target.style.willChange = 'transform';
+        this._dragging = true;
+
+        event.preventDefault();
+        event.stopPropagation();
+    }
+
+    _onDragMove(event) {
+        if (!this.target || !this._dragging) return;
+
+        this._currentX = event.pageX || event.touches[0].pageX;
+
+        event.preventDefault();
+        event.stopPropagation();
+    }
+
+    _onDragEnd(event) {
+        if (!this.target || !this._dragging) return;
+
+        this._dragging = false;
+        event.preventDefault();
+        event.stopPropagation();
+    }
+
+    update() {
+        requestAnimationFrame(this.update);
+        if (!this.target || !this._dragging) return;
+
+        this._deltaX = this._currentX - this._startX;
+        this.style.transform = `translateX(${this._deltaX}px)`;
     }
 
     render() {

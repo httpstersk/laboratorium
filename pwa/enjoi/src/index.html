@@ -44,16 +44,34 @@
             justify-content: center;
             margin: auto;
         }
+        
+        stage-list {
+            align-items: center;
+            background-color: gray;
+            display: flex;
+            height: 100vh;
+            max-width: 600px;
+            overflow: hidden;
+            position: absolute;
+        }
+        
+        stage-artists {
+            align-items: center;
+            background-color: gray;
+            display: flex;
+            height: 100vh;
+            width: 100%;
+        }
     </style>
 </head>
 
 <body>
     <main id="app">
         <stage-list stage="Main">
-            <stage-artists artists='[{ "name": "Flume", "country": "AUS" }, { "name": "Arctic Monkeys", "country": "UK" }]'>
-                <stage-artist artist="Orbital ">Orbital</stage-artist>
-                <stage-artist artist="The Arcade Fire ">The Arcade Fire</stage-artist>
-                <stage-artist artist="Radiohead ">Radiohead</stage-artist>
+            <stage-artists artists='[{ "name": "Flume", "country": "AUS" }, { "name": "Blume", "country": "UK" }, { "name": "Slume", "country": "AT" }, { "name": "Plume", "country": "CZ" }]'>
+                <stage-artist artist="Orbital">Orbital</stage-artist>
+                <stage-artist artist="The Arcade Fire">The Arcade Fire</stage-artist>
+                <stage-artist artist="Radiohead">Radiohead</stage-artist>
             </stage-artists>
         </stage-list>
     </main>
