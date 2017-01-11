@@ -58,11 +58,11 @@ export class StageArtists extends HTMLElement {
     }
 
     _onDragStart(event) {
-        this.target = event.target;
+        this._target = event.target;
         this._startX = event.pageX || event.touches[0].pageX;
         this._currentX = this._startX;
 
-        this.target.style.willChange = 'transform';
+        this._target.style.willChange = 'transform';
         this._dragging = true;
 
         event.preventDefault();
@@ -70,7 +70,7 @@ export class StageArtists extends HTMLElement {
     }
 
     _onDragMove(event) {
-        if (!this.target || !this._dragging) return;
+        if (!this._target || !this._dragging) return;
 
         this._currentX = event.pageX || event.touches[0].pageX;
 
@@ -79,7 +79,7 @@ export class StageArtists extends HTMLElement {
     }
 
     _onDragEnd(event) {
-        if (!this.target || !this._dragging) return;
+        if (!this._target || !this._dragging) return;
 
         this._dragging = false;
         event.preventDefault();
@@ -88,7 +88,7 @@ export class StageArtists extends HTMLElement {
 
     update() {
         requestAnimationFrame(this.update);
-        if (!this.target || !this._dragging) return;
+        if (!this._target || !this._dragging) return;
 
         this._deltaX = this._currentX - this._startX;
         this.style.transform = `translateX(${this._deltaX}px)`;
@@ -96,7 +96,7 @@ export class StageArtists extends HTMLElement {
 
     render() {
         this.root.innerHTML = this.artists.map(artist => {
-            return `<stage-artist artist="${artist.name}"></stage-artist>`;
-        }).join('')
+            return `<stage-artist artist="${artist.name}" class="${artist.status}"></stage-artist>`;
+        }).join('');
     }
 }

@@ -60,6 +60,8 @@
             background-color: gray;
             display: flex;
             height: 100vh;
+            transition-property: all;
+            transition-duration: 100ms;
             width: 100%;
         }
     </style>
@@ -68,11 +70,7 @@
 <body>
     <main id="app">
         <stage-list stage="Main">
-            <stage-artists artists='[{ "name": "Flume", "country": "AUS" }, { "name": "Blume", "country": "UK" }, { "name": "Slume", "country": "AT" }, { "name": "Plume", "country": "CZ" }]'>
-                <stage-artist artist="Orbital">Orbital</stage-artist>
-                <stage-artist artist="The Arcade Fire">The Arcade Fire</stage-artist>
-                <stage-artist artist="Radiohead">Radiohead</stage-artist>
-            </stage-artists>
+            <stage-artists artists='[{ "name": "Flume", "status": "played" }, { "name": "Blume", "status": "live" }, { "name": "Slume", "status": "pending" }, { "name": "Plume", "status": "pending" }]'></stage-artists>
         </stage-list>
     </main>
 </body>
