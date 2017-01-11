@@ -10,6 +10,10 @@
     <style>
          :root {
             --enjoi-color: #ffcc00;
+            --highlight-color: #0a41f6;
+            --boring-grey-color: #b3b3b3;
+            --artist-width: 200px;
+            --artist-list-width: calc(var(--artist-width) * 3);
         }
         
         html {
@@ -50,7 +54,7 @@
             background-color: gray;
             display: flex;
             height: 100vh;
-            max-width: 600px;
+            max-width: var(--artist-list-width);
             overflow: hidden;
             position: absolute;
         }
