@@ -28,11 +28,15 @@ export class StageArtists extends HTMLElement {
         this._onDragStart = this._onDragStart.bind(this);
         this._onDragMove = this._onDragMove.bind(this);
         this._onDragEnd = this._onDragEnd.bind(this);
-        this._listeners();
+        this._addListeners();
         this.render();
 
         this.update = this.update.bind(this);
         requestAnimationFrame(this.update);
+    }
+
+    disconnectedCallback() {
+        this._removeListeners();
     }
 
     get artists() {
@@ -47,7 +51,7 @@ export class StageArtists extends HTMLElement {
         this.setAttribute('artists', val);
     }
 
-    _listeners() {
+    _addListeners() {
         this.addEventListener('touchstart', this._onDragStart);
         this.addEventListener('touchmove', this._onDragMove);
         this.addEventListener('touchend', this._onDragEnd);
@@ -55,6 +59,16 @@ export class StageArtists extends HTMLElement {
         this.addEventListener('mousedown', this._onDragStart);
         this.addEventListener('mousemove', this._onDragMove);
         this.addEventListener('mouseup', this._onDragEnd);
+    }
+
+    _removeListeners() {
+        this.removeEventListener('touchstart', this._onDragStart);
+        this.removeEventListener('touchmove', this._onDragMove);
+        this.removeEventListener('touchend', this._onDragEnd);
+
+        this.removeEventListener('mousedown', this._onDragStart);
+        this.removeEventListener('mousemove', this._onDragMove);
+        this.removeEventListener('mouseup', this._onDragEnd);
     }
 
     _onDragStart(event) {
