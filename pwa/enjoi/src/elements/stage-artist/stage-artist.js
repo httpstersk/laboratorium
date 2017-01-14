@@ -43,6 +43,7 @@ export class StageArtist extends HTMLElement {
                 :host {
                     align-items: center;
                     background-color: var(--boring-grey-color);
+                    box-shadow: 0 0 var(--shadow-spread) rgba(0, 0, 0, 0.1);
                     color: #808080;
                     display: flex;
                     flex: 1;
@@ -114,8 +115,15 @@ export class StageArtist extends HTMLElement {
                 }
 
                 .artist {
+                    color: #606060;
+                    mix-blend-mode: darken;
                     text-transform: uppercase;
                     transform: rotate(-90deg);
+                }
+
+                :host(.live) .artist {
+                    color: var(--highlight-color);
+                    mix-blend-mode: multiply;
                 }
 
                 .status {
