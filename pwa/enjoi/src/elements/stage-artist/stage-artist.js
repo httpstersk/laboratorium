@@ -6,7 +6,7 @@ export class StageArtist extends HTMLElement {
     }
 
     static get observedAttributes() {
-        return ['artist', 'status'];
+        return ['artist', 'status', 'score'];
     }
 
     connectedCallback() {
@@ -29,6 +29,14 @@ export class StageArtist extends HTMLElement {
         this.setAttribute('status', val);
     }
 
+    get score() {
+        return this.getAttribute('score');
+    }
+
+    set score(val) {
+        this.setAttribute('score', val);
+    }
+
     render() {
         this.root.innerHTML = `
             <style>
@@ -47,10 +55,7 @@ export class StageArtist extends HTMLElement {
                 }
 
                 .enjoi-bar {
-                    background-color: tomato;
                     height: 100%;
-                    margin: auto;
-                    top: 0;
                     position: absolute;
                     width: 100%;
                     z-index: -1;
@@ -74,7 +79,8 @@ export class StageArtist extends HTMLElement {
                     left: 0;
                     position: absolute;
                     top: 0;
-                    width: 100%;
+                    transform: rotate(-90deg);
+                    width: 100vh;
                 }
 
                 .enjoi-bar progress::-webkit-progress-bar {
@@ -98,6 +104,13 @@ export class StageArtist extends HTMLElement {
                     box-shadow: 0 0 var(--shadow-spread) rgba(0, 0, 0, 0.35);
                     cursor: pointer;
                     z-index: 2;
+                }
+
+                .bar {
+                    height: 100%;
+                    overflow: hidden;
+                    position: relative;
+                    width: 100%;
                 }
 
                 .artist {
@@ -130,8 +143,10 @@ export class StageArtist extends HTMLElement {
             <span class="status">${this.status}</span>
 
             <div class="enjoi-bar">
-                <input type="range" slot="range" value="50" min="0" max="100" step="1">
-                <progress slot="progress" value="50" max="100"></progress>
+                <div class="bar">
+                    <input type="range" value="${this.score}" min="0" max="100" step="1">
+                    <progress value="${this.score}" max="100"></progress>
+                </div>
             </div>
         `;
     }

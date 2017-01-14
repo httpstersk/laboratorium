@@ -60,7 +60,7 @@
             "live": false,
             "status": "upcoming",
             "minutes": 60,
-            "enjoyable": 60
+            "enjoyable": 0
         },
         {
             "id": 6,
@@ -70,7 +70,7 @@
             "live": false,
             "status": "upcoming",
             "minutes": 60,
-            "enjoyable": 70
+            "enjoyable": 0
         },
         {
             "id": 7,
@@ -80,7 +80,7 @@
             "live": false,
             "status": "upcoming",
             "minutes": 60,
-            "enjoyable": 80
+            "enjoyable": 0
         },
         {
             "id": 8,
@@ -90,7 +90,7 @@
             "live": false,
             "status": "upcoming",
             "minutes": 60,
-            "enjoyable": 90
+            "enjoyable": 0
         },
         {
             "id": 9,
@@ -100,7 +100,7 @@
             "live": false,
             "status": "upcoming",
             "minutes": 60,
-            "enjoyable": 100
+            "enjoyable": 0
         }
     ]
 }]

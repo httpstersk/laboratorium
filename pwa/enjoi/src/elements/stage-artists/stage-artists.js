@@ -119,7 +119,7 @@ export class StageArtists extends HTMLElement {
 
     render() {
         this.root.innerHTML = this.artists.map(artist => {
-            return `<stage-artist artist="${artist.artist}" status="${artist.status}" class="${artist.status}"></stage-artist>`;
+            return `<stage-artist artist="${artist.artist}" status="${artist.status}" class="${artist.status}" score="${artist.enjoyable}"></stage-artist>`;
         }).join('');
 
         [this.live] = [...this.root.children].filter(el => el.classList.contains('live'));
