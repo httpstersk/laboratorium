@@ -41,22 +41,71 @@ export class StageArtist extends HTMLElement {
                     height: 100%;
                     justify-content: center;
                     min-width: var(--artist-width);
-                    text-align: center
+                    position: relative;
+                    text-align: center;
+                    z-index: 1;
+                }
+
+                .enjoi-bar {
+                    background-color: tomato;
+                    height: 100%;
+                    margin: auto;
+                    top: 0;
+                    position: absolute;
+                    width: 100%;
+                    z-index: -1;
+                }
+
+                .enjoi-bar input {
+                    background-color: transparent;
+                    margin: 0;
+                    left: 0;
+                    outline: none;
+                    position: absolute;
+                    top: 0;
+                    vertical-align: middle;
+                    width: 100%;
+                }
+
+                .enjoi-bar progress {
+                    -webkit-appearance: none;
+                    appearance: none;
+                    height: 100%;
+                    left: 0;
+                    position: absolute;
+                    top: 0;
+                    width: 100%;
+                }
+
+                .enjoi-bar progress::-webkit-progress-bar {
+                    background-color: var(--boring-grey-color);
+                }
+
+                .enjoi-bar progress::-webkit-progress-value {
+                    background-color: #808080;
+                }
+
+                :host(.live) .enjoi-bar progress::-webkit-progress-bar {
+                    background-color: white;
+                }
+
+                :host(.live) .enjoi-bar progress::-webkit-progress-value {
+                    background-color: var(--enjoi-color);
                 }
 
                 :host(.live) {
                     background-color: white;
                     box-shadow: 0 0 var(--shadow-spread) rgba(0, 0, 0, 0.35);
                     cursor: pointer;
-                    z-index: 1;
+                    z-index: 2;
                 }
 
-                :host strong {
+                .artist {
                     text-transform: uppercase;
                     transform: rotate(-90deg);
                 }
 
-                :host .status {
+                .status {
                     background-color: #666;
                     bottom: 10vh;
                     border-radius: 50%;
@@ -77,7 +126,13 @@ export class StageArtist extends HTMLElement {
                 }
             </style>
             
-            <strong>${this.artist}</strong>
-            <span class="status">${this.status}</span>`;
+            <strong class="artist">${this.artist}</strong>
+            <span class="status">${this.status}</span>
+
+            <div class="enjoi-bar">
+                <input type="range" slot="range" value="50" min="0" max="100" step="1">
+                <progress slot="progress" value="50" max="100"></progress>
+            </div>
+        `;
     }
 }
