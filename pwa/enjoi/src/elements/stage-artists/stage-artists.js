@@ -111,10 +111,10 @@ export class StageArtists extends HTMLElement {
             this._deltaX = this._offsetX;
         }
 
-        if (this._deltaX !== 0 && (this._lastDeltaX !== this._deltaX)) {
-            this._lastDeltaX = this._deltaX;
-            this.style.transform = `translateX(${this._deltaX}px)`;
-        }
+        if (this._deltaX === 0 || (this._lastDeltaX === this._deltaX)) return;
+
+        this._lastDeltaX = this._deltaX;
+        this.style.transform = `translateX(${this._deltaX}px)`;
     }
 
     render() {
