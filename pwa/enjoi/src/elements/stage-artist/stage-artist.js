@@ -46,6 +46,9 @@ export class StageArtist extends HTMLElement {
 
                 :host(.live) {
                     background-color: white;
+                    box-shadow: 0 0 var(--shadow-spread) rgba(0, 0, 0, 0.35);
+                    cursor: pointer;
+                    z-index: 1;
                 }
 
                 :host strong {
@@ -60,15 +63,15 @@ export class StageArtist extends HTMLElement {
                     color: var(--boring-grey-color);
                     display: flex;
                     font-size: 20px;
-                    height: calc(var(--artist-width) / 2);
+                    height: var(--status-size);
                     justify-content: center;
-                    line-height: calc(var(--artist-width) / 2);
+                    line-height: var(--status-size);
                     position: absolute;
                     text-transform: uppercase;
-                    width: calc(var(--artist-width) / 2);
+                    width: var(--status-size);
                 }
 
-                :host(.live)  .status {
+                :host(.live) .status {
                     background-color: var(--highlight-color);
                     color: white;
                 }

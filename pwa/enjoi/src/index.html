@@ -12,8 +12,10 @@
             --enjoi-color: #ffcc00;
             --highlight-color: #0a41f6;
             --boring-grey-color: #b3b3b3;
+            --shadow-spread: 50px;
             --artist-width: 200px;
             --artist-list-width: calc(var(--artist-width) * 3);
+            --status-size: calc(var(--artist-width) / 2);
         }
         
         html {
@@ -62,8 +64,10 @@
         stage-artists {
             align-items: center;
             background-color: gray;
+            cursor: grab;
             display: flex;
             height: 100vh;
+            touch-action: pan-x;
             transition-property: all;
             transition-duration: 100ms;
             width: 100%;
