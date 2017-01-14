@@ -107,10 +107,12 @@ export class StageArtists extends HTMLElement {
         if (this._dragging) {
             this._deltaX = this._currentX - this._startX;
         } else {
-            this._deltaX = -(this.live.offsetLeft) + this.live.offsetWidth;
+            this._deltaX = this._offset;
         }
 
-        this.style.transform = `translateX(${this._deltaX}px)`;
+        if (this._deltaX !== 0) {
+            this.style.transform = `translateX(${this._deltaX}px)`;
+        }
     }
 
     render() {
@@ -119,5 +121,7 @@ export class StageArtists extends HTMLElement {
         }).join('');
 
         [this.live] = [...this.root.children].filter(el => el.classList.contains('live'));
+        this._offset = -(this.live.offsetLeft) + this.live.offsetWidth;
+        this.style.transform = `translateX(${this._offset}px)`;
     }
 }
