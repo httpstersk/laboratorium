@@ -29,6 +29,7 @@ export class StageArtists extends HTMLElement {
         this._onDragStart = this._onDragStart.bind(this);
         this._onDragMove = this._onDragMove.bind(this);
         this._onDragEnd = this._onDragEnd.bind(this);
+        this._onClick = this._onClick.bind(this);
         this._addListeners();
         this.render();
 
@@ -101,6 +102,10 @@ export class StageArtists extends HTMLElement {
         event.stopPropagation();
     }
 
+    _onClick(event) {
+        const gbcr = this.getBoundingClientRect();
+    }
+
     update() {
         requestAnimationFrame(this.update);
         if (!this._target) return;
@@ -129,5 +134,7 @@ export class StageArtists extends HTMLElement {
         [this.live] = [...this.root.children].filter(el => el.classList.contains('live'));
         this._offsetX = -(this.live.offsetLeft) + this.live.offsetWidth;
         this.style.transform = `translateX(${this._offsetX}px)`;
+
+        this.live.addEventListener('click', this._onClick);
     }
 }
