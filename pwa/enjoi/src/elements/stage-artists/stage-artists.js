@@ -14,6 +14,7 @@ export class StageArtists extends HTMLElement {
         this._startX = 0;
         this._currentX = 0;
         this._deltaX = 0;
+        this._offsetX = 0;
         this._dragging = false;
 
         if (MutationObserver) {
@@ -105,12 +106,13 @@ export class StageArtists extends HTMLElement {
         if (!this._target) return;
 
         if (this._dragging) {
-            this._deltaX = this._currentX - this._startX;
+            this._deltaX = this._currentX - this._startX + this._offsetX;
         } else {
-            this._deltaX = this._offset;
+            this._deltaX = this._offsetX;
         }
 
-        if (this._deltaX !== 0) {
+        if (this._deltaX !== 0 && (this._lastDeltaX !== this._deltaX)) {
+            this._lastDeltaX = this._deltaX;
             this.style.transform = `translateX(${this._deltaX}px)`;
         }
     }
@@ -121,7 +123,7 @@ export class StageArtists extends HTMLElement {
         }).join('');
 
         [this.live] = [...this.root.children].filter(el => el.classList.contains('live'));
-        this._offset = -(this.live.offsetLeft) + this.live.offsetWidth;
-        this.style.transform = `translateX(${this._offset}px)`;
+        this._offsetX = -(this.live.offsetLeft) + this.live.offsetWidth;
+        this.style.transform = `translateX(${this._offsetX}px)`;
     }
 }
