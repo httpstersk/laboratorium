@@ -102,9 +102,14 @@ export class StageArtists extends HTMLElement {
 
     update() {
         requestAnimationFrame(this.update);
-        if (!this._target || !this._dragging) return;
+        if (!this._target) return;
 
-        this._deltaX = this._currentX - this._startX;
+        if (this._dragging) {
+            this._deltaX = this._currentX - this._startX;
+        } else {
+            this._deltaX = -(this.live.offsetLeft) + this.live.offsetWidth;
+        }
+
         this.style.transform = `translateX(${this._deltaX}px)`;
     }
 
@@ -112,5 +117,7 @@ export class StageArtists extends HTMLElement {
         this.root.innerHTML = this.artists.map(artist => {
             return `<stage-artist artist="${artist.artist}" status="${artist.status}" class="${artist.status}"></stage-artist>`;
         }).join('');
+
+        [this.live] = [...this.root.children].filter(el => el.classList.contains('live'));
     }
 }
