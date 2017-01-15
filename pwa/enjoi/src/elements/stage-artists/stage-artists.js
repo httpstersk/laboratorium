@@ -132,7 +132,7 @@ export class StageArtists extends HTMLElement {
         }).join('');
 
         [this.live] = [...this.root.children].filter(el => el.classList.contains('live'));
-        this._offsetX = -(this.live.offsetLeft) + this.live.offsetWidth;
+        this._offsetX = (this.offsetWidth / 2) - (this.live.offsetWidth / 2) - this.live.offsetLeft;
         this.style.transform = `translateX(${this._offsetX}px)`;
 
         this.live.addEventListener('click', this._onClick);
