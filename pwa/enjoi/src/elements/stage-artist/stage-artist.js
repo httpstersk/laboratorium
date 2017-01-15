@@ -10,6 +10,12 @@ export class StageArtist extends HTMLElement {
     }
 
     connectedCallback() {
+        this._onClick = this._onClick.bind(this);
+
+        if (this.classList.contains('live')) {
+            this.addEventListener('click', this._onClick);
+        }
+
         this.render();
     }
 
@@ -37,6 +43,10 @@ export class StageArtist extends HTMLElement {
         this.setAttribute('score', val);
     }
 
+    _onClick(event) {
+        this.classList.toggle('opened');
+    }
+
     render() {
         this.root.innerHTML = `
             <style>
@@ -49,10 +59,14 @@ export class StageArtist extends HTMLElement {
                     flex: 1;
                     height: 100%;
                     justify-content: center;
-                    min-width: var(--artist-width);
                     position: relative;
                     text-align: center;
+                    transition: flex 250ms var(--custom-easing);
                     z-index: 1;
+                }
+
+                :host(.opened) {
+                    flex: 2;
                 }
 
                 .enjoi-bar {

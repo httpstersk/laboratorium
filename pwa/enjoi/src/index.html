@@ -13,8 +13,8 @@
             --highlight-color: #0a41f6;
             --boring-grey-color: #b3b3b3;
             --shadow-spread: 50px;
-            --artist-width: 25vh;
-            --artist-list-width: calc(var(--artist-width) * 3);
+            --artist-width: 200px;
+            --custom-easing: cubic-bezier(0.75, -0.55, 0.25, 1.55);
             --status-size: calc(var(--artist-width) / 2);
         }
         
@@ -52,13 +52,11 @@
         }
         
         stage-list {
-            align-items: center;
             background-color: gray;
-            display: flex;
             height: 100vh;
             overflow: hidden;
             position: absolute;
-            width: 100vw;
+            width: 100%;
         }
         
         stage-artists {
