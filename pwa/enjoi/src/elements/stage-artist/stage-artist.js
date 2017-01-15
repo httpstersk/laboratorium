@@ -11,9 +11,11 @@ export class StageArtist extends HTMLElement {
 
     connectedCallback() {
         this._onClick = this._onClick.bind(this);
+        this._onTransitionEnd = this._onTransitionEnd.bind(this);
 
         if (this.classList.contains('live')) {
             this.addEventListener('click', this._onClick);
+            this.addEventListener('transitionend', this._onTransitionEnd);
         }
 
         this.render();
@@ -44,7 +46,15 @@ export class StageArtist extends HTMLElement {
     }
 
     _onClick(event) {
-        this.classList.toggle('opened');
+        this.classList.add('opened');
+    }
+
+    _onTransitionEnd(event) {
+        const range = this.root.querySelector('input');
+        const progress = this.root.querySelector('progress');
+
+        range.addEventListener('input', () => progress.value = range.value);
+        range.addEventListener('change', () => progress.value = range.value);
     }
 
     render() {
@@ -77,14 +87,19 @@ export class StageArtist extends HTMLElement {
                 }
 
                 .enjoi-bar input {
-                    background-color: transparent;
-                    margin: 0;
+                    height: 100%;
                     left: 0;
+                    margin: 0;
                     outline: none;
                     position: absolute;
-                    top: 0;
+                    transform: rotate(-90deg);
                     vertical-align: middle;
-                    width: 100%;
+                    width: 100vh;
+                    z-index: 1;
+                }
+
+                :host(.live) .enjoi-bar input {
+                    cursor: ns-resize;
                 }
 
                 .enjoi-bar progress {
