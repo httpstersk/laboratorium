@@ -47,6 +47,12 @@ export class StageArtist extends HTMLElement {
 
     _onClick(event) {
         this.classList.add('opened');
+
+        this.dispatchEvent(new CustomEvent('opened', {
+            bubbles: true,
+            composed: true,
+            detail: {}
+        }));
     }
 
     _onTransitionEnd(event) {

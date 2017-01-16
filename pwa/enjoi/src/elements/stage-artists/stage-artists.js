@@ -60,6 +60,8 @@ export class StageArtists extends HTMLElement {
         this.addEventListener('mousedown', this._onDragStart);
         this.addEventListener('mousemove', this._onDragMove);
         this.addEventListener('mouseup', this._onDragEnd);
+
+        this.addEventListener('opened', this._removeListeners);
     }
 
     _removeListeners() {
@@ -70,6 +72,8 @@ export class StageArtists extends HTMLElement {
         this.removeEventListener('mousedown', this._onDragStart);
         this.removeEventListener('mousemove', this._onDragMove);
         this.removeEventListener('mouseup', this._onDragEnd);
+
+        this.removeEventListener('opened', this._removeListeners);
     }
 
     _onDragStart(event) {
