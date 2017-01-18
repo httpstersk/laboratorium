@@ -22,9 +22,6 @@ export class StageList extends HTMLElement {
     }
 
     render(artists) {
-            this.innerHTML = `
-            <button is="confirm-button"></button>
-            ${artists.map(artist => `<stage-artists artists='${JSON.stringify(artist)}'></stage-artist>`).join('')}
-        `;
+            this.innerHTML = `${artists.map(artist => `<stage-artists artists='${JSON.stringify(artist)}'></stage-artist>`).join('')}`;
     }
 }

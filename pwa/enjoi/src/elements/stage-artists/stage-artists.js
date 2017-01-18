@@ -122,16 +122,22 @@ export class StageArtists extends HTMLElement {
     }
 
     render() {
-        this.root.innerHTML = this.artists.map(artist => {
-            if (artist.status === 'played') {
-                artist.status = `${artist.score} %`;
-            }
+            this.root.innerHTML = `
+            <button is="confirm-button"></button>
+            ${this.artists.map(artist => {
+                if (artist.status === 'played') {
+                    artist.status = `${artist.score} %`;
+                }
 
-            return `<stage-artist artist="${artist.artist}" status="${artist.status}" class="${artist.status}" score="${artist.score}"></stage-artist>`;
-        }).join('');
+                return `<stage-artist artist="${artist.artist}" status="${artist.status}" class="${artist.status}" score="${artist.score}"></stage-artist>`;
+            }).join('')}
+        `;
 
         [this.live] = [...this.root.children].filter(el => el.classList.contains('live'));
         this._offsetX = (this.offsetWidth / 2) - (this.live.offsetWidth / 2) - this.live.offsetLeft;
         this.style.transform = `translateX(${this._offsetX}px)`;
+
+        const offsetBtn = this.live.offsetLeft + this.live.offsetWidth;
+        this.root.querySelector('[is=confirm-button]').style.left = `${offsetBtn}px`;
     }
 }

@@ -24,10 +24,10 @@ export class ConfirmButton extends HTMLButtonElement {
             height: 'var(--status-size)',
             lineHeight: 'var(--status-size)',
             position: 'absolute',
-            transfom: 'translateY(-50%)',
+            transform: 'translate(-50%, -50%)',
             top: '50%',
             width: 'var(--status-size)',
-            zIndex: 1
+            zIndex: 3
         });
     }
 
