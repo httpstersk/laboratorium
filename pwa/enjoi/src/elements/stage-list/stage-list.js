@@ -1,23 +1,6 @@
-import { createStore } from 'redux';
+import store from '../../store/store';
 
 const DATA_URL = '../data/data.json'
-
-const initialState = {
-    artists: []
-};
-
-const reducer = (state = initialState, action) => {
-    switch (action.type) {
-        case 'INIT_ARTISTS':
-            const artists = state.artists.slice(0);
-            return Object.assign({}, ...state, { artists: action.artists });
-
-        default:
-            return state;
-    }
-};
-
-const store = createStore(reducer);
 
 export class StageList extends HTMLElement {
     constructor() {
