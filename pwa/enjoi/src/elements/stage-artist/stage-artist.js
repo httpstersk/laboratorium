@@ -60,7 +60,15 @@ export class StageArtist extends HTMLElement {
         const progress = this.root.querySelector('progress');
 
         range.addEventListener('input', () => progress.value = range.value);
-        range.addEventListener('change', () => progress.value = range.value);
+        range.addEventListener('change', () => {
+            this.dispatchEvent(new CustomEvent('score-changed', {
+                bubbles: true,
+                composed: true,
+                detail: { score: range.value }
+            }));
+
+            progress.value = range.value;
+        });
     }
 
     render() {

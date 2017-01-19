@@ -13,22 +13,6 @@ export class ConfirmButton extends HTMLButtonElement {
 
     connectedCallback() {
         this.render();
-
-        Object.assign(this.style, {
-            backgroundColor: 'white',
-            border: 'none',
-            borderRadius: '50%',
-            boxShadow: '0 0 var(--shadow-spread) rgba(0, 0, 0, 0.1)',
-            color: 'var(--boring-grey-color)',
-            fontSize: '20px',
-            height: 'var(--status-size)',
-            lineHeight: 'var(--status-size)',
-            position: 'absolute',
-            transform: 'translate(-50%, -50%)',
-            top: '50%',
-            width: 'var(--status-size)',
-            zIndex: 3
-        });
     }
 
     render() {

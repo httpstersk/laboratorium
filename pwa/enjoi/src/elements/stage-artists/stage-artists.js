@@ -26,6 +26,27 @@ export class StageArtists extends HTMLElement {
             this.observer.observe(this, observerConfig);
         }
 
+        this._button = document.createElement('button');
+        this._button.setAttribute('is', 'confirm-button');
+        this._button.textContent = 'OK';
+
+        Object.assign(this._button.style, {
+            backgroundColor: 'white',
+            border: 'none',
+            borderRadius: '50%',
+            boxShadow: '0 0 var(--shadow-spread) rgba(0, 0, 0, 0.1)',
+            color: 'var(--boring-grey-color)',
+            fontSize: '20px',
+            height: 'var(--status-size)',
+            lineHeight: 'var(--status-size)',
+            opacity: 0,
+            position: 'absolute',
+            transform: 'translate(-50%, -50%)',
+            top: '50%',
+            width: 'var(--status-size)',
+            zIndex: 3
+        });
+
         this._onDragStart = this._onDragStart.bind(this);
         this._onDragMove = this._onDragMove.bind(this);
         this._onDragEnd = this._onDragEnd.bind(this);
@@ -62,6 +83,7 @@ export class StageArtists extends HTMLElement {
         this.addEventListener('mouseup', this._onDragEnd);
 
         this.addEventListener('opened', this._removeListeners);
+        this.addEventListener('score-changed', this._onScoreChanged);
     }
 
     _removeListeners() {
@@ -105,6 +127,10 @@ export class StageArtists extends HTMLElement {
         event.stopPropagation();
     }
 
+    _onScoreChanged(event) {
+        this._button.style.opacity = 1;
+    }
+
     update() {
         requestAnimationFrame(this.update);
         if (!this._target) return;
@@ -123,7 +149,6 @@ export class StageArtists extends HTMLElement {
 
     render() {
             this.root.innerHTML = `
-            <button is="confirm-button"></button>
             ${this.artists.map(artist => {
                 if (artist.status === 'played') {
                     artist.status = `${artist.score} %`;
@@ -133,11 +158,13 @@ export class StageArtists extends HTMLElement {
             }).join('')}
         `;
 
+        this.root.appendChild(this._button);
+
         [this.live] = [...this.root.children].filter(el => el.classList.contains('live'));
         this._offsetX = (this.offsetWidth / 2) - (this.live.offsetWidth / 2) - this.live.offsetLeft;
         this.style.transform = `translateX(${this._offsetX}px)`;
 
         const offsetBtn = this.live.offsetLeft + this.live.offsetWidth;
-        this.root.querySelector('[is=confirm-button]').style.left = `${offsetBtn}px`;
+        this._button.style.left = `${offsetBtn}px`;
     }
 }
