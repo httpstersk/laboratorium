@@ -7,8 +7,16 @@ const initialState = {
 const reducer = (state = initialState, action) => {
     switch (action.type) {
         case 'INIT_ARTISTS':
-            const artists = state.artists.slice(0);
             return Object.assign({}, ...state, { artists: action.artists });
+            break;
+
+        case 'UPDATE_SCORE':
+            const [artists] = state.artists;
+            artists
+                .filter(artist => artist.live === true)
+                .map(artist => artist.score = action.score);
+            return Object.assign({}, ...state, { artists: state.artists });
+            break;
 
         default:
             return state;

@@ -1,3 +1,5 @@
+import store from '../../store/store';
+
 export class StageArtist extends HTMLElement {
     constructor() {
         super();
@@ -66,6 +68,11 @@ export class StageArtist extends HTMLElement {
                 composed: true,
                 detail: { score: range.value }
             }));
+
+            store.dispatch({
+                type: 'UPDATE_SCORE',
+                score: range.value
+            });
 
             progress.value = range.value;
         });
@@ -195,7 +202,7 @@ export class StageArtist extends HTMLElement {
 
             <div class="enjoi-bar">
                 <div class="bar">
-                    <input type="range" value="${this.score}" min="0" max="100" step="1">
+                    <input type="range" value="${this.score}" min="0" max="100" step="5">
                     <progress value="${this.score}" max="100"></progress>
                 </div>
             </div>
