@@ -149,12 +149,12 @@ export class StageArtists extends HTMLElement {
 
     render() {
             this.root.innerHTML = `
-            ${this.artists.map(artist => {
+            ${this.artists.map((artist, index) => {
                 if (artist.status === 'played') {
                     artist.status = `${artist.score} %`;
                 }
 
-                return `<stage-artist artist="${artist.artist}" status="${artist.status}" class="${artist.status}" score="${artist.score}"></stage-artist>`;
+                return `<stage-artist style="animation-delay: ${index * 50}ms" artist="${artist.artist}" status="${artist.status}" class="${artist.status}" score="${artist.score}"></stage-artist>`;
             }).join('')}
         `;
 

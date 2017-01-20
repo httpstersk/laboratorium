@@ -92,8 +92,14 @@ export class StageArtist extends HTMLElement {
                     justify-content: center;
                     position: relative;
                     text-align: center;
-                    transition: flex 250ms var(--custom-easing);
+                    transform: translateY(100%);
+                    animation: translate 250ms ease 0s forwards;
                     z-index: 1;
+                }
+
+                @keyframes translate {
+                    from { transform: translateY(100%); }
+                    to { transform: translateY(0); }
                 }
 
                 :host(.opened) {
