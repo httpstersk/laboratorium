@@ -1,3 +1,5 @@
+import store from '../../store/store';
+
 export class StageArtists extends HTMLElement {
     constructor() {
         super();
@@ -36,6 +38,7 @@ export class StageArtists extends HTMLElement {
             borderRadius: '50%',
             boxShadow: '0 0 var(--shadow-spread) rgba(0, 0, 0, 0.1)',
             color: 'var(--boring-grey-color)',
+            cursor: 'pointer',
             fontSize: '20px',
             height: 'var(--status-size)',
             lineHeight: 'var(--status-size)',
@@ -129,6 +132,13 @@ export class StageArtists extends HTMLElement {
 
     _onScoreChanged(event) {
         this._button.style.opacity = 1;
+        this._button.focus();
+        this._button.addEventListener('click', () => {
+            store.dispatch({
+                type: 'UPDATE_SCORE',
+                score: event.detail.score
+            });
+        });
     }
 
     update() {

@@ -1,5 +1,3 @@
-import store from '../../store/store';
-
 export class StageArtist extends HTMLElement {
     constructor() {
         super();
@@ -16,8 +14,8 @@ export class StageArtist extends HTMLElement {
         this._onTransitionEnd = this._onTransitionEnd.bind(this);
 
         if (this.classList.contains('live')) {
-            this.addEventListener('click', this._onClick);
-            this.addEventListener('transitionend', this._onTransitionEnd);
+            this.addEventListener('click', this._onClick, { once: true });
+            this.addEventListener('transitionend', this._onTransitionEnd, { once: true });
         }
 
         this.render();
@@ -62,17 +60,13 @@ export class StageArtist extends HTMLElement {
         const progress = this.root.querySelector('progress');
 
         range.addEventListener('input', () => progress.value = range.value);
+
         range.addEventListener('change', () => {
             this.dispatchEvent(new CustomEvent('score-changed', {
                 bubbles: true,
                 composed: true,
                 detail: { score: range.value }
             }));
-
-            store.dispatch({
-                type: 'UPDATE_SCORE',
-                score: range.value
-            });
 
             progress.value = range.value;
         });
@@ -83,6 +77,7 @@ export class StageArtist extends HTMLElement {
             <style>
                 :host {
                     align-items: center;
+                    animation: translate 250ms ease 0s forwards;
                     background-color: var(--boring-grey-color);
                     box-shadow: 0 0 var(--shadow-spread) rgba(0, 0, 0, 0.1);
                     color: #808080;
@@ -93,7 +88,8 @@ export class StageArtist extends HTMLElement {
                     position: relative;
                     text-align: center;
                     transform: translateY(100%);
-                    animation: translate 250ms ease 0s forwards;
+                    transition: flex 250ms var(--custom-easing);
+                    will-change: transform;
                     z-index: 1;
                 }
 
