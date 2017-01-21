@@ -15,6 +15,8 @@ export class StageArtist extends HTMLElement {
     connectedCallback() {
         this._onClick = this._onClick.bind(this);
         this._onTransitionEnd = this._onTransitionEnd.bind(this);
+        this._onRangeInput = this._onRangeInput.bind(this);
+        this._onRangeChange = this._onRangeChange.bind(this);
 
         if (this.classList.contains('live')) {
             this.addEventListener('click', this._onClick, { once: true });
@@ -22,6 +24,15 @@ export class StageArtist extends HTMLElement {
         }
 
         this.render();
+        this._range = this.root.querySelector('.live-range');
+        this._progress = this.root.querySelector('progress');
+        this._status = this.root.querySelector('.status');
+    }
+
+    disconnectedCallback() {
+        if (!this._range) return;
+        this._range.removeEventListener('input', this._onRangeInput);
+        this._range.removeEventListener('change', this._onRangeChange);
     }
 
     get artist() {
@@ -58,25 +69,25 @@ export class StageArtist extends HTMLElement {
 
     _onClick(event) {
         this.classList.add('opened');
+        this._range.focus();
         fire(this, 'opened');
     }
 
     _onTransitionEnd(event) {
-        const range = this.root.querySelector('input');
-        const progress = this.root.querySelector('progress');
-        const status = this.root.querySelector('.status');
+        this._range.addEventListener('input', this._onRangeInput);
+        this._range.addEventListener('change', this._onRangeChange);
+    }
 
-        range.addEventListener('input', (e) => {
-            const newScore = e.target.value;
-            progress.value = newScore;
-            status.textContent = `${newScore} %`;
-        });
+    _onRangeInput(event) {
+        const newScore = event.target.value;
+        this._progress.value = newScore;
+        this._status.textContent = `${newScore} %`;
+    }
 
-        range.addEventListener('change', (e) => {
-            const newScore = e.target.value;
-            progress.value = newScore;
-            fire(this, 'score-changed', { score: newScore });
-        });
+    _onRangeChange(event) {
+        const newScore = event.target.value;
+        this._progress.value = newScore;
+        fire(this, 'score-changed', { score: newScore });
     }
 
     render() {
@@ -224,7 +235,7 @@ export class StageArtist extends HTMLElement {
 
             <div class="enjoi-bar">
                 <div class="bar">
-                    <input type="range" value="${this.score}" min="0" max="100" step="5">
+                    <input type="range" class="${(this.status === 'live') ? 'live-range' : 'range'}" value="${this.score}" min="0" max="100" step="5">
                     <progress value="${this.score}" max="100"></progress>
                 </div>
             </div>
