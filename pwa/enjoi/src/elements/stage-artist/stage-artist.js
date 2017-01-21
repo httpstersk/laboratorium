@@ -1,4 +1,5 @@
 import { addMinutes, format } from 'date-fns';
+import { fire } from '../../utils/utils';
 
 export class StageArtist extends HTMLElement {
     constructor() {
@@ -57,12 +58,7 @@ export class StageArtist extends HTMLElement {
 
     _onClick(event) {
         this.classList.add('opened');
-
-        this.dispatchEvent(new CustomEvent('opened', {
-            bubbles: true,
-            composed: true,
-            detail: {}
-        }));
+        fire(this, 'opened');
     }
 
     _onTransitionEnd(event) {
@@ -79,12 +75,7 @@ export class StageArtist extends HTMLElement {
         range.addEventListener('change', (e) => {
             const newScore = e.target.value;
             progress.value = newScore;
-
-            this.dispatchEvent(new CustomEvent('score-changed', {
-                bubbles: true,
-                composed: true,
-                detail: { score: newScore }
-            }));
+            fire(this, 'score-changed', { score: newScore });
         });
     }
 
