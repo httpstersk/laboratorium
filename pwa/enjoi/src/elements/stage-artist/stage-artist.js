@@ -68,17 +68,23 @@ export class StageArtist extends HTMLElement {
     _onTransitionEnd(event) {
         const range = this.root.querySelector('input');
         const progress = this.root.querySelector('progress');
+        const status = this.root.querySelector('.status');
 
-        range.addEventListener('input', () => progress.value = range.value);
+        range.addEventListener('input', (e) => {
+            const newScore = e.target.value;
+            progress.value = newScore;
+            status.textContent = `${newScore} %`;
+        });
 
-        range.addEventListener('change', () => {
+        range.addEventListener('change', (e) => {
+            const newScore = e.target.value;
+            progress.value = newScore;
+
             this.dispatchEvent(new CustomEvent('score-changed', {
                 bubbles: true,
                 composed: true,
-                detail: { score: range.value }
+                detail: { score: newScore }
             }));
-
-            progress.value = range.value;
         });
     }
 
@@ -216,7 +222,7 @@ export class StageArtist extends HTMLElement {
                     bottom: 5vh;
                     color: white;
                     font-size: 16px;
-                    padding: 4px;
+                    padding: 8px 10px;
                     position: absolute;
                 }
             </style>
