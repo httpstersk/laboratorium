@@ -11,8 +11,7 @@ const reducer = (state = initialState, action) => {
             break;
 
         case 'UPDATE_SCORE':
-            const [artists] = state.artists;
-            artists
+            state.artists
                 .filter(artist => artist.live === true)
                 .map(artist => artist.score = action.score);
             return Object.assign({}, state);

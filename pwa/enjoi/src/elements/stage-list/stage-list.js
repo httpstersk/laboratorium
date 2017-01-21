@@ -1,6 +1,14 @@
+import firebase from 'firebase';
 import { initialState, store } from '../../store/store';
 
-const DATA_URL = '../data/data.json'
+const DATA_URL = '../data/data.json';
+const FIREBASE_CONFIG = {
+    apiKey: "AIzaSyBe6D2gJvJCkHez4cArito9P-c74Vvuzns",
+    authDomain: "enjoi-efb8e.firebaseapp.com",
+    databaseURL: "https://enjoi-efb8e.firebaseio.com",
+    storageBucket: "enjoi-efb8e.appspot.com",
+    messagingSenderId: "323606862579"
+};
 
 export class StageList extends HTMLElement {
     constructor() {
@@ -12,13 +20,28 @@ export class StageList extends HTMLElement {
     }
 
     connectedCallback() {
-        this._fetchArtists(DATA_URL);
+        this._initFirebase(FIREBASE_CONFIG);
 
         store.subscribe(_ => {
             this.artists = store.getState().artists;
             if (!this.artists) return;
-            this.render();
+            this.render(this.artists);
         });
+    }
+
+    _initFirebase(config) {
+        firebase.initializeApp(config);
+
+        firebase.database().ref().once('value')
+            .then(snapshot => snapshot.val()[0])
+            .then(val => {
+                const { artists } = val;
+
+                store.dispatch({
+                    type: 'INIT_ARTISTS',
+                    artists: [...artists]
+                });
+            });
     }
 
     _fetchArtists(url) {
@@ -41,7 +64,7 @@ export class StageList extends HTMLElement {
             });
     }
 
-    render() {
-            this.innerHTML = `${this.artists.map(artist => `<stage-artists artists='${JSON.stringify(artist)}'></stage-artist>`).join('')}`;
+    render(artists) {
+        this.innerHTML = `<stage-artists artists='${JSON.stringify(artists)}'></stage-artist>`;
     }
 }
