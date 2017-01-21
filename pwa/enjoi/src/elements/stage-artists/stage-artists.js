@@ -164,7 +164,7 @@ export class StageArtists extends HTMLElement {
                     artist.status = `${artist.score} %`;
                 }
 
-                return `<stage-artist style="animation-delay: ${index * 50}ms" artist="${artist.artist}" status="${artist.status}" class="${artist.status}" score="${artist.score}"></stage-artist>`;
+                return `<stage-artist style="animation-delay: ${index * 50}ms" artist="${artist.artist}" status="${artist.status}" start="${artist.start}" minutes="${artist.minutes}" class="${artist.status}" score="${artist.score}"></stage-artist>`;
             }).join('')}
         `;
 

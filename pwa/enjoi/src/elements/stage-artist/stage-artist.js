@@ -1,3 +1,5 @@
+import { addMinutes, format } from 'date-fns';
+
 export class StageArtist extends HTMLElement {
     constructor() {
         super();
@@ -6,7 +8,7 @@ export class StageArtist extends HTMLElement {
     }
 
     static get observedAttributes() {
-        return ['artist', 'status', 'score'];
+        return ['artist', 'status', 'score', 'start', 'minutes'];
     }
 
     connectedCallback() {
@@ -45,6 +47,14 @@ export class StageArtist extends HTMLElement {
         this.setAttribute('score', val);
     }
 
+    get start() {
+        return this.getAttribute('start');
+    }
+
+    get minutes() {
+        return this.getAttribute('minutes');
+    }
+
     _onClick(event) {
         this.classList.add('opened');
 
@@ -73,6 +83,9 @@ export class StageArtist extends HTMLElement {
     }
 
     render() {
+        const start = format(this.start, 'HH:mm');
+        const end = format(addMinutes(this.start, this.minutes), 'HH:mm');
+
         this.root.innerHTML = `
             <style>
                 :host {
@@ -180,7 +193,7 @@ export class StageArtist extends HTMLElement {
 
                 .status {
                     background-color: #666;
-                    bottom: 10vh;
+                    bottom: 15vh;
                     border-radius: 50%;
                     color: var(--boring-grey-color);
                     display: flex;
@@ -197,10 +210,20 @@ export class StageArtist extends HTMLElement {
                     background-color: var(--highlight-color);
                     color: white;
                 }
+
+                time {
+                    background-color: #808080;
+                    bottom: 5vh;
+                    color: white;
+                    font-size: 16px;
+                    padding: 4px;
+                    position: absolute;
+                }
             </style>
             
             <strong class="artist">${this.artist}</strong>
             <span class="status">${this.status}</span>
+            <time class="start">${start} – ${end}</time>
 
             <div class="enjoi-bar">
                 <div class="bar">

@@ -9,7 +9,7 @@
             "image": "http://placehold.it/100x100",
             "live": false,
             "status": "played",
-            "start": "2017-07-05T12:00:00.000Z",
+            "start": "2017-07-05T12:00:00.000",
             "minutes": 60,
             "score": 10
         },
@@ -20,7 +20,7 @@
             "image": "http://placehold.it/100x100",
             "live": false,
             "status": "played",
-            "start": "2017-07-05T13:00:00.000Z",
+            "start": "2017-07-05T13:00:00.000",
             "minutes": 60,
             "score": 20
         },
@@ -31,7 +31,7 @@
             "image": "http://placehold.it/100x100",
             "live": false,
             "status": "played",
-            "start": "2017-07-05T14:00:00.000Z",
+            "start": "2017-07-05T14:00:00.000",
             "minutes": 60,
             "score": 30
         },
@@ -42,7 +42,7 @@
             "image": "http://placehold.it/100x100",
             "live": false,
             "status": "played",
-            "start": "2017-07-05T15:00:00.000Z",
+            "start": "2017-07-05T15:00:00.000",
             "minutes": 60,
             "score": 40
         },
@@ -53,8 +53,8 @@
             "image": "http://placehold.it/100x100",
             "live": true,
             "status": "live",
-            "start": "2017-07-05T16:00:00.000Z",
-            "minutes": 90,
+            "start": "2017-07-05T16:00:00.000",
+            "minutes": 60,
             "score": 50
         },
         {
@@ -64,7 +64,7 @@
             "image": "http://placehold.it/100x100",
             "live": false,
             "status": "next",
-            "start": "2017-07-05T17:30:00.000Z",
+            "start": "2017-07-05T17:00:00.000",
             "minutes": 60,
             "score": 0
         },
@@ -75,7 +75,7 @@
             "image": "http://placehold.it/100x100",
             "live": false,
             "status": "next",
-            "start": "2017-07-05T18:30:00.000Z",
+            "start": "2017-07-05T18:00:00.000",
             "minutes": 60,
             "score": 0
         },
@@ -86,7 +86,7 @@
             "image": "http://placehold.it/100x100",
             "live": false,
             "status": "next",
-            "start": "2017-07-05T19:30:00.000Z",
+            "start": "2017-07-05T19:00:00.000",
             "minutes": 60,
             "score": 0
         },
@@ -97,7 +97,7 @@
             "image": "http://placehold.it/100x100",
             "live": false,
             "status": "next",
-            "start": "2017-07-05T20:30:00.000Z",
+            "start": "2017-07-05T20:00:00.000",
             "minutes": 60,
             "score": 0
         },
@@ -108,7 +108,7 @@
             "image": "http://placehold.it/100x100",
             "live": false,
             "status": "next",
-            "start": "2017-07-05T21:30:00.000Z",
+            "start": "2017-07-05T21:00:00.000",
             "minutes": 60,
             "score": 0
         }
