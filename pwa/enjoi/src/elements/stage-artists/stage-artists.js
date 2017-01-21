@@ -1,10 +1,10 @@
 import { store } from '../../store/store';
+import { encapsulate } from '../../utils/utils';
 
 export class StageArtists extends HTMLElement {
     constructor() {
         super();
-
-        this.root = this.attachShadow({ mode: 'open' });
+        encapsulate(this);
     }
 
     static get observedAttributes() {
@@ -158,7 +158,7 @@ export class StageArtists extends HTMLElement {
     }
 
     render() {
-            this.root.innerHTML = `
+            this.shadowRoot.innerHTML = `
             ${this.artists.map((artist, index) => {
                 if (artist.status === 'played') {
                     artist.status = `${artist.score} %`;
@@ -168,9 +168,9 @@ export class StageArtists extends HTMLElement {
             }).join('')}
         `;
 
-        this.root.appendChild(this._button);
+        this.shadowRoot.appendChild(this._button);
 
-        [this.live] = [...this.root.children].filter(el => el.classList.contains('live'));
+        [this.live] = [...this.shadowRoot.children].filter(el => el.classList.contains('live'));
         this._offsetX = (this.offsetWidth / 2) - (this.live.offsetWidth / 2) - this.live.offsetLeft;
         this.style.transform = `translateX(${this._offsetX}px)`;
 

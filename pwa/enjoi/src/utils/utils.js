@@ -3,7 +3,7 @@ const isObject = object => Object(object) === object;
 const duplicate = object => JSON.parse(JSON.stringify(object));
 
 const immutable = object => {
-    Object.values(object).filter(isObject).forEach(duplicate);
+    Object.values(object).filter(isObject).forEach(immutable);
     return Object.freeze(object);
 };
 

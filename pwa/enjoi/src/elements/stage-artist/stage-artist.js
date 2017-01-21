@@ -1,11 +1,10 @@
 import { addMinutes, format } from 'date-fns';
-import { fire } from '../../utils/utils';
+import { encapsulate, fire } from '../../utils/utils';
 
 export class StageArtist extends HTMLElement {
     constructor() {
         super();
-
-        this.root = this.attachShadow({ mode: 'open' });
+        encapsulate(this);
     }
 
     static get observedAttributes() {
@@ -24,9 +23,9 @@ export class StageArtist extends HTMLElement {
         }
 
         this.render();
-        this._range = this.root.querySelector('.live-range');
-        this._progress = this.root.querySelector('progress');
-        this._status = this.root.querySelector('.status');
+        this._range = this.shadowRoot.querySelector('.live-range');
+        this._progress = this.shadowRoot.querySelector('progress');
+        this._status = this.shadowRoot.querySelector('.status');
     }
 
     disconnectedCallback() {
@@ -94,7 +93,7 @@ export class StageArtist extends HTMLElement {
         const start = format(this.start, 'HH:mm');
         const end = format(addMinutes(this.start, this.minutes), 'HH:mm');
 
-        this.root.innerHTML = `
+        this.shadowRoot.innerHTML = `
             <style>
                 :host {
                     align-items: center;
