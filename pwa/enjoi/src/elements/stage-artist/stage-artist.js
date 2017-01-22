@@ -97,6 +97,9 @@ export class StageArtist extends HTMLElement {
     }
 
     _onCountDownOver() {
+        this.classList.remove('live');
+        this.status = 'played';
+
         store.dispatch({
             type: 'UPDATE_STATUS',
             status: 'played',
@@ -111,7 +114,11 @@ export class StageArtist extends HTMLElement {
         const now = new Date();
 
         if (this.status === 'live') {
-            countdown(this.start, this._onCountDownOver);
+            countdown(this.start)
+                .then(() => {
+                    console.log('Show is over!');
+                    this._onCountDownOver();
+                });
         }
 
         this.shadowRoot.innerHTML = `

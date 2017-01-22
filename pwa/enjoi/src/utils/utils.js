@@ -17,25 +17,28 @@ const fire = (target = document.body, eventName, eventData = {}) => {
     }));
 };
 
-const countdown = (end, callback) => {
-    const deadline = new Date(end).getTime();
+const countdown = (end) => {
+    return new Promise((resolve, reject) => {
+        const deadline = new Date(end).getTime();
 
-    function getRemainingTime(deadline) {
-        const now = new Date().getTime();
-        return deadline - now;
-    }
+        const tick = () => {
+            const now = new Date().getTime();
+            const remaining = deadline - now;
 
-    function tick() {
-        const remaining = getRemainingTime(deadline);
-        const minutes = Math.floor((remaining / (60 * 1000)));
+            if (remaining < 0) return;
 
-        if (remaining < 0) {
-            callback();
-            return;
+            const minutes = Math.floor((remaining / (60 * 1000)));
+            console.log('⏰ Minutes →', minutes);
+
+            if (minutes === 0) {
+                resolve();
+                return;
+            }
+
+            requestAnimationFrame(tick);
         }
         requestAnimationFrame(tick);
-    }
-    requestAnimationFrame(tick);
+    });
 };
 
 export { immutable, encapsulate, fire, countdown };
