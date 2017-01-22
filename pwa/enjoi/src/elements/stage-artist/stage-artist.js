@@ -1,5 +1,5 @@
-import { addMinutes, format } from 'date-fns';
-import { encapsulate, fire } from '../../utils/utils';
+import { addMinutes, format, differenceInSeconds, getMilliseconds } from 'date-fns';
+import { countdown, encapsulate, fire } from '../../utils/utils';
 
 export class StageArtist extends HTMLElement {
     constructor() {
@@ -97,6 +97,11 @@ export class StageArtist extends HTMLElement {
     render() {
         const start = format(this.start, 'HH:mm');
         const end = format(addMinutes(this.start, this.minutes), 'HH:mm');
+        const now = new Date();
+
+        if (this.status === 'live') {
+            countdown(this.start);
+        }
 
         this.shadowRoot.innerHTML = `
             <style>

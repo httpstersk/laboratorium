@@ -17,4 +17,21 @@ const fire = (target = document.body, eventName, eventData = {}) => {
     }));
 };
 
-export { immutable, encapsulate, fire };
+const countdown = (end) => {
+    const deadline = new Date(end).getTime() + 24 * 60 * 60 * 1000;
+
+    function getRemainingTime(deadline) {
+        const now = new Date().getTime();
+        return deadline - now;
+    }
+
+    function tick() {
+        const remaining = getRemainingTime(deadline);
+        const minutes = Math.floor((remaining / (60 * 1000)));
+        console.log(minutes);
+        if (remaining >= 0) requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+};
+
+export { immutable, encapsulate, fire, countdown };
