@@ -172,10 +172,13 @@ export class StageArtists extends HTMLElement {
         this.shadowRoot.appendChild(this._button);
 
         [this.live] = [...this.shadowRoot.children].filter(el => el.classList.contains('live'));
-        this._offsetX = (this.offsetWidth / 2) - (this.live.offsetWidth / 2) - this.live.offsetLeft;
-        this.style.transform = `translateX(${this._offsetX}px)`;
 
-        const offsetBtn = this.live.offsetLeft + this.live.offsetWidth;
-        this._button.style.left = `${offsetBtn}px`;
+        if (this.live) {
+            this._offsetX = (this.offsetWidth / 2) - (this.live.offsetWidth / 2) - this.live.offsetLeft;
+            this.style.transform = `translateX(${this._offsetX}px)`;
+
+            const offsetBtn = this.live.offsetLeft + this.live.offsetWidth;
+            this._button.style.left = `${offsetBtn}px`;
+        }
     }
 }

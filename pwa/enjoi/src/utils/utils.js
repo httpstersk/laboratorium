@@ -17,8 +17,8 @@ const fire = (target = document.body, eventName, eventData = {}) => {
     }));
 };
 
-const countdown = (end) => {
-    const deadline = new Date(end).getTime() + 24 * 60 * 60 * 1000;
+const countdown = (end, callback) => {
+    const deadline = new Date(end).getTime();
 
     function getRemainingTime(deadline) {
         const now = new Date().getTime();
@@ -28,8 +28,12 @@ const countdown = (end) => {
     function tick() {
         const remaining = getRemainingTime(deadline);
         const minutes = Math.floor((remaining / (60 * 1000)));
-        console.log(minutes);
-        if (remaining >= 0) requestAnimationFrame(tick);
+
+        if (remaining < 0) {
+            callback();
+            return;
+        }
+        requestAnimationFrame(tick);
     }
     requestAnimationFrame(tick);
 };

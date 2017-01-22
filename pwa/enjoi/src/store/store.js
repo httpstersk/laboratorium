@@ -28,6 +28,32 @@ const reducer = (state = initialState, action) => {
             return Object.assign({}, state);
             break;
 
+        case 'UPDATE_STATUS':
+            const currId = action.id;
+            const nextId = parseInt(action.id) + 1;
+
+            state.artists
+                .filter(artist => artist.id === currId)
+                .map(artist => {
+                    artist.status = action.status;
+                    artist.live = action.live;
+                });
+
+            state.artists
+                .filter(artist => artist.id === nextId)
+                .map(artist => {
+                    artist.status = 'status';
+                    artist.status = 'live'
+                });
+
+            updateFirebaseField('artists', currId, 'status', action.status);
+            updateFirebaseField('artists', currId, 'live', action.live);
+
+            updateFirebaseField('artists', nextId, 'status', 'live');
+            updateFirebaseField('artists', nextId, 'live', true);
+            return Object.assign({}, state);
+            break;
+
         default:
             return state;
     }

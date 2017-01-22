@@ -1,5 +1,6 @@
-import { addMinutes, format, differenceInSeconds, getMilliseconds } from 'date-fns';
+import { addMinutes, format } from 'date-fns';
 import { countdown, encapsulate, fire } from '../../utils/utils';
+import { store } from '../../store/store';
 
 export class StageArtist extends HTMLElement {
     constructor() {
@@ -16,6 +17,7 @@ export class StageArtist extends HTMLElement {
         this._onTransitionEnd = this._onTransitionEnd.bind(this);
         this._onRangeInput = this._onRangeInput.bind(this);
         this._onRangeChange = this._onRangeChange.bind(this);
+        this._onCountDownOver = this._onCountDownOver.bind(this);
 
         if (this.classList.contains('live')) {
             this.addEventListener('click', this._onClick, { once: true });
@@ -94,13 +96,22 @@ export class StageArtist extends HTMLElement {
         fire(this, 'score-changed', { score: newScore, id: index });
     }
 
+    _onCountDownOver() {
+        store.dispatch({
+            type: 'UPDATE_STATUS',
+            status: 'played',
+            live: false,
+            id: this.index
+        });
+    }
+
     render() {
         const start = format(this.start, 'HH:mm');
         const end = format(addMinutes(this.start, this.minutes), 'HH:mm');
         const now = new Date();
 
         if (this.status === 'live') {
-            countdown(this.start);
+            countdown(this.start, this._onCountDownOver);
         }
 
         this.shadowRoot.innerHTML = `
