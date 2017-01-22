@@ -1,7 +1,16 @@
 import { createStore } from 'redux';
+import firebase from 'firebase';
 
 const initialState = {
     artists: []
+};
+
+const updateFirebaseField = (child, index, prop, value) => {
+    return firebase.database().ref().child('0')
+        .child(child)
+        .update({
+            [`${index}/${prop}`]: value
+        });
 };
 
 const reducer = (state = initialState, action) => {
@@ -14,6 +23,8 @@ const reducer = (state = initialState, action) => {
             state.artists
                 .filter(artist => artist.live === true)
                 .map(artist => artist.score = action.score);
+
+            updateFirebaseField('artists', action.id, 'score', action.score);
             return Object.assign({}, state);
             break;
 

@@ -8,7 +8,7 @@ export class StageArtist extends HTMLElement {
     }
 
     static get observedAttributes() {
-        return ['artist', 'status', 'score', 'start', 'minutes'];
+        return ['artist', 'status', 'score', 'start', 'minutes', 'index'];
     }
 
     connectedCallback() {
@@ -66,6 +66,10 @@ export class StageArtist extends HTMLElement {
         return this.getAttribute('minutes');
     }
 
+    get index() {
+        return this.getAttribute('index');
+    }
+
     _onClick(event) {
         this.classList.add('opened');
         this._range.focus();
@@ -85,8 +89,9 @@ export class StageArtist extends HTMLElement {
 
     _onRangeChange(event) {
         const newScore = event.target.value;
+        const index = event.target.getAttribute('index');
         this._progress.value = newScore;
-        fire(this, 'score-changed', { score: newScore });
+        fire(this, 'score-changed', { score: newScore, id: index });
     }
 
     render() {
@@ -234,7 +239,7 @@ export class StageArtist extends HTMLElement {
 
             <div class="enjoi-bar">
                 <div class="bar">
-                    <input type="range" class="${(this.status === 'live') ? 'live-range' : 'range'}" value="${this.score}" min="0" max="100" step="5">
+                    <input type="range" class="${(this.status === 'live') ? 'live-range' : 'range'}" value="${this.score}" index="${this.index}" min="0" max="100" step="5">
                     <progress value="${this.score}" max="100"></progress>
                 </div>
             </div>

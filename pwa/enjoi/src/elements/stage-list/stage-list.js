@@ -21,6 +21,7 @@ export class StageList extends HTMLElement {
 
     connectedCallback() {
         this._initFirebase(FIREBASE_CONFIG);
+        this._readDataFromFirebase();
 
         store.subscribe(_ => {
             this.artists = store.getState().artists;
@@ -31,7 +32,9 @@ export class StageList extends HTMLElement {
 
     _initFirebase(config) {
         firebase.initializeApp(config);
+    }
 
+    _readDataFromFirebase() {
         firebase.database().ref().once('value')
             .then(snapshot => snapshot.val()[0])
             .then(val => {
