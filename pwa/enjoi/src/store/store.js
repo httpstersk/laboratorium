@@ -29,8 +29,8 @@ const reducer = (state = initialState, action) => {
             break;
 
         case 'UPDATE_STATUS':
-            const currId = action.id;
-            const nextId = parseInt(action.id) + 1;
+            const currId = parseInt(action.id);
+            const nextId = currId + 1;
 
             state.artists
                 .filter(artist => artist.id === currId)
@@ -46,8 +46,8 @@ const reducer = (state = initialState, action) => {
                     artist.live = true
                 });
 
-            updateFirebaseField('artists', currId, 'status', action.status);
-            updateFirebaseField('artists', currId, 'live', action.live);
+            updateFirebaseField('artists', currId, 'status', 'played');
+            updateFirebaseField('artists', currId, 'live', false);
 
             updateFirebaseField('artists', nextId, 'status', 'live');
             updateFirebaseField('artists', nextId, 'live', true);

@@ -27,15 +27,15 @@ export class StageArtist extends HTMLElement {
         }
 
         this.render();
-        this._range = this.shadowRoot.querySelector('.live-range');
-        this._progress = this.shadowRoot.querySelector('progress');
-        this._status = this.shadowRoot.querySelector('.status');
+        this._rangeEl = this.shadowRoot.querySelector('.live-range');
+        this._progressEl = this.shadowRoot.querySelector('progress');
+        this._statusEl = this.shadowRoot.querySelector('.status');
     }
 
     disconnectedCallback() {
-        if (!this._range) return;
-        this._range.removeEventListener('input', this._onRangeInput);
-        this._range.removeEventListener('change', this._onRangeChange);
+        if (!this._rangeEl) return;
+        this._rangeEl.removeEventListener('input', this._onRangeInput);
+        this._rangeEl.removeEventListener('change', this._onRangeChange);
     }
 
     get artist() {
@@ -51,7 +51,9 @@ export class StageArtist extends HTMLElement {
     }
 
     set status(val) {
-        this.setAttribute('status', val);
+        if (val) {
+            this._status = val;
+        }
     }
 
     get score() {
@@ -76,25 +78,25 @@ export class StageArtist extends HTMLElement {
 
     _onClick(event) {
         this.classList.add('opened');
-        this._range.focus();
+        this._rangeEl.focus();
         fire(this, 'opened');
     }
 
     _onTransitionEnd(event) {
-        this._range.addEventListener('input', this._onRangeInput);
-        this._range.addEventListener('change', this._onRangeChange);
+        this._rangeEl.addEventListener('input', this._onRangeInput);
+        this._rangeEl.addEventListener('change', this._onRangeChange);
     }
 
     _onRangeInput(event) {
         const newScore = event.target.value;
-        this._progress.value = newScore;
-        this._status.textContent = `${newScore} %`;
+        this._progressEl.value = newScore;
+        this._statusEl.textContent = `${newScore} %`;
     }
 
     _onRangeChange(event) {
         const newScore = event.target.value;
         const index = event.target.getAttribute('index');
-        this._progress.value = newScore;
+        this._progressEl.value = newScore;
         fire(this, 'score-changed', { score: newScore, id: index });
     }
 

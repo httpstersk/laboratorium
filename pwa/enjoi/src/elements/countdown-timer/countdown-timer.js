@@ -23,7 +23,7 @@ export class CountdownTimer extends HTMLElement {
             this.remaining--;
             this.update();
 
-            if (this.remaining === 0) {
+            if (this.remaining < 0) {
                 this._onCountdownEnd(counter);
             }
         }, TICK_MS);
