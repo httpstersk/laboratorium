@@ -1,5 +1,5 @@
-import { addMinutes, format } from 'date-fns';
-import { countdown, encapsulate, fire } from '../../utils/utils';
+import { format } from 'date-fns';
+import { encapsulate, fire } from '../../utils/utils';
 import { store } from '../../store/store';
 
 export class StageArtist extends HTMLElement {
@@ -22,6 +22,7 @@ export class StageArtist extends HTMLElement {
         if (this.classList.contains('live')) {
             this.addEventListener('click', this._onClick, { once: true });
             this.addEventListener('transitionend', this._onTransitionEnd, { once: true });
+            this.addEventListener('countdown-ended', this._onCountDownOver, { once: true })
         }
 
         this.render();
@@ -97,9 +98,6 @@ export class StageArtist extends HTMLElement {
     }
 
     _onCountDownOver() {
-        this.classList.remove('live');
-        this.status = 'played';
-
         store.dispatch({
             type: 'UPDATE_STATUS',
             status: 'played',
@@ -109,17 +107,9 @@ export class StageArtist extends HTMLElement {
     }
 
     render() {
-        const start = format(this.start, 'HH:mm');
-        const end = format(addMinutes(this.start, this.minutes), 'HH:mm');
+        const future = new Date(this.start);
         const now = new Date();
-
-        if (this.status === 'live') {
-            countdown(this.start)
-                .then(() => {
-                    console.log('Show is over!');
-                    this._onCountDownOver();
-                });
-        }
+        const distance = Math.round((future - now) / 1000);
 
         this.shadowRoot.innerHTML = `
             <style>
@@ -246,7 +236,7 @@ export class StageArtist extends HTMLElement {
                     color: white;
                 }
 
-                time {
+                countdown-timer {
                     background-color: #808080;
                     bottom: 5vh;
                     color: white;
@@ -258,7 +248,8 @@ export class StageArtist extends HTMLElement {
             
             <strong class="artist">${this.artist}</strong>
             <span class="status">${this.status}</span>
-            <time class="start">${start} – ${end}</time>
+
+            <countdown-timer seconds="${distance}"></countdown-timer>
 
             <div class="enjoi-bar">
                 <div class="bar">

@@ -17,28 +17,4 @@ const fire = (target = document.body, eventName, eventData = {}) => {
     }));
 };
 
-const countdown = (end) => {
-    return new Promise((resolve, reject) => {
-        const deadline = new Date(end).getTime();
-
-        const tick = () => {
-            const now = new Date().getTime();
-            const remaining = deadline - now;
-
-            if (remaining < 0) return;
-
-            const minutes = Math.floor((remaining / (60 * 1000)));
-            console.log('⏰ Minutes →', minutes);
-
-            if (minutes === 0) {
-                resolve();
-                return;
-            }
-
-            requestAnimationFrame(tick);
-        }
-        requestAnimationFrame(tick);
-    });
-};
-
-export { immutable, encapsulate, fire, countdown };
+export { immutable, encapsulate, fire };

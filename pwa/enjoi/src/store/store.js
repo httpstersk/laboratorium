@@ -42,8 +42,8 @@ const reducer = (state = initialState, action) => {
             state.artists
                 .filter(artist => artist.id === nextId)
                 .map(artist => {
-                    artist.status = 'status';
-                    artist.status = 'live'
+                    artist.status = 'live';
+                    artist.live = true
                 });
 
             updateFirebaseField('artists', currId, 'status', action.status);
