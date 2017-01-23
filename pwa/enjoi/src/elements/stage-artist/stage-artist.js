@@ -21,6 +21,7 @@ export class StageArtist extends HTMLElement {
 
         if (this.classList.contains('live')) {
             this.addEventListener('click', this._onClick, { once: true });
+            this.addEventListener('touchend', this._onClick, { once: true });
             this.addEventListener('transitionend', this._onTransitionEnd, { once: true });
             this.addEventListener('countdown-ended', this._onCountDownOver, { once: true })
         }
