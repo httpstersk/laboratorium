@@ -56,6 +56,10 @@ export class StageArtist extends HTMLElement {
         }
     }
 
+    get live() {
+        return this.getAttribute('live');
+    }
+
     get score() {
         return this.getAttribute('score');
     }
@@ -113,6 +117,9 @@ export class StageArtist extends HTMLElement {
         const future = new Date(this.start);
         const now = new Date();
         const distance = Math.round((future - now) / 1000);
+        const seconds = distance + (this.minutes * 60);
+
+        const start = format(this.start, 'HH:mm');
 
         this.shadowRoot.innerHTML = `
             <style>
@@ -252,7 +259,7 @@ export class StageArtist extends HTMLElement {
             <strong class="artist">${this.artist}</strong>
             <span class="status">${this.status}</span>
 
-            <countdown-timer seconds="${distance}"></countdown-timer>
+            <countdown-timer seconds="${seconds}" status="${this.status}" start="${start}"></countdown-timer>
 
             <div class="enjoi-bar">
                 <div class="bar">

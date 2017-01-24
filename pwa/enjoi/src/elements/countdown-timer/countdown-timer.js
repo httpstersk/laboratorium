@@ -9,21 +9,22 @@ export class CountdownTimer extends HTMLElement {
     }
 
     static get observedAttributes() {
-        return ['seconds'];
+        return ['status', 'start', 'seconds'];
     }
 
     connectedCallback() {
         if (this.seconds < 0) this.remove();
 
         this.render();
-        this.remaining = this.seconds;
+        this._timeEl = this.shadowRoot.querySelector('time');
+        this._remaining = this.seconds;
         this.update();
 
         const counter = setInterval(() => {
-            this.remaining--;
+            this._remaining--;
             this.update();
 
-            if (this.remaining < 0) {
+            if (this._remaining < 0) {
                 this._onCountdownEnd(counter);
             }
         }, TICK_MS);
@@ -32,6 +33,14 @@ export class CountdownTimer extends HTMLElement {
     _onCountdownEnd(counter) {
         clearInterval(counter);
         fire(this, 'countdown-ended', {});
+    }
+
+    get status() {
+        return this.getAttribute('status');
+    }
+
+    get start() {
+        return this.getAttribute('start');
     }
 
     get seconds() {
@@ -43,12 +52,12 @@ export class CountdownTimer extends HTMLElement {
     }
 
     update() {
-        this.shadowRoot.querySelector('.seconds-left').textContent = this.remaining;
+        this._timeEl.textContent = (this.status === 'live') ? this._remaining : this.start;
     }
 
     render() {
         this.shadowRoot.innerHTML = `
-            <time class="seconds-left"></time>
+            <time></time>
         `;
     }
 }
