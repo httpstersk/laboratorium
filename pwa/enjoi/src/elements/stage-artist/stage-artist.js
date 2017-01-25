@@ -1,4 +1,4 @@
-import { format } from 'date-fns';
+import { format, addMinutes, isWithinRange } from 'date-fns';
 import { encapsulate, fire } from '../../utils/utils';
 import { store } from '../../store/store';
 
@@ -73,7 +73,7 @@ export class StageArtist extends HTMLElement {
     }
 
     get minutes() {
-        return this.getAttribute('minutes');
+        return parseInt(this.getAttribute('minutes'));
     }
 
     get index() {
@@ -114,12 +114,17 @@ export class StageArtist extends HTMLElement {
     }
 
     render() {
-        const future = new Date(this.start);
+        const start = new Date(this.start);
+        const end = addMinutes(start, this.minutes);
         const now = new Date();
-        const distance = Math.round((future - now) / 1000);
+
+        const distance = Math.floor((start - now) / 1000);
         const seconds = distance + (this.minutes * 60);
 
-        const start = format(this.start, 'HH:mm');
+        const isLive = isWithinRange(now, start, end);
+        const startFormatted = format(this.start, 'HH:mm');
+
+        console.log(`${this.index} → ${isLive}`);
 
         this.shadowRoot.innerHTML = `
             <style>
@@ -259,7 +264,7 @@ export class StageArtist extends HTMLElement {
             <strong class="artist">${this.artist}</strong>
             <span class="status">${this.status}</span>
 
-            <countdown-timer seconds="${seconds}" status="${this.status}" start="${start}"></countdown-timer>
+            <countdown-timer seconds="${seconds}" status="${this.status}" start="${startFormatted}"></countdown-timer>
 
             <div class="enjoi-bar">
                 <div class="bar">
