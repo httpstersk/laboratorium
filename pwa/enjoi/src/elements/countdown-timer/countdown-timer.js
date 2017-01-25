@@ -44,7 +44,7 @@ export class CountdownTimer extends HTMLElement {
     }
 
     get seconds() {
-        return parseInt(this.getAttribute('seconds'));
+        return parseInt(this.getAttribute('seconds'), 10);
     }
 
     set seconds(val) {

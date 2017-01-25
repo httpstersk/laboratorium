@@ -73,7 +73,7 @@ export class StageArtist extends HTMLElement {
     }
 
     get minutes() {
-        return parseInt(this.getAttribute('minutes'));
+        return parseInt(this.getAttribute('minutes'), 10);
     }
 
     get index() {

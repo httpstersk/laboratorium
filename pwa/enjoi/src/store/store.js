@@ -29,7 +29,7 @@ const reducer = (state = initialState, action) => {
             break;
 
         case 'UPDATE_STATUS':
-            const currId = parseInt(action.id);
+            const currId = parseInt(action.id, 10);
             const nextId = currId + 1;
 
             state.artists
