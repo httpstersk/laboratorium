@@ -68,6 +68,9 @@ export class StageList extends HTMLElement {
     }
 
     render(artists) {
-        this.innerHTML = `<stage-artists artists='${JSON.stringify(artists)}'></stage-artist>`;
+        this.innerHTML = `
+            <geo-location></geo-location>
+            <stage-artists artists='${JSON.stringify(artists)}'></stage-artist>
+        `;
     }
 }
