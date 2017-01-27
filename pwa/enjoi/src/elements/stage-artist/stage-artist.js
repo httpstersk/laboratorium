@@ -138,6 +138,7 @@ export class StageArtist extends HTMLElement {
                     flex: 1;
                     height: 100%;
                     justify-content: center;
+                    min-width: 200px;
                     position: relative;
                     text-align: center;
                     transform: translateY(100%);
