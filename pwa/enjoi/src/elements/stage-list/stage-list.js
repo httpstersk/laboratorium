@@ -25,8 +25,9 @@ export class StageList extends HTMLElement {
 
         store.subscribe(_ => {
             this.artists = store.getState().artists;
+            this.coords = store.getState().coords;
             if (!this.artists) return;
-            this.render(this.artists);
+            this.render();
         });
     }
 
@@ -36,13 +37,14 @@ export class StageList extends HTMLElement {
 
     _readDataFromFirebase() {
         firebase.database().ref().once('value')
-            .then(snapshot => snapshot.val()[0])
+            .then(snapshot => snapshot.child(0).val())
             .then(val => {
-                const { artists } = val;
+                const { artists, coords } = val;
 
                 store.dispatch({
                     type: 'INIT_ARTISTS',
-                    artists: [...artists]
+                    artists: [...artists],
+                    coords
                 });
             });
     }
@@ -67,10 +69,13 @@ export class StageList extends HTMLElement {
             });
     }
 
-    render(artists) {
+    render() {
+        const artists = JSON.stringify(this.artists);
+        const coords = JSON.stringify(this.coords);
+
         this.innerHTML = `
-            <geo-location></geo-location>
-            <stage-artists artists='${JSON.stringify(artists)}'></stage-artist>
+            <geo-location target='${coords}'></geo-location>
+            <stage-artists artists='${artists}'></stage-artist>
         `;
     }
 }

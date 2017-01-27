@@ -2,6 +2,7 @@ import { createStore } from 'redux';
 import firebase from 'firebase';
 
 const initialState = {
+    coords: {},
     artists: []
 };
 
@@ -16,7 +17,7 @@ const updateFirebaseField = (child, index, prop, value) => {
 const reducer = (state = initialState, action) => {
     switch (action.type) {
         case 'INIT_ARTISTS':
-            return Object.assign({}, state, { artists: action.artists });
+            return Object.assign({}, state, { artists: action.artists, coords: action.coords });
             break;
 
         case 'UPDATE_SCORE':

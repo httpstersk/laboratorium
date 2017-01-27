@@ -10,20 +10,30 @@ export class GeoLocation extends HTMLElement {
     }
 
     get target() {
-        return this.getAttribute('target');
+        const target = this.getAttribute('target');
+
+        if (target) {
+            return JSON.parse(target);
+        }
     }
 
     connectedCallback() {
         this._onPositionSuccess = this._onPositionSuccess.bind(this);
         this._onPositionError = this._onPositionError.bind(this);
 
+        const options = {
+            enableHighAccuracy: true
+        };
+
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(
                 this._onPositionSuccess,
-                this._onPositionError
+                this._onPositionError,
+                options
             );
         }
 
+        console.log('TARGET', this.target);
         this._watchPosition();
     }
 
