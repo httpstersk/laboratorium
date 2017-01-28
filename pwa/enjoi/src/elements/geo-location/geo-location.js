@@ -1,3 +1,4 @@
+import haversineDistance from 'haversine-distance';
 import { encapsulate, fire } from '../../utils/utils';
 
 export class GeoLocation extends HTMLElement {
@@ -33,7 +34,6 @@ export class GeoLocation extends HTMLElement {
             );
         }
 
-        console.log('TARGET', this.target);
         this._watchPosition();
     }
 
@@ -58,14 +58,14 @@ export class GeoLocation extends HTMLElement {
     _onPositionSuccess(position) {
         if (!position) return;
 
-        this.latitude = position.coords.latitude;
-        this.longitude = position.coords.longitude;
-
-        console.log(`👀 { ${this.latitude}, ${this.longitude} }`);
+        const { latitude, longitude } = position.coords;
+        const current = { latitude, longitude };
+        const distance = Math.floor(haversineDistance(current, this.target));
+        console.log(`🌍 ${distance}m`, );
 
         fire(this, 'position-changed', {
-            latitude: this.latitude,
-            longitude: this.longitude
+            latitude,
+            longitude
         });
     }
 
