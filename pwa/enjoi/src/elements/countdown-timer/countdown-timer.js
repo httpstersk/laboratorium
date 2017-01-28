@@ -32,7 +32,7 @@ export class CountdownTimer extends HTMLElement {
 
     _onCountdownEnd(counter) {
         clearInterval(counter);
-        fire(this, 'countdown-ended', {});
+        fire('countdown-ended', {}, this);
     }
 
     get status() {

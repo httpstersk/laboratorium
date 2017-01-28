@@ -19,6 +19,7 @@ export class GeoLocation extends HTMLElement {
     }
 
     connectedCallback() {
+        this._watchPosition = this._watchPosition.bind(this);
         this._onPositionSuccess = this._onPositionSuccess.bind(this);
         this._onPositionError = this._onPositionError.bind(this);
 
@@ -63,10 +64,7 @@ export class GeoLocation extends HTMLElement {
         const distance = Math.floor(haversineDistance(current, this.target));
         console.log(`🌍 ${distance}m`, );
 
-        fire(this, 'position-changed', {
-            latitude,
-            longitude
-        });
+        fire('position-changed', { latitude, longitude }, this);
     }
 
     _onPositionError(error) {

@@ -9,7 +9,7 @@ const immutable = object => {
 
 const encapsulate = component => component.attachShadow({ mode: 'open' });
 
-const fire = (target = document.body, eventName, eventData = {}) => {
+const fire = (eventName, eventData = {}, target = document.body) => {
     target.dispatchEvent(new CustomEvent(eventName, {
         bubbles: true,
         composed: true,

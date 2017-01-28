@@ -83,7 +83,7 @@ export class StageArtist extends HTMLElement {
     _onClick(event) {
         this.classList.add('opened');
         this._rangeEl.focus();
-        fire(this, 'opened');
+        fire('opened', {}, this);
     }
 
     _onTransitionEnd(event) {
@@ -101,7 +101,7 @@ export class StageArtist extends HTMLElement {
         const newScore = event.target.value;
         const index = event.target.getAttribute('index');
         this._progressEl.value = newScore;
-        fire(this, 'score-changed', { score: newScore, id: index });
+        fire('score-changed', { score: newScore, id: index }, this);
     }
 
     _onCountDownOver() {
