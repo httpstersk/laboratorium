@@ -21,17 +21,18 @@ export class StageArtist extends HTMLElement {
         this._onRangeChange = this._onRangeChange.bind(this);
         this._onCountDownOver = this._onCountDownOver.bind(this);
 
+        this.render();
+
+        this._rangeEl = this.shadowRoot.querySelector('.live-range');
+        this._progressEl = this.shadowRoot.querySelector('progress');
+        this._statusEl = this.shadowRoot.querySelector('.status');
+
         if (this.classList.contains('live')) {
             this.addEventListener('click', this._onClick, { once: true });
             this.addEventListener('touchend', this._onClick, { once: true });
             this.addEventListener('transitionend', this._onTransitionEnd, { once: true });
             this.addEventListener('countdown-ended', this._onCountDownOver, { once: true })
         }
-
-        this.render();
-        this._rangeEl = this.shadowRoot.querySelector('.live-range');
-        this._progressEl = this.shadowRoot.querySelector('progress');
-        this._statusEl = this.shadowRoot.querySelector('.status');
     }
 
     disconnectedCallback() {
@@ -121,7 +122,9 @@ export class StageArtist extends HTMLElement {
         const isLive = isWithinRange(now, start, end);
         const startFormatted = format(this.start, 'HH:mm');
 
-        console.log(`${this.index} → ${isLive}`);
+        if (isLive && this.status === 'live') {
+            this.classList.add('live');
+        }
 
         this.shadowRoot.innerHTML = `
             <style>
