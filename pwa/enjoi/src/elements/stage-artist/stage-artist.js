@@ -1,6 +1,8 @@
 import { format, addMinutes, isWithinRange } from 'date-fns';
 import { encapsulate, fire } from '../../utils/utils';
 import { store } from '../../store/store';
+import { updateStatus } from '../../actions/artist';
+
 
 export class StageArtist extends HTMLElement {
     constructor() {
@@ -105,12 +107,7 @@ export class StageArtist extends HTMLElement {
     }
 
     _onCountDownOver() {
-        store.dispatch({
-            type: 'UPDATE_STATUS',
-            status: 'played',
-            live: false,
-            id: this.index
-        });
+        store.dispatch(updateStatus(parseInt(this.index, 10)));
     }
 
     render() {

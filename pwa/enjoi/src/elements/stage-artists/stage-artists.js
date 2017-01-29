@@ -1,5 +1,6 @@
 import { store } from '../../store/store';
 import { encapsulate } from '../../utils/utils';
+import { updateScore } from '../../actions/artist';
 
 export class StageArtists extends HTMLElement {
     constructor() {
@@ -134,11 +135,7 @@ export class StageArtists extends HTMLElement {
         this._button.style.opacity = 1;
         this._button.focus();
         this._button.addEventListener('click', () => {
-            store.dispatch({
-                type: 'UPDATE_SCORE',
-                score: event.detail.score,
-                id: event.detail.id
-            });
+            store.dispatch(updateScore(parseInt(event.detail.id, 10), event.detail.score));
         });
     }
 

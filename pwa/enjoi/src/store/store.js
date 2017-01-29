@@ -1,65 +1,7 @@
 import { createStore } from 'redux';
-import firebase from 'firebase';
+import rootReducer from '../reducers';
 
-const initialState = {
-    coords: {},
-    artists: []
-};
-
-const updateFirebaseField = (child, index, prop, value) => {
-    return firebase.database().ref().child('0')
-        .child(child)
-        .update({
-            [`${index}/${prop}`]: value
-        });
-};
-
-const reducer = (state = initialState, action) => {
-    switch (action.type) {
-        case 'INIT_ARTISTS':
-            return Object.assign({}, state, { artists: action.artists, coords: action.coords });
-            break;
-
-        case 'UPDATE_SCORE':
-            state.artists
-                .filter(artist => artist.live === true)
-                .map(artist => artist.score = action.score);
-
-            updateFirebaseField('artists', action.id, 'score', action.score);
-            return Object.assign({}, state);
-            break;
-
-        case 'UPDATE_STATUS':
-            const currId = parseInt(action.id, 10);
-            const nextId = currId + 1;
-
-            state.artists
-                .filter(artist => artist.id === currId)
-                .map(artist => {
-                    artist.status = action.status;
-                    artist.live = action.live;
-                });
-
-            state.artists
-                .filter(artist => artist.id === nextId)
-                .map(artist => {
-                    artist.status = 'live';
-                    artist.live = true
-                });
-
-            updateFirebaseField('artists', currId, 'status', 'played');
-            updateFirebaseField('artists', currId, 'live', false);
-
-            updateFirebaseField('artists', nextId, 'status', 'live');
-            updateFirebaseField('artists', nextId, 'live', true);
-            return Object.assign({}, state);
-            break;
-
-        default:
-            return state;
-    }
-};
-
-const store = createStore(reducer, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
+const initialState = {};
+const store = createStore(rootReducer, initialState, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
 
 export { initialState, store };

@@ -1,5 +1,6 @@
 import firebase from 'firebase';
 import { initialState, store } from '../../store/store';
+import { initArtists } from '../../actions/stage';
 
 const DATA_URL = '../data/data.json';
 const FIREBASE_CONFIG = {
@@ -24,8 +25,8 @@ export class StageList extends HTMLElement {
         this._readDataFromFirebase();
 
         store.subscribe(_ => {
-            this.artists = store.getState().artists;
-            this.coords = store.getState().coords;
+            this.artists = store.getState().stage.artists;
+            this.coords = store.getState().stage.coords;
             if (!this.artists) return;
             this.render();
         });
@@ -38,15 +39,7 @@ export class StageList extends HTMLElement {
     _readDataFromFirebase() {
         firebase.database().ref().once('value')
             .then(snapshot => snapshot.child(0).val())
-            .then(val => {
-                const { artists, coords } = val;
-
-                store.dispatch({
-                    type: 'INIT_ARTISTS',
-                    artists: [...artists],
-                    coords
-                });
-            });
+            .then(state => store.dispatch(initArtists(state.artists, state.coords)));
     }
 
     _fetchArtists(url) {
