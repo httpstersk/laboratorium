@@ -224,7 +224,7 @@ export class StageArtist extends HTMLElement {
                     color: #606060;
                     mix-blend-mode: darken;
                     text-transform: uppercase;
-                    transform: rotate(-90deg);
+                    writing-mode: vertical-rl;
                 }
 
                 :host(.live) .artist {
