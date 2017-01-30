@@ -8,7 +8,12 @@ const updateFirebaseField = (child, index, prop, value) => {
         });
 };
 
-const stageReducer = (state = {}, action) => {
+const initialState = {
+    coords: {},
+    artists: []
+};
+
+const stageReducer = (state = initialState, action) => {
     switch (action.type) {
         case 'INIT_ARTISTS':
             return {

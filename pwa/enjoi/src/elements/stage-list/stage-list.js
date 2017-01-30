@@ -2,7 +2,7 @@ import firebase from 'firebase';
 import { initialState, store } from '../../store/store';
 import { initArtists } from '../../actions/stage';
 
-const DATA_URL = '../data/data.json';
+const LOCAL_DATA_URL = '../data/data.json';
 const FIREBASE_CONFIG = {
     apiKey: "AIzaSyBe6D2gJvJCkHez4cArito9P-c74Vvuzns",
     authDomain: "enjoi-efb8e.firebaseapp.com",
@@ -42,7 +42,7 @@ export class StageList extends HTMLElement {
             .then(state => store.dispatch(initArtists(state.artists, state.coords)));
     }
 
-    _fetchArtists(url) {
+    _fetchLocalData(url) {
         fetch(url)
             .then(response => {
                 if (!response.ok) {
@@ -51,15 +51,11 @@ export class StageList extends HTMLElement {
                 return response;
             })
             .then(res => res.json())
-            .then(json => this.artists = json.map(d => d.artists))
-            .then(artists => {
-                store.dispatch({
-                    type: 'INIT_ARTISTS',
-                    artists: [...artists]
-                });
-            }, () => {
-                this.artists = initialState.artists;
-            });
+            .then(stages => {
+                const stage = stages[0];
+                store.dispatch(initArtists(stage.artists, stage.coords))
+            })
+            .catch(err => console.warn('💩'));
     }
 
     render() {

@@ -17,6 +17,4 @@ const fire = (eventName, eventData = {}, target = document.body) => {
     }));
 };
 
-const isOnline = () => window.addEventListener('online') === true;
-
 export { immutable, encapsulate, fire };
