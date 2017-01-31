@@ -1,5 +1,5 @@
 import firebase from 'firebase';
-import { initialState, store } from '../../store/store';
+import store from '../../store/store';
 import { initArtists } from '../../actions/stage';
 
 const LOCAL_DATA_URL = '../data/data.json';

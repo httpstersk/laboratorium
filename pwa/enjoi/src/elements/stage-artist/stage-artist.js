@@ -1,6 +1,6 @@
 import { format, addMinutes, isWithinRange } from 'date-fns';
 import { encapsulate, fire } from '../../utils/utils';
-import { store } from '../../store/store';
+import store from '../../store/store';
 import { updateStatus } from '../../actions/artist';
 
 

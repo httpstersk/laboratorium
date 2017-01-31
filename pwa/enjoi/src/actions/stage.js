@@ -1,7 +1,5 @@
-export function initArtists(artists, coords) {
-    return {
-        type: 'INIT_ARTISTS',
-        artists,
-        coords
-    };
-}
+export const initArtists = (artists, coords) => ({
+    type: 'INIT_ARTISTS',
+    artists,
+    coords
+});

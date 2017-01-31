@@ -1,4 +1,4 @@
-import { store } from '../../store/store';
+import store from '../../store/store';
 import { encapsulate } from '../../utils/utils';
 import { updateScore } from '../../actions/artist';
 
