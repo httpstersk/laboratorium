@@ -1,10 +1,10 @@
 [{
         "index": 0,
-        "stage": "Main",
+        "stage": "Corrib Stage",
         "about": "",
         "coords": {
-            "latitude": "48.955847",
-            "longitude": "20.531906"
+            "latitude": "49.055166",
+            "longitude": "20.308475"
         },
         "artists": [{
                 "id": 0,
@@ -13,7 +13,7 @@
                 "image": "http://placehold.it/100x100",
                 "live": true,
                 "status": "live",
-                "start": "2017-01-26T14:00:00.000",
+                "start": "2017-08-01T14:00:00.000",
                 "minutes": 60,
                 "score": 10
             },
@@ -24,7 +24,7 @@
                 "image": "http://placehold.it/100x100",
                 "live": false,
                 "status": "next",
-                "start": "2017-01-26T15:00:00.000",
+                "start": "2017-08-01T15:00:00.000",
                 "minutes": 60,
                 "score": 20
             },
@@ -35,7 +35,7 @@
                 "image": "http://placehold.it/100x100",
                 "live": false,
                 "status": "next",
-                "start": "2017-01-26T16:00:00.000",
+                "start": "2017-08-01T16:00:00.000",
                 "minutes": 60,
                 "score": 30
             },
@@ -46,7 +46,7 @@
                 "image": "http://placehold.it/100x100",
                 "live": false,
                 "status": "next",
-                "start": "2017-01-26T17:00:00.000",
+                "start": "2017-08-01T17:00:00.000",
                 "minutes": 60,
                 "score": 40
             },
@@ -57,7 +57,7 @@
                 "image": "http://placehold.it/100x100",
                 "live": false,
                 "status": "next",
-                "start": "2017-01-26T18:00:00.000",
+                "start": "2017-08-01T18:00:00.000",
                 "minutes": 60,
                 "score": 50
             },
@@ -68,7 +68,7 @@
                 "image": "http://placehold.it/100x100",
                 "live": false,
                 "status": "next",
-                "start": "2017-01-26T19:00:00.000",
+                "start": "2017-08-01T19:00:00.000",
                 "minutes": 60,
                 "score": 0
             },
@@ -79,7 +79,7 @@
                 "image": "http://placehold.it/100x100",
                 "live": false,
                 "status": "next",
-                "start": "2017-01-26T20:00:00.000",
+                "start": "2017-08-01T20:00:00.000",
                 "minutes": 60,
                 "score": 0
             },
@@ -90,7 +90,7 @@
                 "image": "http://placehold.it/100x100",
                 "live": false,
                 "status": "next",
-                "start": "2017-01-26T21:00:00.000",
+                "start": "2017-08-01T21:00:00.000",
                 "minutes": 60,
                 "score": 0
             },
@@ -101,7 +101,7 @@
                 "image": "http://placehold.it/100x100",
                 "live": false,
                 "status": "next",
-                "start": "2017-01-26T22:00:00.000",
+                "start": "2017-08-01T22:00:00.000",
                 "minutes": 60,
                 "score": 0
             },
@@ -112,7 +112,7 @@
                 "image": "http://placehold.it/100x100",
                 "live": false,
                 "status": "next",
-                "start": "2017-01-26T23:00:00.000",
+                "start": "2017-08-01T23:00:00.000",
                 "minutes": 60,
                 "score": 0
             }
@@ -120,11 +120,11 @@
     },
     {
         "index": 1,
-        "stage": "Creative",
+        "stage": "Krea Stage",
         "about": "",
         "coords": {
-            "latitude": "49.0551014",
-            "longitude": "20.3012576"
+            "latitude": "49.055335",
+            "longitude": "20.301330"
         },
         "artists": [{
                 "id": 0,
@@ -133,7 +133,7 @@
                 "image": "http://placehold.it/100x100",
                 "live": true,
                 "status": "live",
-                "start": "2017-01-26T14:00:00.000",
+                "start": "2017-08-01T14:00:00.000",
                 "minutes": 60,
                 "score": 10
             },
@@ -144,7 +144,7 @@
                 "image": "http://placehold.it/100x100",
                 "live": false,
                 "status": "next",
-                "start": "2017-01-26T15:00:00.000",
+                "start": "2017-08-01T15:00:00.000",
                 "minutes": 60,
                 "score": 20
             },
@@ -155,7 +155,7 @@
                 "image": "http://placehold.it/100x100",
                 "live": false,
                 "status": "next",
-                "start": "2017-01-26T16:00:00.000",
+                "start": "2017-08-01T16:00:00.000",
                 "minutes": 60,
                 "score": 30
             },
@@ -166,7 +166,7 @@
                 "image": "http://placehold.it/100x100",
                 "live": false,
                 "status": "next",
-                "start": "2017-01-26T17:00:00.000",
+                "start": "2017-08-01T17:00:00.000",
                 "minutes": 60,
                 "score": 40
             },
@@ -177,7 +177,7 @@
                 "image": "http://placehold.it/100x100",
                 "live": false,
                 "status": "next",
-                "start": "2017-01-26T18:00:00.000",
+                "start": "2017-08-01T18:00:00.000",
                 "minutes": 60,
                 "score": 50
             },
@@ -188,7 +188,7 @@
                 "image": "http://placehold.it/100x100",
                 "live": false,
                 "status": "next",
-                "start": "2017-01-26T19:00:00.000",
+                "start": "2017-08-01T19:00:00.000",
                 "minutes": 60,
                 "score": 0
             },
@@ -199,7 +199,7 @@
                 "image": "http://placehold.it/100x100",
                 "live": false,
                 "status": "next",
-                "start": "2017-01-26T20:00:00.000",
+                "start": "2017-08-01T20:00:00.000",
                 "minutes": 60,
                 "score": 0
             },
@@ -210,7 +210,7 @@
                 "image": "http://placehold.it/100x100",
                 "live": false,
                 "status": "next",
-                "start": "2017-01-26T21:00:00.000",
+                "start": "2017-08-01T21:00:00.000",
                 "minutes": 60,
                 "score": 0
             },
@@ -221,7 +221,7 @@
                 "image": "http://placehold.it/100x100",
                 "live": false,
                 "status": "next",
-                "start": "2017-01-26T22:00:00.000",
+                "start": "2017-08-01T22:00:00.000",
                 "minutes": 60,
                 "score": 0
             },
@@ -232,7 +232,7 @@
                 "image": "http://placehold.it/100x100",
                 "live": false,
                 "status": "next",
-                "start": "2017-01-26T23:00:00.000",
+                "start": "2017-08-01T23:00:00.000",
                 "minutes": 60,
                 "score": 0
             }

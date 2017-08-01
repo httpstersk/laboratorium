@@ -53,7 +53,8 @@ export class CountdownTimer extends HTMLElement {
 
     update() {
         const minutesToEnd = parseInt(this._remaining / 60);
-        this._timeEl.textContent = (this.status === 'live') ? minutesToEnd : this.start;
+        this._timeEl.textContent =
+            this.status === 'live' ? `⌛ ${minutesToEnd}` : `➡️ ${this.start}`;
     }
 
     render() {
