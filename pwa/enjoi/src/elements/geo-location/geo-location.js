@@ -62,7 +62,11 @@ export class GeoLocation extends HTMLElement {
         const { latitude, longitude } = position.coords;
         const current = { latitude, longitude };
         const distance = Math.floor(haversineDistance(current, this.target));
-        console.log(`🌍 ${distance}m`, );
+        console.log(`🌍 ${distance}m`);
+
+        if (distance < 100) {
+            fire('is-near-stage', {}, this);
+        }
 
         fire('position-changed', { latitude, longitude }, this);
     }
