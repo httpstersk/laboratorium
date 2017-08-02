@@ -26,23 +26,25 @@ export class StageList extends HTMLElement {
         this._readDataFromFirebase();
 
         store.subscribe(_ => {
-            this.artists = store.getState().stage.artists;
-            this.coords = store.getState().stage.coords;
-            this.stageId = store.getState().stage.index;
+            const state = store.getState();
+
+            this.artists = state.stage.artists;
+            this.coords = state.stage.coords;
+            this.stageId = state.stage.stageId;
             if (!this.artists) return;
             this.render();
         });
 
-        this.addEventListener('is-near-stage', this._onIsNearStage, {
-            once: true
-        });
+        this.addEventListener('is-near-stage', this._onIsNearStage);
     }
 
     _initFirebase(config) {
         firebase.initializeApp(config);
     }
 
-    _onIsNearStage(event) {}
+    _onIsNearStage(event) {
+        console.log(event.detail.stageId);
+    }
 
     _readDataFromFirebase() {
         firebase
@@ -50,9 +52,9 @@ export class StageList extends HTMLElement {
             .ref()
             .once('value')
             .then(snapshot => snapshot.child(0).val())
-            .then(state =>
+            .then(data =>
                 store.dispatch(
-                    initArtists(state.artists, state.coords, state.index)
+                    initArtists(data.artists, data.coords, data.index)
                 )
             );
     }
@@ -69,7 +71,7 @@ export class StageList extends HTMLElement {
             .then(stages => {
                 const stage = stages[0];
                 store.dispatch(
-                    initArtists(stage.artists, stage.coords, state.index)
+                    initArtists(stage.artists, stage.coords, stage.index)
                 );
             })
             .catch(err => console.warn('💩'));
@@ -79,8 +81,6 @@ export class StageList extends HTMLElement {
         const artists = JSON.stringify(this.artists);
         const coords = JSON.stringify(this.coords);
         const stageId = JSON.stringify(this.stageId);
-
-        console.log({ stageId });
 
         this.innerHTML = `
             <geo-location target='${coords}' stage-id='${stageId}'></geo-location>

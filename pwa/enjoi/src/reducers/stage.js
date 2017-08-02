@@ -17,9 +17,9 @@ const stageReducer = (state = initialState, action) => {
         case 'INIT_ARTISTS':
             return {
                 ...state,
-                stageId: action.stageId,
                 artists: [...action.artists],
-                coords: {...action.coords }
+                coords: {...action.coords },
+                stageId: action.stageId
             };
 
         case 'UPDATE_SCORE':

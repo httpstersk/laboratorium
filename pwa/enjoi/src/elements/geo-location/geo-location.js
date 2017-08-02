@@ -7,7 +7,7 @@ export class GeoLocation extends HTMLElement {
     }
 
     static get observedAttributes() {
-        return ['target'];
+        return ['target', 'stageId'];
     }
 
     get target() {
@@ -56,6 +56,10 @@ export class GeoLocation extends HTMLElement {
         }
     }
 
+    get stageId() {
+        return this.getAttribute('stage-id');
+    }
+
     _onPositionSuccess(position) {
         if (!position) return;
 
@@ -65,7 +69,7 @@ export class GeoLocation extends HTMLElement {
         console.log(`🌍 ${distance}m`);
 
         if (distance < 100) {
-            fire('is-near-stage', {}, this);
+            fire('is-near-stage', { stageId: this.stageId }, this);
         }
 
         fire('position-changed', { latitude, longitude }, this);
