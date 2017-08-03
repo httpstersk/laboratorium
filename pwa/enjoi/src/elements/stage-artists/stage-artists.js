@@ -135,7 +135,8 @@ export class StageArtists extends HTMLElement {
         this._button.style.opacity = 1;
         this._button.focus();
         this._button.addEventListener('click', () => {
-            store.dispatch(updateScore(parseInt(event.detail.id, 10), event.detail.score));
+            const { id, score, stageId } = event.detail;
+            store.dispatch(updateScore(stageId, parseInt(id, 10), score));
         });
     }
 
@@ -149,7 +150,7 @@ export class StageArtists extends HTMLElement {
             this._deltaX = this._offsetX;
         }
 
-        if (this._deltaX === 0 || (this._lastDeltaX === this._deltaX)) return;
+        if (this._deltaX === 0 || this._lastDeltaX === this._deltaX) return;
 
         this._lastDeltaX = this._deltaX;
         this.style.transform = `translateX(${this._deltaX}px)`;
@@ -157,21 +158,29 @@ export class StageArtists extends HTMLElement {
 
     render() {
             this.shadowRoot.innerHTML = `
-            ${this.artists.map((artist, index) => {
-                if (artist.status === 'played') {
-                    artist.status = `${artist.score} %`;
-                }
+            ${this.artists
+                .map((artist, index) => {
+                    if (artist.status === 'played') {
+                        artist.status = `${artist.score} %`;
+                    }
 
-                return `<stage-artist style="animation-delay: ${index * 50}ms" artist="${artist.artist}" status="${artist.status}" live="${artist.live}" start="${artist.start}" minutes="${artist.minutes}" score="${artist.score}" index="${artist.id}"></stage-artist>`;
-            }).join('')}
+                    return `<stage-artist style="animation-delay: ${index *
+                        50}ms" artist="${artist.artist}" status="${artist.status}" live="${artist.live}" start="${artist.start}" minutes="${artist.minutes}" score="${artist.score}" index="${artist.id}"></stage-artist>`;
+                })
+                .join('')}
         `;
 
         this.shadowRoot.appendChild(this._button);
 
-        [this.live] = [...this.shadowRoot.children].filter(el => el.classList.contains('live'));
+        [this.live] = [...this.shadowRoot.children].filter(el =>
+            el.classList.contains('live')
+        );
 
         if (this.live) {
-            this._offsetX = (this.offsetWidth / 2) - (this.live.offsetWidth / 2) - this.live.offsetLeft;
+            this._offsetX =
+                this.offsetWidth / 2 -
+                this.live.offsetWidth / 2 -
+                this.live.offsetLeft;
             this.style.transform = `translateX(${this._offsetX}px)`;
 
             const offsetBtn = this.live.offsetLeft + this.live.offsetWidth;

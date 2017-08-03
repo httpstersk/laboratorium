@@ -35,7 +35,9 @@ export class StageList extends HTMLElement {
             this.render();
         });
 
-        this.addEventListener('is-near-stage', this._onIsNearStage);
+        this.addEventListener('is-near-stage', this._onIsNearStage, {
+            once: true
+        });
     }
 
     _initFirebase(config) {
@@ -43,18 +45,20 @@ export class StageList extends HTMLElement {
     }
 
     _onIsNearStage(event) {
-        console.log(event.detail.stageId);
+        const stageId = event.detail.stageId;
+        console.log('📍', stageId);
+        this._readDataFromFirebase(stageId);
     }
 
-    _readDataFromFirebase() {
+    _readDataFromFirebase(stageId = 0) {
         firebase
             .database()
             .ref()
             .once('value')
-            .then(snapshot => snapshot.child(0).val())
+            .then(snapshot => snapshot.child(stageId).val())
             .then(data =>
                 store.dispatch(
-                    initArtists(data.artists, data.coords, data.index)
+                    initArtists(data.artists, data.coords, data.index, stageId)
                 )
             );
     }

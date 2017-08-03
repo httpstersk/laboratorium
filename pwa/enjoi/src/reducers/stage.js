@@ -1,7 +1,7 @@
 import firebase from 'firebase';
 
-const updateFirebaseField = (child, index, prop, value) => {
-    return firebase.database().ref().child('0').child(child).update({
+const updateFirebaseField = (stageId, child, index, prop, value) => {
+    return firebase.database().ref().child(stageId).child(child).update({
         [`${index}/${prop}`]: value
     });
 };
@@ -13,30 +13,32 @@ const initialState = {
 };
 
 const stageReducer = (state = initialState, action) => {
-    switch (action.type) {
+    const { artists, coords, id, live, score, stageId, status, type } = action;
+
+    switch (type) {
         case 'INIT_ARTISTS':
             return {
                 ...state,
-                artists: [...action.artists],
-                coords: {...action.coords },
-                stageId: action.stageId
+                artists: [...artists],
+                coords: {...coords },
+                stageId: stageId
             };
 
         case 'UPDATE_SCORE':
             state.artists
-                .filter(artist => artist.id === action.id)
-                .map(artist => (artist.score = action.score));
+                .filter(artist => artist.id === id)
+                .map(artist => (artist.score = score));
 
-            updateFirebaseField('artists', action.id, 'score', action.score);
+            updateFirebaseField(stageId, 'artists', id, 'score', score);
             return Object.assign({}, state);
 
         case 'UPDATE_STATUS':
-            const currId = action.id;
+            const currId = id;
             const nextId = currId + 1;
 
             state.artists.filter(artist => artist.id === currId).map(artist => {
-                artist.status = action.status;
-                artist.live = action.live;
+                artist.status = status;
+                artist.live = live;
             });
 
             state.artists.filter(artist => artist.id === nextId).map(artist => {
@@ -44,11 +46,11 @@ const stageReducer = (state = initialState, action) => {
                 artist.live = true;
             });
 
-            updateFirebaseField('artists', currId, 'status', 'played');
-            updateFirebaseField('artists', currId, 'live', false);
+            updateFirebaseField(stageId, 'artists', currId, 'status', 'played');
+            updateFirebaseField(stageId, 'artists', currId, 'live', false);
 
-            updateFirebaseField('artists', nextId, 'status', 'live');
-            updateFirebaseField('artists', nextId, 'live', true);
+            updateFirebaseField(stageId, 'artists', nextId, 'status', 'live');
+            updateFirebaseField(stageId, 'artists', nextId, 'live', true);
             return Object.assign({}, state);
 
         default:

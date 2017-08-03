@@ -3,7 +3,6 @@ import { encapsulate, fire } from '../../utils/utils';
 import store from '../../store/store';
 import { updateStatus } from '../../actions/artist';
 
-
 export class StageArtist extends HTMLElement {
     constructor() {
         super();
@@ -30,8 +29,12 @@ export class StageArtist extends HTMLElement {
         if (this.classList.contains('live')) {
             this.addEventListener('click', this._onClick, { once: true });
             this.addEventListener('touchend', this._onClick, { once: true });
-            this.addEventListener('transitionend', this._onTransitionEnd, { once: true });
-            this.addEventListener('countdown-ended', this._onCountDownOver, { once: true })
+            this.addEventListener('transitionend', this._onTransitionEnd, {
+                once: true
+            });
+            this.addEventListener('countdown-ended', this._onCountDownOver, {
+                once: true
+            });
         }
     }
 
@@ -103,8 +106,9 @@ export class StageArtist extends HTMLElement {
     _onRangeChange(event) {
         const newScore = event.target.value;
         const index = event.target.getAttribute('index');
+        const stageId = store.getState().stage.stageId;
         this._progressEl.value = newScore;
-        fire('score-changed', { score: newScore, id: index }, this);
+        fire('score-changed', { score: newScore, id: index, stageId }, this);
     }
 
     _onCountDownOver() {
@@ -117,7 +121,7 @@ export class StageArtist extends HTMLElement {
         const now = new Date();
 
         const distance = Math.floor((start - now) / 1000);
-        const seconds = distance + (this.minutes * 60);
+        const seconds = distance + this.minutes * 60;
 
         const isLive = isWithinRange(now, start, end);
         const startFormatted = format(this.start, 'HH:mm');
@@ -265,11 +269,15 @@ export class StageArtist extends HTMLElement {
             <strong class="artist">${this.artist}</strong>
             <span class="status">${this.status}</span>
 
-            <countdown-timer seconds="${seconds}" status="${this.status}" start="${startFormatted}"></countdown-timer>
+            <countdown-timer seconds="${seconds}" status="${this
+            .status}" start="${startFormatted}"></countdown-timer>
 
             <div class="enjoi-bar">
                 <div class="bar">
-                    <input type="range" class="${(this.status === 'live') ? 'live-range' : 'range'}" value="${this.score}" index="${this.index}" min="0" max="100" step="5">
+                    <input type="range" class="${this.status === 'live'
+                        ? 'live-range'
+                        : 'range'}" value="${this.score}" index="${this
+            .index}" min="0" max="100" step="5">
                     <progress value="${this.score}" max="100"></progress>
                 </div>
             </div>
