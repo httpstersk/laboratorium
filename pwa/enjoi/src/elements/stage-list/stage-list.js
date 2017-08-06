@@ -23,7 +23,8 @@ export class StageList extends HTMLElement {
     connectedCallback() {
         this._onIsNearStage = this._onIsNearStage.bind(this);
         this._initFirebase(FIREBASE_CONFIG);
-        this._readDataFromFirebase();
+        this._getStagesFromFirebase();
+        this._getArtistsFromFirebase();
 
         store.subscribe(_ => {
             const state = store.getState();
@@ -38,6 +39,8 @@ export class StageList extends HTMLElement {
         this.addEventListener('is-near-stage', this._onIsNearStage, {
             once: true
         });
+
+        this.allCoords = [];
     }
 
     _initFirebase(config) {
@@ -47,10 +50,10 @@ export class StageList extends HTMLElement {
     _onIsNearStage(event) {
         const stageId = event.detail.stageId;
         console.log('📍', stageId);
-        this._readDataFromFirebase(stageId);
+        this._getArtistsFromFirebase(stageId);
     }
 
-    _readDataFromFirebase(stageId = 0) {
+    _getArtistsFromFirebase(stageId = 0) {
         firebase
             .database()
             .ref()
@@ -63,31 +66,23 @@ export class StageList extends HTMLElement {
             );
     }
 
-    _fetchLocalData(url) {
-        fetch(url)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network request failed! 💩');
-                }
-                return response;
-            })
-            .then(res => res.json())
-            .then(stages => {
-                const stage = stages[0];
-                store.dispatch(
-                    initArtists(stage.artists, stage.coords, stage.index)
-                );
-            })
-            .catch(err => console.warn('💩'));
+    _getStagesFromFirebase() {
+        firebase.database().ref().once('value').then(snapshot => {
+            snapshot.forEach(child => {
+                const coords = child.val().coords;
+                this.allCoords.push(coords);
+            });
+
+            return this.allCoords;
+        });
     }
 
     render() {
         const artists = JSON.stringify(this.artists);
-        const coords = JSON.stringify(this.coords);
-        const stageId = JSON.stringify(this.stageId);
+        const coords = JSON.stringify(this.allCoords);
 
         this.innerHTML = `
-            <geo-location target='${coords}' stage-id='${stageId}'></geo-location>
+            <geo-location coords='${coords}'></geo-location>
             <stage-artists artists='${artists}'></stage-artist>
         `;
     }

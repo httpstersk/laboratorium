@@ -1,5 +1,5 @@
 import haversineDistance from 'haversine-distance';
-import { encapsulate, fire } from '../../utils/utils';
+import { fire } from '../../utils/utils';
 
 export class GeoLocation extends HTMLElement {
     constructor() {
@@ -7,14 +7,14 @@ export class GeoLocation extends HTMLElement {
     }
 
     static get observedAttributes() {
-        return ['target', 'stageId'];
+        return ['coords'];
     }
 
-    get target() {
-        const target = this.getAttribute('target');
+    get coords() {
+        const coords = this.getAttribute('coords');
 
-        if (target) {
-            return JSON.parse(target);
+        if (coords) {
+            return JSON.parse(coords);
         }
     }
 
@@ -38,16 +38,12 @@ export class GeoLocation extends HTMLElement {
         this._watchPosition();
     }
 
-    disconnectedCallback() {
-        this._stopWatching();
-    }
-
     attributeChangedCallback(attrName, oldVal, newVal) {
         if (newVal !== oldVal && oldVal !== null) {
             console.log(`${attrName}: ${oldVal} ———→ ${newVal}`);
 
             switch (attrName) {
-                case 'target':
+                case 'coords':
                     break;
 
                 default:
@@ -56,21 +52,20 @@ export class GeoLocation extends HTMLElement {
         }
     }
 
-    get stageId() {
-        return this.getAttribute('stage-id');
-    }
-
     _onPositionSuccess(position) {
         if (!position) return;
 
         const { latitude, longitude } = position.coords;
         const current = { latitude, longitude };
-        const distance = Math.floor(haversineDistance(current, this.target));
-        console.log(`🌍 ${distance}m`);
 
-        if (distance < 100) {
-            fire('is-near-stage', { stageId: this.stageId }, this);
-        }
+        this.coords.map((coord, index) => {
+            const distance = Math.floor(haversineDistance(current, coord));
+            console.log(`🌍 #${index}: ${distance}m`);
+
+            if (distance < 100) {
+                fire('is-near-stage', { stageId: index }, this);
+            }
+        });
 
         fire('position-changed', { latitude, longitude }, this);
     }
