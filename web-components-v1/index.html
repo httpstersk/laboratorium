@@ -19,25 +19,25 @@
             box-sizing: border-box;
             height: 100%;
         }
-        
+
         @media screen and (min-width: 20rem) {
             html {
                 font-size: calc(1rem + 1.2 * ((100vw - 20rem) / 30));
             }
         }
-        
+
         @media screen and (min-width: 50rem) {
             html {
                 font-size: 2rem;
             }
         }
-        
+
         *,
         *:before,
         *:after {
             box-sizing: inherit;
         }
-        
+
         body {
             background: #efe8d8;
             display: flex;
@@ -47,52 +47,92 @@
             margin: 0;
             min-height: 100%;
         }
-        
+
         section {
             height: 50vh;
             max-height: 50vh;
             overflow: hidden;
         }
-        
+
         [center] {
             align-items: center;
             display: flex;
             justify-content: center;
         }
-        
+
         section>*:not(:defined) {
             opacity: 0;
             transition: opacity 200ms ease-in-out;
         }
-        
+
         tabs-with-indicator {
             background: #ef3e4a;
         }
-        
+
         progress-bar {
             height: 100%;
             width: 100%;
+        }
+
+        fancy-tabs {
+            background: silver;
+            display: inline-flex;
+            width: 100%;
+            user-select: none;
+        }
+
+        fancy-tab {
+            border: none;
+            cursor: pointer;
+            display: inline-flex;
+            font-size: 1rem;
+            margin: 0;
+            overflow: hidden;
+            padding: 2vw 1vw;
+            text-align: center;
+            text-overflow: ellipsis;
+            width: 100px;
+            white-space: nowrap;
+        }
+
+        fancy-tab[selected] {
+            background: white;
+            font-weight: 600;
+        }
+
+        fancy-panel {
+            background: white;
+            justify-content: center;
+            height: 100%;
+            overflow: auto;
+            padding: 3vw;
+        }
+
+        fancy-tabs:not(:defined),
+        fancy-tab:not(:defined),
+        fancy-panel:not(:defined) {
+            display: block;
         }
     </style>
 </head>
 
 <body>
     <section center>
+        <fancy-tabs>
+            <fancy-tab role="heading" slot="tab">Tab 1</fancy-tab>
+            <fancy-panel role="region" slot="panel">Content 1</fancy-panel>
+            <fancy-tab role="heading" slot="tab">Tab 2</fancy-tab>
+            <fancy-panel role="region" slot="panel">Content 2</fancy-panel>
+            <fancy-tab role="heading" slot="tab">Tab 3</fancy-tab>
+            <fancy-panel role="region" slot="panel">Content 3</fancy-panel>
+        </fancy-tabs>
+    </section>
+
+    <section center>
         <progress-bar current="5" max="10"></progress-bar>
     </section>
 
     <section center id="material"></section>
-
-    <section center>
-        <fancy-tabs>
-            <button slot="tab">Tab 1</button>
-            <button slot="tab" selected>Tab 2</button>
-            <button slot="tab">Tab 3</button>
-            <div>1</div>
-            <div>2</div>
-            <div>3</div>
-        </fancy-tabs>
-    </section>
 
     <section center>
         <clip-path-hover>
@@ -139,7 +179,8 @@
             </blockquote>
             <span slot="tab-2">Quote 2</span>
             <blockquote slot="panel-2">
-                <p>❝Think about each component as if it could be presented to a design contest. Design the footer that will win the design contest of footers.❞</p>
+                <p>❝Think about each component as if it could be presented to a design contest. Design the footer that will
+                    win the design contest of footers.❞</p>
                 <footer><cite>David Martin</cite></footer>
             </blockquote>
             <span slot="tab-3">Quote 3</span>
@@ -156,7 +197,7 @@
     </section>
 
     <script type="text/javascript">
-        (function() {
+        (function () {
             'use strict';
 
             if (document.fonts) {
@@ -176,7 +217,8 @@
                 };
 
                 const defineClassName = font => `font-${font.toLowerCase()}`;
-                const createCSSDefinition = font => addCSSRule(document.styleSheets[0], `.${defineClassName(font)}`, `font-family: ${font}`);
+                const createCSSDefinition = font => addCSSRule(document.styleSheets[0], `.${defineClassName(font)}`,
+                    `font-family: ${font}`);
 
                 FONTS.map(font => FONT_FACES.add(new FontFace(font, `url(${font}.woff)`)));
                 FONTS.map(font => createCSSDefinition(font));

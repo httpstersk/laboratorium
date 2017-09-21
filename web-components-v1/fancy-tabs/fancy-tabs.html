@@ -1,192 +1,261 @@
-<template id="fancy-tabs">
-    <style>
-        :host {
+<script>
+    (function () {
+        const KEYCODE = {
+            END: 35,
+            HOME: 36,
+            LEFT: 37,
+            UP: 38,
+            RIGHT: 39,
+            DOWN: 40,
+        };
+
+        const template = document.createElement('template');
+
+        template.innerHTML =
+            `    <style>
+         :host {
             contain: content;
-            display: inline-block;
+            display: flex;
+            flex-wrap: wrap;
             height: 100%;
             width: 100%;
         }
 
-        main {
-            height: 100%;
-        }
-
-        #panels {
-            background: white;
-            justify-content: center;
-            height: 100%;
-            overflow: auto;
-            padding: 3vw;
-        }
-
-        #tabs {
-            background: silver;
-            display: inline-flex;
-            width: 100%;
-            user-select: none;
-        }
-
-        #tabs slot {
-            display: inline-flex;
-        }
-
-        #tabs ::slotted(*) {
-            border: none;
-            cursor: pointer;
-            font-size: 1rem;
-            margin: 0;
-            overflow: hidden;
-            padding: 2vw 1vw;
-            text-align: center;
-            text-overflow: ellipsis;
-            width: 100px;
-            white-space: nowrap;
-        }
-
-        #tabs ::slotted([aria-selected="true"]) {
-            background: white;
-            font-weight: 600;
-        }
-
-        #tabs ::slotted(:focus) {
-            z-index: 1;
-        }
-
-        #panels ::slotted([aria-hidden="true"]) {
-            display: none;
+        ::slotted(fancy-panel) {
+            flex-basis: 100%;
         }
     </style>
-
-    <main>
-
-      <section id="tabs">
-          <slot id="tabs-slot" name="tab"></slot>
-      </section>
-
-      <section id="panels">
-            <slot id="panels-slot"></slot>
-      </section>
-
-    </main>
-
-</template>
-
-<script>
-    (function() {
-        'use strict';
-
-        const owner = document.currentScript.ownerDocument;
-        const template = owner.querySelector('template');
-        const content = template.content.cloneNode(true);
+    
+        <slot id="tabs-slot" name="tab"></slot>
+        <slot id="panel-slot" name="panel"></slot>
+    `;
 
         class FancyTabs extends HTMLElement {
             constructor() {
                 super();
 
-                this._shadowRoot = this.attachShadow({ mode: 'open' });
-                this._shadowRoot.appendChild(content);
-                this.selected_ = null;
-            }
+                this._onSlotChange = this._onSlotChange.bind(this);
 
-            get selected() {
-                return this.selected_;
-            }
+                this.attachShadow({
+                    mode: 'open'
+                });
 
-            set selected(idx) {
-                this.selected_ = idx;
-                this._selectTab(idx);
-                this.setAttribute('selected', idx);
+                this.shadowRoot.appendChild(template.content.cloneNode(true));
+
+                this._tabSlot = this.shadowRoot.querySelector('slot[name=tab]');
+                this._panelSlot = this.shadowRoot.querySelector('slot[name=panel]');
+
+                this._tabSlot.addEventListener('slotchange', this._onSlotChange);
+                this._panelSlot.addEventListener('slotchange', this._onSlotChange);
             }
 
             connectedCallback() {
-                if (!this.getAttribute('role')) {
-                    this.setAttribute('role', 'tablist');
-                }
+                this.addEventListener('keydown', this._onKeyDown);
+                this.addEventListener('click', this._onClick);
 
-                const tabsSlot = this._shadowRoot.querySelector('#tabs-slot');
-                const panelsSlot = this._shadowRoot.querySelector('#panels-slot');
+                if (!this.hasAttribute('role')) this.setAttribute('role', 'tablist');
 
-                this.tabs = tabsSlot.assignedNodes({flatten: true});
-                this.panels = panelsSlot.assignedNodes({flatten: true})
-                    .filter(el => el.nodeType === Node.ELEMENT_NODE);
-
-                for (let [i, panel] of this.panels.entries()) {
-                    panel.setAttribute('role', 'tabpanel');
-                    panel.setAttribute('tabindex', 0);
-                }
-
-                this._boundOnTitleClick = this._onTitleClick.bind(this);
-                this._boundOnKeyDown = this._onKeyDown.bind(this);
-
-                tabsSlot.addEventListener('click', this._boundOnTitleClick);
-                tabsSlot.addEventListener('keydown', this._boundOnKeyDown);
-
-                this.selected = this._findFirstSelectedTab() || 0;
+                Promise.all([
+                    customElements.whenDefined('fancy-tab'),
+                    customElements.whenDefined('fancy-panel'),
+                ]).then(_ => this._linkPanels());
             }
 
             disconnectedCallback() {
-                const tabsSlot = this._shadowRoot.querySelector('#tabsSlot');
-                tabsSlot.removeEventListener('click', this._boundOnTitleClick);
-                tabsSlot.removeEventListener('keydown', this._boundOnKeyDown);
+                this.removeEventListener('keydown', this._onKeyDown);
+                this.removeEventListener('click', this._onClick);
             }
 
-            _onTitleClick(event) {
-                if (event.target.slot === 'tab') {
-                    this.selected = this.tabs.indexOf(event.target);
-                    event.target.focus();
-                }
+            _onSlotChange() {
+                this._linkPanels();
+            }
+
+            _linkPanels() {
+                const tabs = this._allTabs();
+
+                tabs.forEach(tab => {
+                    const panel = tab.nextElementSibling;
+
+                    if (panel.tagName.toLowerCase() !== 'fancy-panel') {
+                        console.error(`Tab #${tab.id} is not a` +
+                            `sibling of a <fancy-panel>`);
+                        return;
+                    }
+
+                    tab.setAttribute('aria-controls', panel.id);
+                    panel.setAttribute('aria-labelledby', tab.id);
+                });
+
+
+                const selectedTab = tabs.find(tab => tab.selected) || tabs[0];
+                this._selectTab(selectedTab);
+            }
+
+            _allPanels() {
+                return Array.from(this.querySelectorAll('fancy-panel'));
+            }
+
+            _allTabs() {
+                return Array.from(this.querySelectorAll('fancy-tab'));
+            }
+
+            _panelForTab(tab) {
+                const panelId = tab.getAttribute('aria-controls');
+                return this.querySelector(`#${panelId}`);
+            }
+
+            _prevTab() {
+                const tabs = this._allTabs();
+                let newIdx = tabs.findIndex(tab => tab.selected) - 1;
+                return tabs[(newIdx + tabs.length) % tabs.length];
+            }
+
+            _firstTab() {
+                const [firstTab] = this._allTabs();
+                return firstTab;
+            }
+
+            _lastTab() {
+                const tabs = this._allTabs();
+                return tabs[tabs.length - 1];
+            }
+
+            _nextTab() {
+                const tabs = this._allTabs();
+                let newIdx = tabs.findIndex(tab => tab.selected) + 1;
+                return tabs[newIdx % tabs.length];
+            }
+
+            reset() {
+                const tabs = this._allTabs();
+                const panels = this._allPanels();
+
+                tabs.map(tab => tab.selected = false);
+                panels.map(panel => panel.hidden = true);
+            }
+
+            _selectTab(newTab) {
+                this.reset();
+                const newPanel = this._panelForTab(newTab);
+
+                if (!newPanel) throw new Error(`No panel with id ${newPanel.id}`)
+                newTab.selected = true;
+                newPanel.hidden = false;
+                newTab.focus();
             }
 
             _onKeyDown(event) {
-                switch (event.code) {
-                    case 'ArrowUp':
-                    case 'ArrowLeft':
-                        event.preventDefault();
+                if (event.target.getAttribute('role') !== 'tab') return;
+                if (event.altKey) return;
 
-                        var idx = this.selected - 1;
-                        idx = idx < 0 ? this.tabs.length - 1 : idx;
+                let newTab;
 
-                        this.tabs[idx].click();
+                switch (event.keyCode) {
+                    case KEYCODE.LEFT:
+                    case KEYCODE.UP:
+                        newTab = this._prevTab();
                         break;
 
-                    case 'ArrowDown':
-                    case 'ArrowRight':
-                        event.preventDefault();
-                        var idx = this.selected + 1;
-
-                        this.tabs[idx % this.tabs.length].click();
+                    case KEYCODE.RIGHT:
+                    case KEYCODE.DOWN:
+                        newTab = this._nextTab();
                         break;
+
+                    case KEYCODE.HOME:
+                        newTab = this._firstTab();
+                        break
+
+                    case KEYCODE.END:
+                        newTab = this._lastTab();
+                        break
 
                     default:
-                        break;
+                        return;
                 }
+
+                event.preventDefault();
+                this._selectTab(newTab);
             }
 
-            _findFirstSelectedTab() {
-                let selectedIdx;
-
-                for (let [i, tab] of this.tabs.entries()) {
-                    tab.setAttribute('role', 'tab');
-
-                    if (tab.hasAttribute('selected')) {
-                        selectedIdx = i;
-                    }
-                }
-
-                return selectedIdx;
-            }
-
-            _selectTab(idx = null) {
-                for (let i = 0, tab; tab = this.tabs[i]; i++) {
-                    let select = i === idx;
-                    tab.setAttribute('tabindex', select ? 0 : -1);
-                    tab.setAttribute('aria-selected', select);
-                    this.panels[i].setAttribute('aria-hidden', !select);
-                }
+            _onClick(event) {
+                if (event.target.getAttribute('role') !== 'tab') return;
+                this._selectTab(event.target);
             }
 
         }
 
-        window.customElements.define('fancy-tabs', FancyTabs);
+        customElements.define('fancy-tabs', FancyTabs);
+
+        let fancyTabCounter = 0;
+
+        class FancyTab extends HTMLElement {
+            static get observedAttributes() {
+                return ['selected'];
+            }
+
+            constructor() {
+                super();
+            }
+
+            connectedCallback() {
+                this.setAttribute('role', 'tab');
+
+                if (!this.id) {
+                    this.id = `fancy-tab-generated-${fancyTabCounter++}`;
+                }
+
+                this.setAttribute('aria-selected', 'false');
+                this.setAttribute('tabindex', -1);
+                this._upgradeProperty('selected');
+            }
+
+            _upgradeProperty(prop) {
+                if (this.hasOwnProperty(prop)) {
+                    let value = this[prop];
+                    delete this[prop];
+                    this[prop] = value;
+                }
+            }
+
+            attributeChangedCallback() {
+                const value = this.hasAttribute('selected');
+                this.setAttribute('aria-selected', value);
+                this.setAttribute('tabindex', value ? 0 : -1);
+            }
+
+            set selected(value) {
+                value = Boolean(value);
+
+                if (value) {
+                    this.setAttribute('selected', '');
+                } else {
+                    this.removeAttribute('selected');
+                }
+            }
+
+            get selected() {
+                return this.hasAttribute('selected');
+            }
+        }
+
+        customElements.define('fancy-tab', FancyTab);
+
+        let fancyPanelCounter = 0;
+
+        class FancyPanel extends HTMLElement {
+            constructor() {
+                super();
+            }
+
+            connectedCallback() {
+                this.setAttribute('role', 'tabpanel');
+
+                if (!this.id) {
+                    this.id = `fancy-panel-generated-${fancyPanelCounter++}`;
+                }
+            }
+        }
+
+        customElements.define('fancy-panel', FancyPanel);
     }());
 </script>

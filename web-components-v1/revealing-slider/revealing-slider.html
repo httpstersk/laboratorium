@@ -1,6 +1,6 @@
 <template id="revealing-slider">
     <style>
-        :host {
+         :host {
             --button-color: #e13334;
             --button-size: 12vw;
             --slide-color-1: #005397;
@@ -166,7 +166,7 @@
 </template>
 
 <script>
-    (function() {
+    (function () {
         'use strict';
 
         const owner = document.currentScript.ownerDocument;
@@ -254,8 +254,6 @@
                 this._applyClasses(event);
                 this._addSneakPeekBackground(event);
                 this._fireChangeEvent();
-
-                this._debugIndexes();
             }
 
             prev(event) {
@@ -274,8 +272,6 @@
                 this._applyClasses(event);
                 this._addSneakPeekBackground(event);
                 this._fireChangeEvent();
-
-                this._debugIndexes();
             }
 
             play() {
@@ -345,12 +341,16 @@
                     nextSlide.classList.add('slide--active-prev');
                 }
 
-                currSlide.addEventListener('transitionend', () => this._onTransitionEnd(), { once: true });
+                currSlide.addEventListener('transitionend', () => this._onTransitionEnd(), {
+                    once: true
+                });
             }
 
             _fireChangeEvent() {
                 this.dispatchEvent(new CustomEvent('slidechange', {
-                    detail: { currentSlide: this._currIndex },
+                    detail: {
+                        currentSlide: this._currIndex
+                    },
                     bubbles: true
                 }));
             }
