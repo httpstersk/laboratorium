@@ -1,0 +1,45 @@
+@font-face {
+  font-family: 'Kairos Sans';
+  src: url('./fonts/kairos-sans-variable.ttf');
+}
+
+:root {
+  --wght: 750;
+  --wdth: 10;
+  --ital: 0;
+}
+
+body,
+html {
+  height: 100%;
+}
+
+body {
+  align-items: center;
+  background-color: blue;
+  color: white;
+  display: flex;
+  font-family: 'Kairos Sans';
+  overflow: hidden;
+  text-transform: uppercase;
+}
+
+strong {
+  animation-name: stretch;
+  animation-direction: alternate;
+  animation-duration: 2s;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease;
+  font-size: 20vw;
+  font-variation-settings: 'wght' var(--wght), 'wdth' var(--wdth),
+    'ital' var(--ital);
+}
+
+@keyframes stretch {
+  from {
+    font-variation-settings: 'wght' 0;
+  }
+  to {
+    font-variation-settings: 'wght' 700;
+  }
+}
