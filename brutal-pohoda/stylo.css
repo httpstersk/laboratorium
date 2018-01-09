@@ -7,6 +7,7 @@
   --wght: 750;
   --wdth: 10;
   --ital: 0;
+  font-size: calc(10vw + 10vh + 1rem);
 }
 
 body,
@@ -20,17 +21,11 @@ body {
   color: white;
   display: flex;
   font-family: 'Kairos Sans';
-  overflow: hidden;
   text-transform: uppercase;
 }
 
-strong {
-  animation-name: stretch;
-  animation-direction: alternate;
-  animation-duration: 2s;
-  animation-iteration-count: infinite;
-  animation-timing-function: ease;
-  font-size: 20vw;
+li {
+  animation: stretch 2s ease infinite alternate;
   font-variation-settings: 'wght' var(--wght), 'wdth' var(--wdth),
     'ital' var(--ital);
 }
@@ -40,6 +35,6 @@ strong {
     font-variation-settings: 'wght' 0;
   }
   to {
-    font-variation-settings: 'wght' 700;
+    font-variation-settings: 'wght' 500;
   }
 }
