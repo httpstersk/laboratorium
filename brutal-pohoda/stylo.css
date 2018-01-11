@@ -7,7 +7,11 @@
   --wght: 750;
   --wdth: 10;
   --ital: 0;
-  font-size: calc(10vw + 10vh + 1rem);
+  font-size: calc(5vw + 5vh + 1rem);
+}
+
+* {
+  box-sizing: border-box;
 }
 
 body,
@@ -16,18 +20,70 @@ html {
 }
 
 body {
-  align-items: center;
   background-color: blue;
   color: white;
   display: flex;
+  margin: 0;
   font-family: 'Kairos Sans';
   text-transform: uppercase;
 }
 
+ul {
+  display: grid;
+  grid-template-columns: repeat(12 1fr);
+  grid-template-rows: 35vw 1fr 1fr;
+  grid-auto-flow: dense;
+  grid-template-areas:
+    'chem chem chem chem chem glass glass glass vinc vinc danny danny'
+    'auro auro drago drago drago drago drago fink fink fink danny danny '
+    'auro auro drago drago drago drago drago femme femme femme femme femme';
+  padding: 0;
+  list-style: none;
+}
+
 li {
-  animation: stretch 2s ease infinite alternate;
+  height: 100%;
+  overflow: hidden;
+}
+
+li:nth-of-type(odd) strong {
+  animation: stretch 1s ease infinite alternate;
   font-variation-settings: 'wght' var(--wght), 'wdth' var(--wdth),
     'ital' var(--ital);
+}
+
+li:nth-child(1) {
+  background-color: darkblue;
+  grid-area: chem;
+}
+
+li:nth-child(2) {
+  grid-area: glass;
+}
+
+li:nth-child(3) {
+  background-color: navy;
+  grid-area: vinc;
+}
+
+li:nth-child(4) {
+  grid-area: danny;
+}
+
+li:nth-child(5) {
+  grid-area: auro;
+}
+
+li:nth-child(6) {
+  grid-area: drago;
+}
+
+li:nth-child(7) {
+  grid-area: fink;
+}
+
+li:nth-child(8) {
+  grid-area: femme;
 }
 
 @keyframes stretch {
