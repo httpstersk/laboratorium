@@ -34,9 +34,9 @@ ul {
   grid-template-rows: 35vw 1fr 1fr;
   grid-auto-flow: dense;
   grid-template-areas:
-    'chem chem chem chem chem glass glass glass vinc vinc danny danny'
-    'auro auro drago drago drago drago drago fink fink fink danny danny '
-    'auro auro drago drago drago drago drago femme femme femme femme femme';
+    '⚗️ ⚗️ ⚗️ ⚗️ ⚗️ 🐋 🐋 🐋 👼 👼 🐻 🐻'
+    '🌌 🌌 🐉 🐉 🐉 🐉 🐉 🎩 🎩 🎩 🐻 🐻'
+    '🌌 🌌 🐉 🐉 🐉 🐉 🐉 👩 👩 👩 👩 👩';
   padding: 0;
   list-style: none;
 }
@@ -54,36 +54,36 @@ li:nth-of-type(odd) strong {
 
 li:nth-child(1) {
   background-color: darkblue;
-  grid-area: chem;
+  grid-area: ⚗️;
 }
 
 li:nth-child(2) {
-  grid-area: glass;
+  grid-area: 🐋;
 }
 
 li:nth-child(3) {
   background-color: navy;
-  grid-area: vinc;
+  grid-area: 👼;
 }
 
 li:nth-child(4) {
-  grid-area: danny;
+  grid-area: 🐻;
 }
 
 li:nth-child(5) {
-  grid-area: auro;
+  grid-area: 🌌;
 }
 
 li:nth-child(6) {
-  grid-area: drago;
+  grid-area: 🐉;
 }
 
 li:nth-child(7) {
-  grid-area: fink;
+  grid-area: 🎩;
 }
 
 li:nth-child(8) {
-  grid-area: femme;
+  grid-area: 👩;
 }
 
 @keyframes stretch {
