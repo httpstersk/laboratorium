@@ -54,6 +54,7 @@ ul {
 li {
   height: 100%;
   overflow: hidden;
+  user-select: none;
   word-break: break-all;
 }
 
