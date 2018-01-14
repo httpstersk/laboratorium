@@ -8,7 +8,7 @@
   --palette-color-2: tomato;
   --palette-color-3: blue;
   --palette-color-4: pink;
-  --wght: 750;
+  --wght: 100;
   --wdth: 10;
   --ital: 0;
   font-size: calc(5vw + 5vh + 1rem);
@@ -34,7 +34,7 @@ body {
 
 ul {
   display: grid;
-  grid-template-columns: repeat(12 1fr);
+  grid-template-columns: repeat(auto-fit, 1fr);
   grid-template-rows: 35vw 1fr 1fr;
   grid-auto-flow: dense;
   grid-template-areas:
@@ -47,13 +47,17 @@ ul {
 
 li {
   height: 100%;
-  overflow: hidden;
+  word-break: break-all;
 }
 
 li:nth-of-type(odd) strong {
-  animation: stretch 1s ease infinite alternate;
-  font-variation-settings: 'wght' var(--wght), 'wdth' var(--wdth),
-    'ital' var(--ital);
+  animation: stretch 1s ease-in infinite alternate;
+  font-variation-settings: 'wght' var(--wght);
+}
+
+li:nth-of-type(even) strong {
+  animation: italic 0.5s ease-in-out infinite alternate;
+  font-variation-settings: 'ital' var(--ital);
 }
 
 li:nth-child(odd) {
@@ -106,5 +110,14 @@ li:nth-child(8) {
   }
   to {
     font-variation-settings: 'wght' 500;
+  }
+}
+
+@keyframes italic {
+  from {
+    font-variation-settings: 'ital' 0;
+  }
+  to {
+    font-variation-settings: 'ital' 1;
   }
 }
