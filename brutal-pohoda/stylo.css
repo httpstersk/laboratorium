@@ -4,6 +4,10 @@
 }
 
 :root {
+  --palette-color-1: navy;
+  --palette-color-2: tomato;
+  --palette-color-3: blue;
+  --palette-color-4: pink;
   --wght: 750;
   --wdth: 10;
   --ital: 0;
@@ -20,7 +24,7 @@ html {
 }
 
 body {
-  background-color: blue;
+  background-color: var(--palette-color-4);
   color: white;
   display: flex;
   margin: 0;
@@ -52,8 +56,19 @@ li:nth-of-type(odd) strong {
     'ital' var(--ital);
 }
 
+li:nth-child(odd) {
+  background-color: var(--palette-color-1);
+}
+
+li:nth-child(even) {
+  background-color: var(--palette-color-2);
+}
+
+li:nth-child(3n) {
+  background-color: var(--palette-color-3);
+}
+
 li:nth-child(1) {
-  background-color: darkblue;
   grid-area: ⚗️;
 }
 
@@ -62,7 +77,6 @@ li:nth-child(2) {
 }
 
 li:nth-child(3) {
-  background-color: navy;
   grid-area: 👼;
 }
 
