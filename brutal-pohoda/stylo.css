@@ -39,7 +39,7 @@ ul {
   background: black;
   display: grid;
   grid-template-columns: repeat(12, 1fr);
-  grid-template-rows: 35vw 1fr 1fr;
+  grid-template-rows: 100vh repeat(2, 50vh);
   grid-auto-flow: dense;
   grid-template-areas:
     '⚗️ ⚗️ ⚗️ ⚗️ ⚗️ 🐋 🐋 🐋 👼 👼 🐻 🐻'
@@ -61,13 +61,23 @@ strong {
   font-size: calc(5vw + 5vh + var(--base-size) * 1rem);
 }
 
+li {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  will-change: font-variation-settings;
+}
+
 li:nth-of-type(odd) strong {
-  animation: stretch 0.75s ease-in-out infinite alternate;
+  --base-size: 2;
+  animation: stretch 1s linear infinite alternate;
   font-variation-settings: 'wght' var(--wght);
 }
 
 li:nth-of-type(even) strong {
-  animation: italic 0.35s ease-in-out infinite alternate;
+  --base-size: 0.25;
+  animation: italic 0.5s ease-in-out infinite alternate;
   font-variation-settings: 'ital' var(--ital);
 }
 
@@ -116,7 +126,7 @@ li:nth-child(8) {
     font-variation-settings: 'wght' 0;
   }
   to {
-    font-variation-settings: 'wght' 500;
+    font-variation-settings: 'wght' 600;
   }
 }
 
