@@ -9,7 +9,7 @@
   --palette-color-2: blue;
   --palette-color-3: pink;
   --wght: 100;
-  --wdth: 10;
+  --wdth: 100;
   --ital: 0;
   font-kerning: auto;
   text-rendering: optimizeLegibility;
@@ -62,6 +62,7 @@ strong {
 }
 
 li {
+  cursor: pointer;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -70,23 +71,31 @@ li {
 }
 
 li:nth-of-type(odd) strong {
-  --base-size: 2;
-  animation: stretch 1s linear infinite alternate;
   font-variation-settings: 'wght' var(--wght);
 }
 
+li:nth-of-type(odd):focus strong,
+li:nth-of-type(odd):hover strong {
+  animation: stretch 0.35s ease-out infinite alternate;
+}
+
 li:nth-of-type(even) strong {
-  --base-size: 0.25;
-  animation: italic 0.5s ease-in-out infinite alternate;
   font-variation-settings: 'ital' var(--ital);
+}
+
+li:nth-of-type(even):focus strong,
+li:nth-of-type(even):hover strong {
+  animation: italic 0.15s linear infinite alternate;
 }
 
 li:nth-child(odd) {
   background-color: var(--palette-color-2);
+  color: var(--palette-color-3);
 }
 
 li:nth-child(even) {
   background-color: var(--palette-color-3);
+  color: var(--palette-color-2);
 }
 
 li:nth-child(1) {
@@ -123,16 +132,16 @@ li:nth-child(8) {
 
 @keyframes stretch {
   from {
-    font-variation-settings: 'wght' 0;
+    font-variation-settings: 'wght' var(--wght);
   }
   to {
-    font-variation-settings: 'wght' 600;
+    font-variation-settings: 'wght' 700;
   }
 }
 
 @keyframes italic {
   from {
-    font-variation-settings: 'ital' 0;
+    font-variation-settings: 'ital' var(--ital);
   }
   to {
     font-variation-settings: 'ital' 1;
