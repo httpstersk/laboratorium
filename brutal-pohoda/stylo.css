@@ -3,8 +3,14 @@
   src: url('./fonts/kairos-sans-variable.ttf');
 }
 
+@font-face {
+  font-family: 'Avenir Next';
+  src: url('./fonts/avenir-next-variable.ttf');
+}
+
 :root {
   --base-size: 1;
+  --counter-size: 10vw;
   --shadow-blue: 10rem;
   --palette-color-1: navy;
   --palette-color-2: blue;
@@ -25,6 +31,7 @@
 body {
   background-color: var(--palette-color-3);
   color: white;
+  counter-reset: artists;
   display: flex;
   margin: 0;
   font-family: 'Kairos Sans';
@@ -34,19 +41,44 @@ body {
 main {
   background: black;
   display: grid;
-  grid-template-columns: repeat(12, 1fr);
-  grid-template-rows: 100vh repeat(2, 50vh);
   grid-auto-flow: dense;
   grid-template-areas: '⚗️ ⚗️ ⚗️ ⚗️ ⚗️ 🐋 🐋 🐋 👼 👼 🐻 🐻' '🌌 🌌 🐉 🐉 🐉 🐉 🐉 🎩 🎩 🎩 🐻 🐻' '🌌 🌌 🐉 🐉 🐉 🐉 🐉 👩 👩 👩 🐻 🐻';
-  margin: 0;
+  grid-template-columns: repeat(12, 1fr);
+  grid-template-rows: 100vh repeat(2, 50vh);
   grid-gap: 1vw;
+  list-style: none;
+  margin: 0;
   overflow: hidden;
   padding: 0;
-  list-style: none;
 }
 
 section {
   position: relative;
+}
+
+aside {
+  background-color: white;
+  border-radius: 50%;
+  height: var(--counter-size);
+  justify-content: center;
+  font-family: 'Avenir Next';
+  font-size: calc(var(--counter-size) / 2);
+  font-variant-numeric: slashed-zero;
+  font-variation-settings: 'wght' var(--wght);
+  position: fixed;
+  right: calc(var(--counter-size) / 5);
+  top: calc(var(--counter-size) / 5);
+  width: var(--counter-size);
+  z-index: 2;
+}
+
+aside:after {
+  color: black;
+  content: counter(artists);
+  left: 50%;
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
 }
 
 input {
@@ -54,6 +86,10 @@ input {
   opacity: 0;
   position: absolute;
   width: 100%;
+}
+
+input:checked {
+  counter-increment: artists;
 }
 
 label {
