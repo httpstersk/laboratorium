@@ -11,13 +11,17 @@
 :root {
   --base-size: 1;
   --counter-size: 10vw;
-  --shadow-blue: 10rem;
+  --header-size: 12vw;
+  --shadow-blur: 10rem;
   --palette-color-1: navy;
   --palette-color-2: blue;
   --palette-color-3: pink;
+  --palette-color-4: black;
   --wght: 100;
   --wdth: 100;
   --ital: 0;
+  --font-family-1: 'Kairos Sans';
+  --font-family-2: 'Avenir Next';
   font-kerning: auto;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -33,38 +37,67 @@ body {
   color: white;
   counter-reset: artists;
   display: flex;
+  flex-direction: column;
   margin: 0;
-  font-family: 'Kairos Sans';
+  font-family: var(--font-family-1);
   text-transform: uppercase;
 }
 
 main {
-  background: black;
+  background: var(--palette-color-4);
+  border-top: 1vw solid var(--palette-color-4);
   display: grid;
   grid-auto-flow: dense;
-  grid-template-areas: '⚗️ ⚗️ ⚗️ ⚗️ ⚗️ 🐋 🐋 🐋 👼 👼 🐻 🐻' '🌌 🌌 🐉 🐉 🐉 🐉 🐉 🎩 🎩 🎩 🐻 🐻' '🌌 🌌 🐉 🐉 🐉 🐉 🐉 👩 👩 👩 🐻 🐻';
-  grid-template-columns: repeat(12, 1fr);
-  grid-template-rows: 100vh repeat(2, 50vh);
   grid-gap: 1vw;
   list-style: none;
   margin: 0;
+  margin-top: var(--header-size);
   overflow: hidden;
   padding: 0;
+  position: relative;
 }
 
-section {
+#thursday > main {
+  grid-template-areas: '⚗️ ⚗️ ⚗️ ⚗️ ⚗️ 🐋 🐋 🐋 👼 👼 🐻 🐻' '🌌 🌌 🐉 🐉 🐉 🐉 🐉 🎩 🎩 🎩 🐻 🐻' '🌌 🌌 🐉 🐉 🐉 🐉 🐉 👩 👩 👩 🐻 🐻';
+  grid-template-columns: repeat(12, 1fr);
+  grid-template-rows: 100vh repeat(2, 50vh);
+}
+
+header {
+  align-items: center;
+  background: #666;
+  display: flex;
+  height: var(--header-size);
+  justify-content: center;
+  overflow: hidden;
+  position: absolute;
+  width: 100%;
+}
+
+h1,
+h2,
+h3 {
+  margin: 0;
+}
+
+h2 {
+  color: var(--palette-color-4);
+  font-family: var(--font-family-2);
+  font-size: calc(var(--header-size) * 2);
+  font-variation-settings: 'wght' 900;
+}
+
+div {
   position: relative;
 }
 
 aside {
-  background-color: white;
-  border-radius: 50%;
   height: var(--counter-size);
-  justify-content: center;
-  font-family: 'Avenir Next';
+  font-family: var(--font-family-2);
   font-size: calc(var(--counter-size) / 2);
   font-variant-numeric: slashed-zero;
-  font-variation-settings: 'wght' var(--wght);
+  font-variation-settings: 'wght' 900;
+  justify-content: center;
   position: fixed;
   right: calc(var(--counter-size) / 5);
   top: calc(var(--counter-size) / 5);
@@ -73,7 +106,7 @@ aside {
 }
 
 aside:after {
-  color: black;
+  color: white;
   content: counter(artists);
   left: 50%;
   position: absolute;
@@ -111,71 +144,71 @@ label {
   word-break: break-all;
 }
 
-section:nth-child(odd) input~label {
+div:nth-child(odd) input ~ label {
   font-variation-settings: 'wght' var(--wght);
 }
 
-section:nth-child(odd) input:checked~label {
+div:nth-child(odd) input:checked ~ label {
   animation: stretch 0.4s ease infinite alternate;
   opacity: 1;
 }
 
-section:nth-child(even) input~label {
+div:nth-child(even) input ~ label {
   font-variation-settings: 'ital' var(--ital);
 }
 
-section:nth-child(even) input:checked~label {
+div:nth-child(even) input:checked ~ label {
   animation: italic 0.2s linear infinite alternate;
   opacity: 1;
 }
 
-section:nth-child(odd) {
+div:nth-child(odd) {
   background-color: var(--palette-color-2);
   color: var(--palette-color-3);
 }
 
-section:nth-child(odd) input:focus~label {
-  text-shadow: 0 0 var(--shadow-blue) var(--palette-color-3);
+div:nth-child(odd) input:focus ~ label {
+  text-shadow: 0 0 var(--shadow-blur) var(--palette-color-3);
 }
 
-section:nth-child(even) {
+div:nth-child(even) {
   background-color: var(--palette-color-3);
   color: var(--palette-color-2);
 }
 
-section:nth-child(even) input:focus~label {
-  text-shadow: 0 0 var(--shadow-blue) var(--palette-color-2);
+div:nth-child(even) input:focus ~ label {
+  text-shadow: 0 0 var(--shadow-blur) var(--palette-color-2);
 }
 
-section:nth-child(1) {
+div:nth-child(1) {
   grid-area: ⚗️;
 }
 
-section:nth-child(2) {
+div:nth-child(2) {
   grid-area: 🐋;
 }
 
-section:nth-child(3) {
+div:nth-child(3) {
   grid-area: 👼;
 }
 
-section:nth-child(4) {
+div:nth-child(4) {
   grid-area: 🐻;
 }
 
-section:nth-child(5) {
+div:nth-child(5) {
   grid-area: 🌌;
 }
 
-section:nth-child(6) {
+div:nth-child(6) {
   grid-area: 🐉;
 }
 
-section:nth-child(7) {
+div:nth-child(7) {
   grid-area: 🎩;
 }
 
-section:nth-child(8) {
+div:nth-child(8) {
   grid-area: 👩;
 }
 
