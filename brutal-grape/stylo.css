@@ -1,0 +1,69 @@
+@font-face {
+  font-family: 'Avenir Next';
+  src: url('./fonts/avenir-next-variable.ttf');
+}
+
+:root {
+  --base-size: 1;
+  --palette-color-1: #ffdb00;
+  --palette-color-2: #2d50df;
+  --palette-color-3: #ffee8b;
+  --palette-color-4: black;
+  --wght: 100;
+  --font-family-1: 'Avenir Next';
+  font-kerning: auto;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background-color: var(--palette-color-1);
+  color: var(--palette-color-2);
+  counter-reset: artists;
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  font-family: var(--font-family-1);
+  text-transform: uppercase;
+}
+
+header {
+  font-size: 50vh;
+  height: 95vh;
+  text-align: center;
+}
+
+main {
+  list-style: none;
+  margin: 0;
+  overflow: hidden;
+  padding: 0;
+  position: relative;
+}
+
+ul {
+  display: flex;
+  flex-direction: column;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+li {
+  background: var(--palette-color-1);
+  color: var(--palette-color-2);
+  font-size: calc(5vw + 5vh + var(--base-size) * 1rem);
+  font-variation-settings: 'wght' 999;
+  margin-bottom: 1rem;
+  text-align: center;
+  transition: color 1s ease;
+}
+
+li.viewport {
+  color: var(--palette-color-4);
+}

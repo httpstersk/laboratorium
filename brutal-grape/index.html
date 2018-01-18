@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Brutal Grape 🍇</title>
+	<link rel="stylesheet" href="./stylo.css">
+</head>
+
+<body>
+	<section>
+		<header>↓</header>
+		<main>
+			<ul>
+				<li>Billy Barman</li>
+				<li>Barman Billy</li>
+				<li>Billy Barman</li>
+				<li>Barman Billy</li>
+				<li>Billy Barman</li>
+				<li>Barman Billy</li>
+				<li>Billy Barman</li>
+				<li>Barman Billy</li>
+				<li>Billy Barman</li>
+				<li>Barman Billy</li>
+				<li>Billy Barman</li>
+				<li>Barman Billy</li>
+				<li>Billy Barman</li>
+				<li>Barman Billy</li>
+				<li>Billy Barman</li>
+				<li>Barman Billy</li>
+				<li>Billy Barman</li>
+				<li>Barman Billy</li>
+			</ul>
+		</main>
+	</section>
+</body>
+
+
+<script>
+	const artists = document.querySelectorAll('li:nth-of-type(odd)');
+	const CSS_CLASS = 'viewport';
+	const CONFIG = {
+		threshold: 0.5
+	};
+
+	function onIntersection(entries) {
+		entries.forEach(entry => {
+			const {
+				intersectionRatio,
+				target
+			} = entry;
+
+			if (intersectionRatio > 0) {
+				target.classList.add(CSS_CLASS);
+				target.style.setProperty('--base-size', (intersectionRatio ** intersectionRatio) * 2);
+			} else {
+				target.classList.remove(CSS_CLASS);
+			}
+		});
+	}
+
+	let observer = new IntersectionObserver(onIntersection, CONFIG);
+	artists.forEach(artist => observer.observe(artist));
+</script>
+
+</html>
