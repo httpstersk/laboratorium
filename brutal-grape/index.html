@@ -39,22 +39,25 @@
 
 
 <script>
-	const artists = document.querySelectorAll('li:nth-of-type(odd)');
+	const elements = [...document.querySelectorAll('li')];
+	const style = getComputedStyle(document.body);
+
+	const ARTIST_HEIGHT = style.getPropertyValue('--artist-height');
+	const OFFSET = 50 - ARTIST_HEIGHT / 5;
 	const CSS_CLASS = 'viewport';
 	const CONFIG = {
-		threshold: 0.5
+		rootMargin: `-${OFFSET}% 0px -${OFFSET}% 0px`
 	};
 
 	function onIntersection(entries) {
-		entries.forEach(entry => {
+		entries.forEach((entry, index) => {
 			const {
 				intersectionRatio,
 				target
 			} = entry;
 
-			if (intersectionRatio > 0) {
+			if (entry.isIntersecting) {
 				target.classList.add(CSS_CLASS);
-				target.style.setProperty('--base-size', (intersectionRatio ** intersectionRatio) * 2);
 			} else {
 				target.classList.remove(CSS_CLASS);
 			}
@@ -62,7 +65,7 @@
 	}
 
 	let observer = new IntersectionObserver(onIntersection, CONFIG);
-	artists.forEach(artist => observer.observe(artist));
+	elements.forEach(ele => observer.observe(ele));
 </script>
 
 </html>

@@ -11,6 +11,7 @@
   --palette-color-4: black;
   --wght: 100;
   --font-family-1: 'Avenir Next';
+  --artist-height: 10;
   font-kerning: auto;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -56,14 +57,16 @@ ul {
 
 li {
   background: var(--palette-color-1);
-  color: var(--palette-color-2);
+  color: var(--palette-color-3);
+  display: block;
   font-size: calc(5vw + 5vh + var(--base-size) * 1rem);
   font-variation-settings: 'wght' 999;
-  margin-bottom: 1rem;
+  height: calc(var(--artist-height) * 1%);
+  margin: 1%;
   text-align: center;
   transition: color 1s ease;
 }
 
 li.viewport {
-  color: var(--palette-color-4);
+  background-color: var(--palette-color-4);
 }
