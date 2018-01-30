@@ -1,16 +1,16 @@
 @font-face {
-  font-family: 'Avenir Next';
-  src: url('./fonts/avenir-next-variable.ttf');
+  font-family: 'Mutator Sans';
+  src: url('./fonts/mutator-sans.ttf');
 }
 
 :root {
   --base-size: 1;
   --palette-color-1: #ffdb00;
   --palette-color-2: #2d50df;
-  --palette-color-3: #ffee8b;
+  --palette-color-3: gainsboro;
   --palette-color-4: black;
   --wght: 100;
-  --font-family-1: 'Avenir Next';
+  --font-family-1: 'Mutator Sans';
   --artist-height: 10;
   font-kerning: auto;
   text-rendering: optimizeLegibility;
@@ -34,8 +34,10 @@ body {
 }
 
 header {
-  font-size: 50vh;
-  height: 95vh;
+  background-color: var(--palette-color-3);
+  color: var(--palette-color-1);
+  font-size: 30vw;
+  height: 75vh;
   text-align: center;
 }
 
@@ -59,14 +61,14 @@ li {
   background: var(--palette-color-1);
   color: var(--palette-color-3);
   display: block;
-  font-size: calc(5vw + 5vh + var(--base-size) * 1rem);
+  font-size: 8vw;
   font-variation-settings: 'wght' 999;
   height: calc(var(--artist-height) * 1%);
   margin: 1%;
   text-align: center;
-  transition: color 1s ease;
+  transition: color 0.5s ease;
 }
 
 li.viewport {
-  background-color: var(--palette-color-4);
+  color: var(--palette-color-4);
 }
