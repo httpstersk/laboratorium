@@ -58,7 +58,19 @@ main {
 }
 
 #thursday > main {
-  grid-template-areas: '⚗️ ⚗️ ⚗️ ⚗️ ⚗️ 🐋 🐋 🐋 👼 👼 🐻 🐻' '🌌 🌌 🐉 🐉 🐉 🐉 🐉 🎩 🎩 🎩 🐻 🐻' '🌌 🌌 🐉 🐉 🐉 🐉 🐉 👩 👩 👩 🐻 🐻';
+  grid-template-areas:
+    '❶ ❶ ❶ ❶ ❶ ❷ ❷ ❷ ❸ ❸ ❹ ❹'
+    '❺ ❺ ❻ ❻ ❻ ❻ ❻ ❼ ❼ ❼ ❹ ❹'
+    '❺ ❺ ❻ ❻ ❻ ❻ ❻ ❽ ❽ ❽ ❹ ❹';
+  grid-template-columns: repeat(12, 1fr);
+  grid-template-rows: 100vh repeat(2, 50vh);
+}
+
+#friday > main {
+  grid-template-areas:
+    '➀ ➀ ➁ ➁ ➁ ➁ ➂ ➂ ➅ ➅ ➅ ➅'
+    '➀ ➀ ➃ ➃ ➄ ➄ ➂ ➂ ➆ ➆ ➆ ➆'
+    '➀ ➀ ➃ ➃ ➄ ➄ ➂ ➂ ➇ ➇ ➇ ➇';
   grid-template-columns: repeat(12, 1fr);
   grid-template-rows: 100vh repeat(2, 50vh);
 }
@@ -180,36 +192,68 @@ div:nth-child(even) input:focus ~ label {
   text-shadow: 0 0 var(--shadow-blur) var(--palette-color-2);
 }
 
-div:nth-child(1) {
-  grid-area: ⚗️;
+#thursday div:nth-child(1) {
+  grid-area: ❶;
 }
 
-div:nth-child(2) {
-  grid-area: 🐋;
+#thursday div:nth-child(2) {
+  grid-area: ❷;
 }
 
-div:nth-child(3) {
-  grid-area: 👼;
+#thursday div:nth-child(3) {
+  grid-area: ❸;
 }
 
-div:nth-child(4) {
-  grid-area: 🐻;
+#thursday div:nth-child(4) {
+  grid-area: ❹;
 }
 
-div:nth-child(5) {
-  grid-area: 🌌;
+#thursday div:nth-child(5) {
+  grid-area: ❺;
 }
 
-div:nth-child(6) {
-  grid-area: 🐉;
+#thursday div:nth-child(6) {
+  grid-area: ❻;
 }
 
-div:nth-child(7) {
-  grid-area: 🎩;
+#thursday div:nth-child(7) {
+  grid-area: ❼;
 }
 
-div:nth-child(8) {
-  grid-area: 👩;
+#thursday div:nth-child(8) {
+  grid-area: ❽;
+}
+
+#friday div:nth-child(1) {
+  grid-area: ➀;
+}
+
+#friday div:nth-child(2) {
+  grid-area: ➁;
+}
+
+#friday div:nth-child(3) {
+  grid-area: ➂;
+}
+
+#friday div:nth-child(4) {
+  grid-area: ➃;
+}
+
+#friday div:nth-child(5) {
+  grid-area: ➄;
+}
+
+#friday div:nth-child(6) {
+  grid-area: ➅;
+}
+
+#friday div:nth-child(7) {
+  grid-area: ➆;
+}
+
+#friday div:nth-child(8) {
+  grid-area: ➇;
 }
 
 @keyframes stretch {
