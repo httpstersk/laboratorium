@@ -2,70 +2,96 @@
 <html lang="en">
 
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta http-equiv="X-UA-Compatible" content="ie=edge">
-	<title>Brutal Grape 🍇</title>
-	<link rel="stylesheet" href="./stylo.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Brutal Grape 🍇</title>
+    <link rel="stylesheet" href="./stylo.css">
 </head>
 
 <body>
-	<section>
-		<header>Grape</header>
-		<main>
-			<ul>
-				<li>Billy Barman</li>
-				<li>Barman Billy</li>
-				<li>Billy Barman</li>
-				<li>Barman Billy</li>
-				<li>Billy Barman</li>
-				<li>Barman Billy</li>
-				<li>Billy Barman</li>
-				<li>Barman Billy</li>
-				<li>Billy Barman</li>
-				<li>Barman Billy</li>
-				<li>Billy Barman</li>
-				<li>Barman Billy</li>
-				<li>Billy Barman</li>
-				<li>Barman Billy</li>
-				<li>Billy Barman</li>
-				<li>Barman Billy</li>
-				<li>Billy Barman</li>
-				<li>Barman Billy</li>
-			</ul>
-		</main>
-	</section>
+    <section>
+        <header>
+            <div class="circle"></div>
+            <h1>Grape</h1>
+        </header>
+        <main>
+            <audio src="lalalalala.mp3" autoplay loop></audio>
+
+            <ul>
+                <li>Billy Barman</li>
+                <li>Barman Billy</li>
+                <li>Billy Barman</li>
+                <li>Barman Billy</li>
+                <li>Billy Barman</li>
+                <li>Barman Billy</li>
+                <li>Billy Barman</li>
+                <li>Barman Billy</li>
+                <li>Billy Barman</li>
+                <li>Barman Billy</li>
+                <li>Billy Barman</li>
+                <li>Barman Billy</li>
+                <li>Billy Barman</li>
+                <li>Barman Billy</li>
+                <li>Billy Barman</li>
+                <li>Barman Billy</li>
+                <li>Billy Barman</li>
+                <li>Barman Billy</li>
+            </ul>
+        </main>
+    </section>
 </body>
 
 
 <script>
-	const elements = [...document.querySelectorAll('li')];
-	const style = getComputedStyle(document.body);
+    const audio = document.querySelector('audio');
+    const circle = document.querySelector('.circle');
+    const elements = [...document.querySelectorAll('li')];
+    const style = getComputedStyle(document.body);
+    const audioCtx = new AudioContext();
+    const analyser = audioCtx.createAnalyser();
 
-	const ARTIST_HEIGHT = style.getPropertyValue('--artist-height');
-	const OFFSET = 50 - ARTIST_HEIGHT / 5;
-	const CSS_CLASS = 'viewport';
-	const CONFIG = {
-		rootMargin: `-${OFFSET}% 0px -${OFFSET}% 0px`
-	};
+    const loop = () => {
+        requestAnimationFrame(loop)
+        const frequencyArr = new Uint8Array(analyser.frequencyBinCount);
+        analyser.getByteFrequencyData(frequencyArr);
+        const [frequency] = frequencyArr;
+        const radius = frequency / 5;
+        document.body.style.setProperty('--radius', radius);
+    };
 
-	function onIntersection(entries) {
-		entries.forEach((entry, index) => {
-			const {
-				intersectionRatio,
-				target
-			} = entry;
+    audio.addEventListener('play', (event) => {
+        const source = audioCtx.createMediaElementSource(audio);
+        source.connect(analyser);
+        source.connect(audioCtx.destination);
+        audio.play();
+        loop();
+    });
 
-			if (entry.isIntersecting) {
-				target.classList.add(CSS_CLASS);
-			} else {
-				target.classList.remove(CSS_CLASS);
-			}
-		});
-	}
+    const ARTIST_HEIGHT = style.getPropertyValue('--artist-height');
+    const OFFSET = 50 - ARTIST_HEIGHT / 5;
+    const CSS_CLASS = 'viewport';
+    const CONFIG = {
+        rootMargin: `-${OFFSET}% 0px -${OFFSET}% 0px`
+    };
 
-	let observer = new IntersectionObserver(onIntersection, CONFIG);
-	elements.forEach(ele => observer.observe(ele));
+    function onIntersection(entries) {
+        entries.forEach((entry, index) => {
+            const {
+                intersectionRatio,
+                target
+            } = entry;
+
+            if (entry.isIntersecting) {
+                target.classList.add(CSS_CLASS);
+            } else {
+                target.classList.remove(CSS_CLASS);
+            }
+        });
+    }
+
+    let observer = new IntersectionObserver(onIntersection, CONFIG);
+    elements.forEach(ele => observer.observe(ele));
 </script>
 
 </html>
