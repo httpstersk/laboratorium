@@ -1,0 +1,75 @@
+@font-face {
+    font-display: swap;
+    font-family: 'Jakob';
+    src: url('../typography/dt-jakob-variable.ttf');
+}
+
+:root {
+    --bg-color: #000;
+    --text-color: #fff;
+    --golden-ratio: 1.618;
+    --big-font: 15vw;
+    --medium-font: calc(var(--big-font) / var(--golden-ratio));
+    --small-font: calc(var(--medium-font) / var(--golden-ratio));
+    --extra-small-font: calc(var(--small-font) / var(--golden-ratio));
+    --typography-1: 'Jakob', 'Futura ND', Helvetica, Roboto, Arial;
+    font-kerning: auto;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    --scale: 1;
+    --skew: 0;
+    --wght: 100;
+}
+
+body {
+    background-color: var(--bg-color);
+    box-sizing: border-box;
+    color: var(--text-color);
+    font-feature-settings: "liga"1;
+    font-family: var(--typography-1);
+    margin: 0;
+    overflow-x: hidden;
+    padding: 0;
+    perspective: 100rem;
+    text-transform: uppercase;
+}
+
+@supports (font-variant-ligatures: common-ligatures) {
+    body {
+        font-feature-settings: normal;
+        font-variant-ligatures: common-ligatures;
+    }
+}
+
+main {
+    align-items: center;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+    position: relative;
+    width: 100vw;
+}
+
+h1,
+h2,
+h3 {
+    display: inline-block;
+    margin: 0;
+}
+
+h1 {
+    font-family: var(--typography-1);
+    font-feature-settings: 'ss02' 1;
+    font-variation-settings: 'wght' var(--wght);
+    position: relative;
+    will-change: transform;
+}
+
+h1 {
+    font-size: var(--big-font);
+    transform: scale(var(--scale)) skew(calc(var(--skew) * 1deg), calc(var(--skew) * 1deg));
+}
