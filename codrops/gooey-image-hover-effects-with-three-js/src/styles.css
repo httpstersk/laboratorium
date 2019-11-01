@@ -1,0 +1,64 @@
+:root {
+  --base-size: 1;
+  --counter-size: 10vw;
+  --header-size: 12vw;
+  --shadow-blur: 10rem;
+  --palette-color-1: navy;
+  --palette-color-2: blue;
+  --palette-color-3: pink;
+  --palette-color-4: black;
+  --wght: 100;
+  --wdth: 100;
+  --ital: 0;
+  --font-family-1: 'Kairos Sans';
+  --font-family-2: 'Avenir Next';
+  font-kerning: auto;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background-color: var(--palette-color-3);
+  color: white;
+  counter-reset: artists;
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  font-family: var(--font-family-1);
+  text-transform: uppercase;
+}
+
+.container {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  height: 100vh;
+  width: 100%;
+  z-index: 10;
+}
+
+.tile {
+  flex: 0 0 auto;
+  width: 35vw;
+}
+
+.tile__image {
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  width: 100%;
+}
+
+canvas {
+  height: 100vh;
+  left: 0;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 9;
+}
